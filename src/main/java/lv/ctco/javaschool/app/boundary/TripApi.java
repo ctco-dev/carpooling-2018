@@ -12,7 +12,6 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import java.util.Comparator;
-import java.util.List;
 import java.util.stream.Collectors;
 
 @Path("/trip")
@@ -21,36 +20,29 @@ public class TripApi {
     @Inject
     private TripStore tripStore;
 
-    @GET
-    @Path("/active")
-    @Produces("application/json")
-    @RolesAllowed({"ADMIN", "USER"})
-    public List<TripDto> getActiveTrips() {
-        List<Trip> activeTrips = tripStore.findTripsByStatus(TripStatus.ACTIVE);
-        return activeTrips.stream().sorted(Comparator.comparing(Trip::getTime))
-                .map(this::convertToTripDto)
-                .collect(Collectors.toList());
-    }
-
     private TripDto convertToTripDto(Trip trip) {
         TripDto dto = new TripDto();
         dto.setDriver(trip.getDriver());
         dto.setEvent(trip.isEvent());
-        dto.setFrom(trip.getFrom());
-        dto.setTo(trip.getTo());
+        dto.setFrom(trip.getDeparture());
+        dto.setTo(trip.getDestination());
         dto.setPlaces(trip.getPlaces());
-        dto.setTime(trip.getTime());
+        dto.setTime(trip.getDepartureTime());
         dto.setTripStatus(trip.getTripStatus());
         return dto;
     }
 
     @GET
-    @Path("/active2")
+    @Path("/active")
     @Produces("application/json")
     @RolesAllowed({"ADMIN", "USER"})
-    public ListTripDto getActiveTrips2() {
+    public ListTripDto getActiveTrips() {
         ListTripDto listTripDto = new ListTripDto();
-        listTripDto.setTrips(getActiveTrips());
+        listTripDto.setTrips(tripStore.findTripsByStatus(TripStatus.ACTIVE)
+                .stream()
+                .sorted(Comparator.comparing(Trip::getDepartureTime))
+                .map(this::convertToTripDto)
+                .collect(Collectors.toList()));
         return listTripDto;
     }
 }

@@ -90,7 +90,7 @@
         }).then(function (response) {
             if (response.status === 200) {
                 console.log("login success");
-                location.href = "/app/start.jsp";
+                location.href = "/main.jsp";
             } else {
                 showError("Username or Password is incorrect!");
             }

@@ -3,6 +3,7 @@ package lv.ctco.javaschool.app.boundary;
 import lv.ctco.javaschool.app.control.TripStore;
 import lv.ctco.javaschool.app.entity.domain.Trip;
 import lv.ctco.javaschool.app.entity.domain.TripStatus;
+import lv.ctco.javaschool.app.entity.domain.dto.ListTripDto;
 import lv.ctco.javaschool.app.entity.domain.dto.TripDto;
 
 import javax.annotation.security.RolesAllowed;
@@ -41,5 +42,15 @@ public class TripApi {
         dto.setTime(trip.getTime());
         dto.setTripStatus(trip.getTripStatus());
         return dto;
+    }
+
+    @GET
+    @Path("/active2")
+    @Produces("application/json")
+    @RolesAllowed({"ADMIN", "USER"})
+    public ListTripDto getActiveTrips2() {
+        ListTripDto listTripDto = new ListTripDto();
+        listTripDto.setTrips(getActiveTrips());
+        return listTripDto;
     }
 }

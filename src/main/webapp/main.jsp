@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
+<script src="https://www.w3schools.com/lib/w3.js"></script>
 <head>
     <title>Car pooling service</title>
     <meta http-equiv="refresh" content="30" />
@@ -17,10 +18,18 @@
         <tr>
             <th>No</th>
             <th>Route</th>
-            <th>Driver info</th>
+            <th>Driver</th>
             <th>Places</th>
             <th>Event</th>
             <th></th>
+        </tr>
+        <tr  w3-repeat="trip">
+            <td>No</td>
+            <td>Route</td>
+            <td>{{driver}}</td>
+            <td>Places</td>
+            <td>Event</td>
+            <td></td>
         </tr>
         </thead>
         <tbody>
@@ -28,34 +37,24 @@
     </table>
 </div>
 <script>
-function addRow () {
-    var table = document.getElementById("table-active-trip");
+    w3.getHttpObject(myFunction);
 
-    fetch("<c:url value='/api/trip/active'/>", {
-        "method": "GET",
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        }
-    }).then(function (response) {
-        return response.json();
-    }).then(function (trip) {
-        console.log(JSON.stringify(trip));
-        var row = table.insertRow(i);
-        var cell1 = row.insertCell(0);
-        var cell2 = row.insertCell(1);
-        var cell3 = row.insertCell(2);
-        var cell4 = row.insertCell(3);
-        var cell5 = row.insertCell(4);
-        var cell6 = row.insertCell(5);
-        cell1.innerHTML = "NEW CELL1";
-        cell2.innerHTML = "NEW CELL2";
-        cell3.innerHTML = ;
-        cell4.innerHTML = "NEW CELL4";
-        cell5.innerHTML = "NEW CELL5";
-        cell6.innerHTML = "NEW CELL6";
-}
-function scrollBar(){
+    function myFunction() {
+        w3.displayObject("table table-bordered",getData());
+    }
+    function getData() {
+        fetch("<c:url value='/api/trip/active'/>", {
+            "method": "GET",
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        }).then(function (response) {
+            return response.json();
+        });
+    }
+
+            function scrollBar(){
     var table = document.getElementById("table-active-trip");
     var rows = document.getElementById("table-active-trip").getElementsByTagName("tbody")[0].getElementsByTagName("tr").length;
     if(rows>13)

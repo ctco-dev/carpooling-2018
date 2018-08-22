@@ -10,7 +10,6 @@ public class Car {
     @Id
     @GeneratedValue
     private Long id;
-    @OneToOne
     private String carModel;
     private String carColor;
     private int carNumber;

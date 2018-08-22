@@ -15,15 +15,18 @@ public class Trip {
     @ManyToOne
     private User driver;
 
+    @Enumerated(EnumType.STRING)
     private Place from;
 
+    @Enumerated(EnumType.STRING)
     private Place to;
 
     private int places;
 
-    private Date time;
+    private String time;
 
     private boolean isEvent;
 
+    @Enumerated(EnumType.STRING)
     private TripStatus tripStatus;
 }

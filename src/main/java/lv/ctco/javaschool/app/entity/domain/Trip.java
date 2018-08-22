@@ -3,9 +3,9 @@ package lv.ctco.javaschool.app.entity.domain;
 import lv.ctco.javaschool.auth.entity.domain.User;
 
 import javax.persistence.*;
-import java.util.Date;
 
 @Entity
+@Table(name = "trips")
 public class Trip {
 
     @Id
@@ -16,14 +16,14 @@ public class Trip {
     private User driver;
 
     @Enumerated(EnumType.STRING)
-    private Place from;
+    private Place departure;
 
     @Enumerated(EnumType.STRING)
-    private Place to;
+    private Place destination;
 
     private int places;
 
-    private String time;
+    private String departureTime;
 
     private boolean isEvent;
 
@@ -38,20 +38,20 @@ public class Trip {
         this.driver = driver;
     }
 
-    public Place getFrom() {
-        return from;
+    public Place getDeparture() {
+        return departure;
     }
 
-    public void setFrom(Place from) {
-        this.from = from;
+    public void setDeparture(Place from) {
+        this.departure = from;
     }
 
-    public Place getTo() {
-        return to;
+    public Place getDestination() {
+        return destination;
     }
 
-    public void setTo(Place to) {
-        this.to = to;
+    public void setDestination(Place to) {
+        this.destination = to;
     }
 
     public int getPlaces() {
@@ -62,12 +62,12 @@ public class Trip {
         this.places = places;
     }
 
-    public String getTime() {
-        return time;
+    public String getDepartureTime() {
+        return departureTime;
     }
 
-    public void setTime(String time) {
-        this.time = time;
+    public void setDepartureTime(String time) {
+        this.departureTime = time;
     }
 
     public boolean isEvent() {

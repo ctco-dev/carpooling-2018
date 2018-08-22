@@ -18,13 +18,13 @@ public class TripStore {
                 .getResultList();
     }
 
-    public List<Trip> findTripByStatus(TripStatus tripStatus) {
+    public List<Trip> findTripsByStatus(TripStatus tripStatus) {
         return em.createQuery("select t from Trip t where t.tripStatus = :status", Trip.class)
                 .setParameter("status", tripStatus)
                 .getResultList();
     }
 
-    public List<Trip> findTripByUser(User user) {
+    public List<Trip> findTripsByUser(User user) {
         return em.createQuery("select t from Trip t where t.driver = :user", Trip.class)
                 .setParameter("user", user)
                 .getResultList();

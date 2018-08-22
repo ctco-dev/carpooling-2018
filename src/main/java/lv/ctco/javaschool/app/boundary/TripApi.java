@@ -25,7 +25,7 @@ public class TripApi {
     @Produces("application/json")
     @RolesAllowed({"ADMIN", "USER"})
     public List<TripDto> getActiveTrips() {
-        List<Trip> activeTrips = tripStore.findTripByStatus(TripStatus.ACTIVE);
+        List<Trip> activeTrips = tripStore.findTripsByStatus(TripStatus.ACTIVE);
         return activeTrips.stream().sorted(Comparator.comparing(Trip::getTime))
                 .map(this::convertToTripDto)
                 .collect(Collectors.toList());

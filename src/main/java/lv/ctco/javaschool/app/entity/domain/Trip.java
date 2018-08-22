@@ -23,7 +23,7 @@ public class Trip {
 
     private int places;
 
-    private Date time;
+    private String time;
 
     private boolean isEvent;
 

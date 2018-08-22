@@ -5,6 +5,7 @@ import lv.ctco.javaschool.app.entity.domain.TripStatus;
 import lv.ctco.javaschool.auth.entity.domain.User;
 
 public class TripDto {
+
     private User driver;
     private Place from;
     private Place to;

@@ -24,4 +24,6 @@ public class Trip {
     private Date time;
 
     private boolean isEvent;
+
+    private TripStatus tripStatus;
 }

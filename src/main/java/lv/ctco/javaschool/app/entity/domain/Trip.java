@@ -2,10 +2,7 @@ package lv.ctco.javaschool.app.entity.domain;
 
 import lv.ctco.javaschool.auth.entity.domain.User;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 import java.util.Date;
 
 @Entity
@@ -15,7 +12,7 @@ public class Trip {
     @GeneratedValue
     private Long id;
 
-    @OneToOne
+    @ManyToOne
     private User driver;
 
     private Place from;

@@ -7,7 +7,6 @@ import lv.ctco.javaschool.auth.entity.domain.User;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
-import java.util.Optional;
 
 public class TripStore {
 
@@ -19,18 +18,16 @@ public class TripStore {
                 .getResultList();
     }
 
-    public Optional<Trip> findTripByStatus(TripStatus tripStatus) {
-        List<Trip> trips = em.createQuery("select t from Trip t where t.tripStatus = :status", Trip.class)
+    public List<Trip> findTripByStatus(TripStatus tripStatus) {
+        return em.createQuery("select t from Trip t where t.tripStatus = :status", Trip.class)
                 .setParameter("status", tripStatus)
                 .getResultList();
-        return trips.isEmpty() ? Optional.empty() : Optional.of(trips.get(0));
     }
 
-    public Optional<Trip> findTripByUser(User user) {
-        List<Trip> trips = em.createQuery("select t from Trip t where t.driver = :user", Trip.class)
+    public List<Trip> findTripByUser(User user) {
+        return em.createQuery("select t from Trip t where t.driver = :user", Trip.class)
                 .setParameter("user", user)
                 .getResultList();
-        return trips.isEmpty() ? Optional.empty() : Optional.of(trips.get(0));
     }
 
 }

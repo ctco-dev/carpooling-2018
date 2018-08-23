@@ -13,6 +13,7 @@ public class Trip {
     private Long id;
 
     @ManyToOne
+    @JoinColumn(name = "driver_id")
     private User driver;
 
     @Enumerated(EnumType.STRING)

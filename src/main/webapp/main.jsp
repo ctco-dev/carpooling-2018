@@ -11,9 +11,9 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="http://www.w3schools.com/lib/w3data.js"></script>
 </head>
-<body onload="displayActiveTrips()">
+<body onload="displayActiveTrips(),rowCounter()">
 <h2 style="margin-left: 10%">Active trips</h2>
-<div class="container" id="active-trip" onload="scrollBar()" style="border-style:solid; height:55%;  overflow: auto">
+<div class="container" id="active-trip" style="border-style:solid; height:55%;  overflow: auto">
     <table class="table table-bordered" id="trips">
         <thead>
         <tr>
@@ -24,20 +24,21 @@
             <th>Event</th>
             <th></th>
         </tr>
+        </thead>
+        <tbody>
         <tr w3-repeat="trips">
-            <td>No</td>
+            <td ></td>
             <td>{{from}}-{{to}}</td>
             <td>{{driver}}</td>
             <td>{{places}}</td>
             <td>{{event}}</td>
             <td></td>
         </tr>
-        </thead>
-        <tbody>
         </tbody>
     </table>
 </div>
 <script>
+    var j=0;
     function displayActiveTrips() {
         fetch("<c:url value="/api/trip/active"/>", {
             "method": "GET",
@@ -47,12 +48,20 @@
             }
         }).then(function (response) {
             return response.json();
+
         }).then(function (trips) {
             console.log(JSON.stringify(trips));
             w3DisplayData("trips", trips);
         });
     }
-
+    function rowCounter(){
+        var table = document.getElementsByTagName('table')[0],
+            rows = table.getElementsByTagName('tr'),
+            text = 'textContent' in document ? 'textContent' : 'innerText';
+        for (var i = 1, len = rows.length; i < len; i++){
+            rows[i].children[0][text] = j+ rows[i].children[0][text];
+        }
+    }
     function scrollBar() {
         var table = document.getElementById("table-active-trip");
         var rows = document.getElementById("table-active-trip").getElementsByTagName("tbody")[0].getElementsByTagName("tr").length;

@@ -1,12 +1,12 @@
-package lv.ctco.javaschool.app.entity.domain.dto;
+package lv.ctco.javaschool.app.entity.dto;
 
 import lv.ctco.javaschool.app.entity.domain.Place;
 import lv.ctco.javaschool.app.entity.domain.TripStatus;
-import lv.ctco.javaschool.auth.entity.domain.User;
+
+import java.util.Objects;
 
 public class TripDto {
 
-    private User driver;
     private String driverInfo;
     private String driverPhone;
     private Place from;
@@ -16,12 +16,19 @@ public class TripDto {
     private boolean isEvent;
     private TripStatus tripStatus;
 
-    public User getDriver() {
-        return driver;
+    public TripDto() {
     }
 
-    public void setDriver(User driver) {
-        this.driver = driver;
+    public TripDto(String driverInfo, String driverPhone, Place from, Place to, int places, String time, boolean isEvent, TripStatus tripStatus) {
+        this.driverInfo = driverInfo;
+        this.driverPhone = driverPhone;
+        this.from = from;
+        this.to = to;
+        this.places = places;
+        this.time = time;
+        this.isEvent = isEvent;
+        this.isEvent = isEvent;
+        this.tripStatus = tripStatus;
     }
 
     public String getDriverInfo() {
@@ -86,5 +93,25 @@ public class TripDto {
 
     public void setTripStatus(TripStatus tripStatus) {
         this.tripStatus = tripStatus;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        TripDto tripDto = (TripDto) o;
+        return places == tripDto.places &&
+                isEvent == tripDto.isEvent &&
+                Objects.equals(driverInfo, tripDto.driverInfo) &&
+                Objects.equals(driverPhone, tripDto.driverPhone) &&
+                from == tripDto.from &&
+                to == tripDto.to &&
+                Objects.equals(time, tripDto.time) &&
+                tripStatus == tripDto.tripStatus;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(driverInfo, driverPhone, from, to, places, time, isEvent, tripStatus);
     }
 }

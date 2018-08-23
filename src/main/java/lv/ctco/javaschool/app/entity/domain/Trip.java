@@ -31,6 +31,19 @@ public class Trip {
     @Enumerated(EnumType.STRING)
     private TripStatus tripStatus;
 
+    public Trip() {
+    }
+
+    public Trip(User driver, Place departure, Place destination, int places, String departureTime, boolean isEvent, TripStatus tripStatus) {
+        this.driver = driver;
+        this.departure = departure;
+        this.destination = destination;
+        this.places = places;
+        this.departureTime = departureTime;
+        this.isEvent = isEvent;
+        this.tripStatus = tripStatus;
+    }
+
     public User getDriver() {
         return driver;
     }

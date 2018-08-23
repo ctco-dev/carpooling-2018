@@ -13,11 +13,10 @@
 </head>
 <body onload="displayActiveTrips(),rowCounter()">
 <h2 style="margin-left: 10%">Active trips</h2>
-<div class="container" id="active-trip" style="border-style:solid; height:55%;  overflow: auto">
+    <div class="container" id="active-trip" style="border-style:solid; height:55%;  overflow: auto; margin-left: 5%; width: 90%">
     <table class="table table-bordered" id="trips">
         <thead>
         <tr>
-            <th>No</th>
             <th>Route</th>
             <th>Driver</th>
             <th>Places</th>
@@ -27,16 +26,34 @@
         </thead>
         <tbody>
         <tr w3-repeat="trips">
-            <td ></td>
             <td>{{from}}-{{to}}</td>
             <td>{{driver}}</td>
             <td>{{places}}</td>
             <td>{{event}}</td>
-            <td></td>
+            <td><button>Join</button></td>
         </tr>
         </tbody>
     </table>
+        <button>Add trip</button>
 </div>
+<h2 style="margin-left: 10%">No active trips for your destination. Add your own trip</h2>
+<div class="container" id="passenger-trip" style="border-style:solid; margin-left: 5%; width: 90%">
+    <table id="passenger-trips" style="border:0; width:50%">
+        <tr>
+            <td>Destination</td>
+            <td><input type="text" id="destination"></td>
+        </tr>
+        <tr>
+            <td>Start point</td>
+            <td><input type="text" id="start-point"></td>
+        </tr>
+        <tr>
+            <td>Time</td>
+            <td><input type="text" id="time"></td>
+        </tr>
+    </table>
+</div>
+<button style="margin-left: 5%; margin-top: 1%">Save</button>
 <script>
     var j=0;
     function displayActiveTrips() {
@@ -53,14 +70,6 @@
             console.log(JSON.stringify(trips));
             w3DisplayData("trips", trips);
         });
-    }
-    function rowCounter(){
-        var table = document.getElementsByTagName('table')[0],
-            rows = table.getElementsByTagName('tr'),
-            text = 'textContent' in document ? 'textContent' : 'innerText';
-        for (var i = 1, len = rows.length; i < len; i++){
-            rows[i].children[0][text] = j+ rows[i].children[0][text];
-        }
     }
     function scrollBar() {
         var table = document.getElementById("table-active-trip");

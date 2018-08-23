@@ -227,48 +227,6 @@
                 })
             }
         })
-
-        function carRegisration () {
-            hideError();
-            console.log("start car registration");
-            var dtoCar = {
-                "carModel-txt": carModel.value,
-                "carColor-txt": carColor.value,
-                "carNumber-txt": carNumber.value
-            };
-
-            fetch("<c:url value='/api/auth/registerCar'/>", {
-                "method": "POST",
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(dtoCar)
-            }).then(function (response) {
-                if (response.status === 200) {
-                    console.log("car registration success");
-                    location.href = "<c:url value='/app/main.jsp'/>";
-                } else if (response.status === 401) {
-                    showError("Something is wrong!");
-                } else {
-                    response.json().then(function (json) {
-                        switch (json.errorCode) {
-                            case "CONFLICT":
-                                showError("A user with the same username already exists!");
-                                break;
-                            case "BAD_USERNAME":
-                                showError("Username is invalid!");
-                                break;
-                            case "BAD_PASSWORD":
-                                showError("Password is invalid!");
-                                break;
-                            default:
-                                showError("Something is wrong!");
-                        }
-                    })
-                }
-            })
-        }
     }
 
 

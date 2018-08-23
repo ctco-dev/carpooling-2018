@@ -10,8 +10,20 @@ public class Car {
     @Id
     @GeneratedValue
     private Long id;
-    @OneToOne
+
     private String carModel;
     private String carColor;
-    private int carNumber;
+    private String carNumber;
+
+    public String getCarModel() { return carModel; }
+
+    public void setCarModel(String carModel) { this.carModel = carModel; }
+
+    public String getCarColor() { return carColor; }
+
+    public void setCarColor(String carColor) { this.carColor = carColor; }
+
+    public String getCarNumber() { return carNumber; }
+
+    public void setCarNumber(String carNumber) { this.carNumber = carNumber; }
 }

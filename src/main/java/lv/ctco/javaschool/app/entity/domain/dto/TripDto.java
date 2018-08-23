@@ -7,6 +7,8 @@ import lv.ctco.javaschool.auth.entity.domain.User;
 public class TripDto {
 
     private User driver;
+    private String driverInfo;
+    private String driverPhone;
     private Place from;
     private Place to;
     private int places;
@@ -20,6 +22,22 @@ public class TripDto {
 
     public void setDriver(User driver) {
         this.driver = driver;
+    }
+
+    public String getDriverInfo() {
+        return driverInfo;
+    }
+
+    public void setDriverInfo(String driverInfo) {
+        this.driverInfo = driverInfo;
+    }
+
+    public String getDriverPhone() {
+        return driverPhone;
+    }
+
+    public void setDriverPhone(String driverPhone) {
+        this.driverPhone = driverPhone;
     }
 
     public Place getFrom() {

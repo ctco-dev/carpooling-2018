@@ -15,6 +15,12 @@ public class Car {
     private String carColor;
     private String carNumber;
 
+    public Long getId() { return id; }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public String getCarModel() { return carModel; }
 
     public void setCarModel(String carModel) { this.carModel = carModel; }

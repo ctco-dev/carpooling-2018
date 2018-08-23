@@ -55,26 +55,6 @@
             <label for="phoneNumber-txt">Enter your phone number</label>
         </p>
 
-        <p id="register_car-grp" class="w3-hide">
-            <input id="register_car-cb" class="w3-check" type="checkbox" onchange="switchRegistration()">
-            <label for="register_car-cb">Car registration</label>
-        </p>
-
-        <p id="carModel-grp" class="w3-hide">
-            <input id="carModel-txt" class="w3-input" type="text" style="width:90%" required>
-            <label for="carModel-txt">Enter car model</label>
-        </p>
-
-        <p id="carColor-grp" class="w3-hide">
-            <input id="carColor-txt" class="w3-input" type="text" style="width:90%" required>
-            <label for="carColor-txt">Enter car color</label>
-        </p>
-
-        <p id="carNumber-grp" class="w3-hide">
-            <input id="carNumber-txt" class="w3-input" type="text" style="width:90%" required>
-            <label for="carNumber-txt">Enter car number</label>
-        </p>
-
         <p>
             <button id="login-btn" type="button" class="w3-button w3-section w3-teal w3-ripple" onclick="login()">Log
                 in
@@ -93,23 +73,17 @@
     function switchRegistration() {
         hideError();
         var checkbox = document.getElementById("register-cb");
-        var checkbox_carRegButton = document.getElementById("register_car-grp");
-        var checkbox_carReg = document.getElementById("register_car-cb");
         var pwd2 = document.getElementById("password2-grp");
         var loginBtn = document.getElementById("login-btn");
         var registerBtn = document.getElementById("register-btn");
         var name = document.getElementById("name-grp");
         var surname = document.getElementById("surname-grp");
         var phoneNumber = document.getElementById("phoneNumber-grp");
-        var carModel = document.getElementById("carModel-grp");
-        var carColor = document.getElementById("carColor-grp");
-        var carNumber = document.getElementById("carNumber-grp");
         if (checkbox.checked) {
             pwd2.classList.remove("w3-hide");
             name.classList.remove("w3-hide");
             surname.classList.remove("w3-hide");
             phoneNumber.classList.remove("w3-hide");
-            checkbox_carRegButton.classList.remove("w3-hide");
             loginBtn.classList.add("w3-hide");
             registerBtn.classList.remove("w3-hide");
         } else {
@@ -119,18 +93,6 @@
             name.classList.add("w3-hide");
             surname.classList.add("w3-hide");
             phoneNumber.classList.add("w3-hide");
-            checkbox_carRegButton.classList.add("w3-hide");
-        }
-
-        if (checkbox.checked && checkbox_carReg.checked) {
-            carModel.classList.remove("w3-hide");
-            carColor.classList.remove("w3-hide");
-            carNumber.classList.remove("w3-hide");
-        } else {
-            carModel.classList.add("w3-hide");
-            carColor.classList.add("w3-hide");
-            carNumber.classList.add("w3-hide");
-            document.getElementById("register_car-cb").checked = false;
         }
     }
 
@@ -169,20 +131,15 @@
         var name = document.getElementById("name-txt");
         var surname = document.getElementById("surname-txt");
         var phoneNumber = document.getElementById("phoneNumber-txt");
-        var carModel = document.getElementById("carModel-txt");
-        var carColor = document.getElementById("carColor-txt");
-        var carNumber = document.getElementById("carNumber-txt");
         var pwd1 = password1Txt.value;
         var pwd2 = password2Txt.value;
-
-        var checkbox = document.getElementById("register-cb");
-        var checkbox_carRegButton = document.getElementById("register_car-grp");
 
         console.log("start registration");
         if (pwd1 !== pwd2) {
             showError("Passwords doesn't match!")
             return;
         }
+
         var dto = {
             "username": usernameTxt.value,
             "password": pwd1,
@@ -201,12 +158,7 @@
         }).then(function (response) {
             if (response.status === 200) {
                 console.log("registration success");
-                if(!checkbox_carRegButton.checked){
-                    console.log("Button checked");
-                    carRegisration();
-                } else {
-                    location.href = "<c:url value='/app/main.jsp'/>";
-                }
+                location.href = "<c:url value='/app/main.jsp'/>";
             } else if (response.status === 401) {
                 showError("Something is wrong!");
             } else {
@@ -228,7 +180,6 @@
             }
         })
     }
-
 
     function hideError() {
         var errorPanel = document.getElementById("error-panel");

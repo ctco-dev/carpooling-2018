@@ -23,9 +23,7 @@ public class User {
     @OneToOne
     private Car car;
 
-    public Long getId() {
-        return id;
-    }
+    public Long getId() { return id; }
 
     public void setId(Long id) {
         this.id = id;

@@ -23,7 +23,18 @@ public class User {
     @OneToOne
     private Car car;
 
-    public Long getId() { return id; }
+    public User() {
+    }
+
+    public User(String name, String surname, String phoneNumber) {
+        this.name = name;
+        this.surname = surname;
+        this.phoneNumber = phoneNumber;
+    }
+
+    public Long getId() {
+        return id;
+    }
 
     public void setId(Long id) {
         this.id = id;

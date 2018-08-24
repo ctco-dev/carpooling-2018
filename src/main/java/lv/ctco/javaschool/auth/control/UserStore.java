@@ -58,21 +58,6 @@ public class UserStore {
         return user;
     }
 
-    public User createCar(String username, String carModel, String carColor, String carNumber) throws InvalidUsernameException {
-        username = username == null ? null : username.trim();
-        if (!findUserByUsername(username).isPresent()) {
-            throw new InvalidUsernameException();
-        }
-        Car newCar = new Car();
-        newCar.setCarModel(carModel);
-        newCar.setCarColor(carColor);
-        newCar.setCarNumber(carNumber);
-        User currentUser = getCurrentUser();
-        currentUser.setCar(newCar);
-        em.persist(newCar);
-        return currentUser;
-    }
-
     void validateUsername(String username) throws InvalidUsernameException {
         username = username == null ? null : username.trim();
         if (username == null || username.isEmpty()) {
@@ -85,12 +70,4 @@ public class UserStore {
             throw new InvalidPasswordException();
         }
     }
-
-    public User getCurrentUser() {
-        String username = securityContext.getCallerPrincipal()
-                .getName();
-        return findUserByUsername(username)
-                .orElseThrow(IllegalStateException::new);
-    }
-
 }

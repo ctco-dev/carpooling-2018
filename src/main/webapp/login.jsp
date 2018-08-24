@@ -27,7 +27,7 @@
 
         <p>
             <input id="username-txt" class="w3-input" type="text" style="width:90%" required>
-            <label for="username-txt">Username</label>
+            <label for="username-txt">Name</label>
         </p>
 
         <p>
@@ -73,6 +73,8 @@
     function switchRegistration() {
         hideError();
         var checkbox = document.getElementById("register-cb");
+        var checkbox_carRegButton = document.getElementById("register_car-grp");
+        var checkbox_carReg = document.getElementById("register_car-cb");
         var pwd2 = document.getElementById("password2-grp");
         var loginBtn = document.getElementById("login-btn");
         var registerBtn = document.getElementById("register-btn");
@@ -133,13 +135,10 @@
         var phoneNumber = document.getElementById("phoneNumber-txt");
         var pwd1 = password1Txt.value;
         var pwd2 = password2Txt.value;
-
-        console.log("start registration");
         if (pwd1 !== pwd2) {
             showError("Passwords doesn't match!")
             return;
         }
-
         var dto = {
             "username": usernameTxt.value,
             "password": pwd1,
@@ -162,8 +161,8 @@
             } else if (response.status === 401) {
                 showError("Something is wrong!");
             } else {
-                response.json().then(function (json) {
-                    switch (json.errorCode) {
+                response.json().then(function(json) {
+                    switch(json.errorCode) {
                         case "CONFLICT":
                             showError("A user with the same username already exists!");
                             break;

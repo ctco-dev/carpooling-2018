@@ -19,5 +19,7 @@ public class UserResourceApi {
     @Path("/list")
     @Produces("application/json")
     @RolesAllowed("ADMIN")
-    public List<User> getUserList() { return userStore.getAllUsers(); }
+    public List<User> getUserList() {
+        return userStore.getAllUsers();
+    }
 }

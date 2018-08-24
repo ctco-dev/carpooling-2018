@@ -9,6 +9,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <title>Title</title>
 </head>
 <body>
@@ -42,8 +43,20 @@
             <div>
                 <table id="passenger-trips" style="border:0; width: 30%; margin-top:2%; padding-left: 2%">
                     <tr>
+                        <td><b>User name:</b></td>
+                        <td>test<td><input id="input-user-name" type="text" ></td>
+                    </tr>
+                    <tr>
+                        <td><b>Name Surname:</b></td>
+                        <td>test<td><input id="input-name-surname" type="text"></td>
                     </tr>
                 </table>
+                <td><button id="button-user-name" onclick="editField()">Edit</button></td>
             </div>
+<script>
+    function editField() {
+        document.getElementById("input-user-info").classList.add("w3-hide");
+    }
+</script>
 </body>
 </html>

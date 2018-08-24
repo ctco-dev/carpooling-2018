@@ -36,8 +36,8 @@
         </tr>
         </tbody>
     </table>
-        <button>Add trip</button>
 </div>
+<button style="margin-left: 5%; margin-top: 1%">Add trip</button>
 <h2 style="margin-left: 10%">No active trips for your destination. Add your own trip</h2>
 <div class="container" id="passenger-trip" style="border-style:solid; margin-left: 5%; width: 90%">
     <table id="passenger-trips" style="border:0; width:50%">

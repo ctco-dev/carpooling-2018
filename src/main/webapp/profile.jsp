@@ -1,17 +1,16 @@
-
-<%--
-  Created by IntelliJ IDEA.
-  User: gatis.frishfelds01
-  Date: 8/23/2018
-  Time: 13:00
-  To change this template use File | Settings | File Templates.
---%>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="http://www.w3schools.com/lib/w3data.js"></script>
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-    <title>Title</title>
+    <title>My profile</title>
     <style>
         #profile-info td {
             padding: 2%;
@@ -54,7 +53,7 @@
         .show {display: block;}
     </style>
 </head>
-<body>
+<body onload="displayMyActiveTrips()">
     <div style="height: 10%; border-bottom: solid #1C91D8 3pt">
         <h1>My profile</h1>
     </div>
@@ -65,7 +64,6 @@
                         <thead>
                         <tr>
                             <th>Route</th>
-                            <th>Driver</th>
                             <th>Places</th>
                             <th>Event</th>
                             <th></th>
@@ -74,7 +72,6 @@
                         <tbody>
                         <tr w3-repeat="trips">
                             <td>{{from}}-{{to}}</td>
-                            <td>{{driver}}</td>
                             <td>{{places}}</td>
                             <td>{{event}}</td>
                             <td class="dropdown">
@@ -151,6 +148,21 @@
                 }
             }
         }
+    }
+    function displayMyActiveTrips() {
+        fetch("<c:url value="/api/trip/active"/>", {
+            "method": "GET",
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        }).then(function (response) {
+            return response.json();
+
+        }).then(function (trips) {
+            console.log(JSON.stringify(trips));
+            w3DisplayData("trips", trips);
+        });
     }
 </script>
 </body>

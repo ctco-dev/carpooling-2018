@@ -21,7 +21,7 @@ public class TripApi {
     @Inject
     private TripStore tripStore;
 
-   TripDto convertToTripDto(Trip trip) {
+    TripDto convertToTripDto(Trip trip) {
         User driver = trip.getDriver();
         TripDto dto = new TripDto();
         dto.setDriverInfo(driver.getSurname() + " " + driver.getName());

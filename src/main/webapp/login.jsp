@@ -153,6 +153,7 @@
         errorPanel.classList.remove("w3-hide");
         w3DisplayData("error-panel", {"message" : msg});
     }
+
 </script>
 </body>
 </html>

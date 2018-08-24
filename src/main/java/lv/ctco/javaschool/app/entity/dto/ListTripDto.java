@@ -1,4 +1,4 @@
-package lv.ctco.javaschool.app.entity.domain.dto;
+package lv.ctco.javaschool.app.entity.dto;
 
 import java.util.List;
 

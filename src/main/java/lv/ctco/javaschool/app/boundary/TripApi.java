@@ -3,8 +3,9 @@ package lv.ctco.javaschool.app.boundary;
 import lv.ctco.javaschool.app.control.TripStore;
 import lv.ctco.javaschool.app.entity.domain.Trip;
 import lv.ctco.javaschool.app.entity.domain.TripStatus;
-import lv.ctco.javaschool.app.entity.domain.dto.ListTripDto;
-import lv.ctco.javaschool.app.entity.domain.dto.TripDto;
+import lv.ctco.javaschool.app.entity.dto.ListTripDto;
+import lv.ctco.javaschool.app.entity.dto.TripDto;
+import lv.ctco.javaschool.auth.entity.domain.User;
 
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
@@ -20,9 +21,11 @@ public class TripApi {
     @Inject
     private TripStore tripStore;
 
-    private TripDto convertToTripDto(Trip trip) {
+    TripDto convertToTripDto(Trip trip) {
+        User driver = trip.getDriver();
         TripDto dto = new TripDto();
-        dto.setDriver(trip.getDriver());
+        dto.setDriverInfo(driver.getSurname() + " " + driver.getName());
+        dto.setDriverPhone(driver.getPhoneNumber());
         dto.setEvent(trip.isEvent());
         dto.setFrom(trip.getDeparture());
         dto.setTo(trip.getDestination());

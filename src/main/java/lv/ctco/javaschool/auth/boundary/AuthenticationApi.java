@@ -1,15 +1,12 @@
 package lv.ctco.javaschool.auth.boundary;
 
-import lv.ctco.javaschool.app.entity.domain.Car;
 import lv.ctco.javaschool.auth.control.exceptions.InvalidPasswordException;
 import lv.ctco.javaschool.auth.control.exceptions.InvalidUsernameException;
 import lv.ctco.javaschool.auth.control.UserStore;
 import lv.ctco.javaschool.auth.control.exceptions.UsernameAlreadyExistsException;
 import lv.ctco.javaschool.auth.entity.domain.Role;
 import lv.ctco.javaschool.auth.entity.domain.User;
-import lv.ctco.javaschool.auth.entity.dto.CarRegistrationDto;
 import lv.ctco.javaschool.auth.entity.dto.UserLoginDto;
-import lv.ctco.javaschool.auth.entity.dto.CarDto;
 import lv.ctco.javaschool.auth.entity.dto.ErrorDto;
 
 import javax.inject.Inject;
@@ -88,30 +85,6 @@ public class AuthenticationApi {
                 .entity(errorDto)
                 .build();
     }
-
-    @POST
-    @Path("/registerCar")
-    public Response carRegister(CarRegistrationDto carReg) {
-        String username = carReg.getUserLogin().getUsername();
-        String carModel = carReg.getCar().getCarModel();
-        String carColor = carReg.getCar().getCarColor();
-        String carNumber = carReg.getCar().getCarNumber();
-        String errorCode = "UNKNOWN";
-        Response.Status status = Response.Status.BAD_REQUEST;
-        try {
-            User newCar = userStore.createCar(username, carModel, carColor, carNumber);
-            log.info(String.format("Car is registered %s", newCar));
-        } catch (Exception e) {
-            status = Response.Status.INTERNAL_SERVER_ERROR;
-        }
-        ErrorDto errorDto = new ErrorDto();
-        errorDto.setErrorCode(errorCode);
-        return Response
-                .status(status)
-                .entity(errorDto)
-                .build();
-    }
-
     @POST
     @Path("/logout")
     public Response logout(@Context HttpServletRequest request) {

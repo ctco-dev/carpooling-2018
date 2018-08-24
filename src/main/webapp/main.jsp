@@ -11,7 +11,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="http://www.w3schools.com/lib/w3data.js"></script>
 </head>
-<body onload="displayActiveTrips(),rowCounter()">
+<body onload="displayActiveTrips()">
 <h2 style="margin-left: 10%">Active trips</h2>
     <div class="container" id="active-trip" style="border-style:solid; height:55%;  overflow: auto; margin-left: 5%; width: 90%">
     <table class="table table-bordered" id="trips">
@@ -19,6 +19,7 @@
         <tr>
             <th>Route</th>
             <th>Driver</th>
+            <th>Driver phone</th>
             <th>Places</th>
             <th>Event</th>
             <th></th>
@@ -27,15 +28,16 @@
         <tbody>
         <tr w3-repeat="trips">
             <td>{{from}}-{{to}}</td>
-            <td>{{driver}}</td>
+            <td>{{driverInfo}}</td>
+            <td>{{driverPhone}}</td>
             <td>{{places}}</td>
             <td>{{event}}</td>
             <td><button>Join</button></td>
         </tr>
         </tbody>
     </table>
-        <button>Add trip</button>
 </div>
+<button style="margin-left: 5%; margin-top: 1%">Add trip</button>
 <h2 style="margin-left: 10%">No active trips for your destination. Add your own trip</h2>
 <div class="container" id="passenger-trip" style="border-style:solid; margin-left: 5%; width: 90%">
     <table id="passenger-trips" style="border:0; width:50%">

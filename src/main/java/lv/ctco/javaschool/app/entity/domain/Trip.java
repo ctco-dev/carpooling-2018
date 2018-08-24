@@ -2,7 +2,14 @@ package lv.ctco.javaschool.app.entity.domain;
 
 import lv.ctco.javaschool.auth.entity.domain.User;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.ManyToOne;
+import javax.persistence.JoinColumn;
+import javax.persistence.Enumerated;
+import javax.persistence.EnumType;
 
 @Entity
 @Table(name = "trips")
@@ -30,6 +37,19 @@ public class Trip {
 
     @Enumerated(EnumType.STRING)
     private TripStatus tripStatus;
+
+    public Trip() {
+    }
+
+    public Trip(User driver, Place departure, Place destination, int places, String departureTime, boolean isEvent, TripStatus tripStatus) {
+        this.driver = driver;
+        this.departure = departure;
+        this.destination = destination;
+        this.places = places;
+        this.departureTime = departureTime;
+        this.isEvent = isEvent;
+        this.tripStatus = tripStatus;
+    }
 
     public User getDriver() {
         return driver;

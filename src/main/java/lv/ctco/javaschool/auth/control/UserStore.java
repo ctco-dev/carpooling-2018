@@ -58,10 +58,10 @@ public class UserStore {
         return user;
     }
 
-    public User createCar(String username, String carModel, String carColor, String carNumber) {
+    public User createCar(String username, String carModel, String carColor, String carNumber) throws InvalidUsernameException {
         username = username == null ? null : username.trim();
         if (!findUserByUsername(username).isPresent()) {
-            //exception should be here
+            throw new InvalidUsernameException();
         }
         Car newCar = new Car();
         newCar.setCarModel(carModel);

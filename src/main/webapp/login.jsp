@@ -116,7 +116,7 @@
         }).then(function (response) {
             if (response.status === 200) {
                 console.log("login success");
-                location.href = "/app/main.jsp";
+                location.href = "/main.jsp";
             } else {
                 showError("Username or Password is incorrect!");
             }
@@ -158,7 +158,7 @@
         }).then(function (response) {
             if (response.status === 200) {
                 console.log("registration success");
-                location.href = "<c:url value='/app/main.jsp'/>";
+                location.href = "<c:url value='/main.jsp'/>";
             } else if (response.status === 401) {
                 showError("Something is wrong!");
             } else {

@@ -58,11 +58,14 @@ public class AuthenticationApi {
     @Path("/register")
     public Response register(UserLoginDto userLogin, @Context HttpServletRequest request, @Context HttpServletResponse response) {
         String username = userLogin.getUsername();
+        String name = userLogin.getName();
+        String surname = userLogin.getSurname();
+        String phoneNumber = userLogin.getPhoneNumber();
         String password = userLogin.getPassword();
         String errorCode = "UNKNOWN";
         Response.Status status = Response.Status.BAD_REQUEST;
         try {
-            User user = userStore.createUser(username, password, Role.USER);
+            User user = userStore.createUser(username, name, surname, phoneNumber, password, Role.USER);
             log.info(String.format("User is registered %s", user));
             return login(userLogin, request, response);
         } catch (UsernameAlreadyExistsException e) {
@@ -82,7 +85,6 @@ public class AuthenticationApi {
                 .entity(errorDto)
                 .build();
     }
-
     @POST
     @Path("/logout")
     public Response logout(@Context HttpServletRequest request) {

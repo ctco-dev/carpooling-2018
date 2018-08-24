@@ -69,7 +69,6 @@
             registerBtn.classList.add("w3-hide");
         }
     }
-
     function login() {
         hideError();
         console.log("start login");
@@ -90,13 +89,12 @@
         }).then(function (response) {
             if (response.status === 200) {
                 console.log("login success");
-                location.href = "/app/start.jsp";
+                location.href = "/main.jsp";
             } else {
                 showError("Username or Password is incorrect!");
             }
         })
     }
-
     function register() {
         hideError();
         console.log("start registration");
@@ -124,7 +122,7 @@
         }).then(function (response) {
             if (response.status === 200) {
                 console.log("registration success");
-                location.href = "<c:url value='/app/start.jsp'/>";
+                location.href = "<c:url value='/main.jsp'/>";
             } else if (response.status === 401) {
                 showError("Something is wrong!");
             } else {
@@ -146,7 +144,6 @@
             }
         })
     }
-
     function hideError() {
         var errorPanel = document.getElementById("error-panel");
         errorPanel.classList.add("w3-hide");
@@ -156,6 +153,7 @@
         errorPanel.classList.remove("w3-hide");
         w3DisplayData("error-panel", {"message" : msg});
     }
+
 </script>
 </body>
 </html>

@@ -1,5 +1,6 @@
 package lv.ctco.javaschool.auth.control;
 
+import lv.ctco.javaschool.app.entity.domain.Car;
 import lv.ctco.javaschool.auth.control.exceptions.InvalidPasswordException;
 import lv.ctco.javaschool.auth.control.exceptions.InvalidUsernameException;
 import lv.ctco.javaschool.auth.control.exceptions.UsernameAlreadyExistsException;
@@ -10,6 +11,7 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.security.enterprise.SecurityContext;
 import javax.security.enterprise.identitystore.Pbkdf2PasswordHash;
 import java.util.List;
 import java.util.Optional;
@@ -21,6 +23,8 @@ public class UserStore {
     private EntityManager em;
     @Inject
     private Pbkdf2PasswordHash hash;
+    @Inject
+    private SecurityContext securityContext;
 
     public List<User> getAllUsers() {
         return em.createQuery("select u from User u", User.class)
@@ -35,7 +39,7 @@ public class UserStore {
         return user.isEmpty() ? Optional.empty() : Optional.of(user.get(0));
     }
 
-    public User createUser(String username, String password, Role role) throws InvalidUsernameException, InvalidPasswordException, UsernameAlreadyExistsException {
+    public User createUser(String username, String password, String name, String surname, String phoneNumber, Role role) throws InvalidUsernameException, InvalidPasswordException, UsernameAlreadyExistsException {
         username = username == null ? null : username.trim();
         validateUsername(username);
         validatePassword(password);
@@ -46,6 +50,9 @@ public class UserStore {
         User user = new User();
         user.setUsername(username);
         user.setPassword(pwdHash);
+        user.setName(name);
+        user.setSurname(surname);
+        user.setPhoneNumber(phoneNumber);
         user.setRole(role);
         em.persist(user);
         return user;
@@ -63,5 +70,4 @@ public class UserStore {
             throw new InvalidPasswordException();
         }
     }
-
 }

@@ -1,5 +1,7 @@
 package lv.ctco.javaschool.auth.entity.domain;
 
+import lv.ctco.javaschool.app.entity.domain.Car;
+
 import javax.persistence.*;
 
 @Entity
@@ -13,6 +15,22 @@ public class User {
     private String password;
     @Enumerated(EnumType.STRING)
     private Role role;
+
+    private String name;
+    private String surname;
+    private String phoneNumber;
+
+    @OneToOne
+    private Car car;
+
+    public User() {
+    }
+
+    public User(String name, String surname, String phoneNumber) {
+        this.name = name;
+        this.surname = surname;
+        this.phoneNumber = phoneNumber;
+    }
 
     public Long getId() {
         return id;
@@ -44,5 +62,35 @@ public class User {
 
     public void setRole(Role role) {
         this.role = role;
+    }
+
+    public String getName() { return name; }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getSurname() {
+        return surname;
+    }
+
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public Car getCar() {
+        return car;
+    }
+
+    public void setCar(Car car) {
+        this.car = car;
     }
 }

@@ -14,6 +14,12 @@
     <script src="javascript/main.js"></script>
 </head>
 <body onload="displayActiveTrips()">
+<div  id="logout">
+    <button type="button" onclick="logout()">Log out</button>
+</div>
+<div id="go-my-profile">
+    <button type="button" onclick="goMyProfile()">My Profile</button>
+</div>
 <h2>Active trips</h2>
 <div class="container" id="active-trip">
     <table class="table table-bordered" id="trips">

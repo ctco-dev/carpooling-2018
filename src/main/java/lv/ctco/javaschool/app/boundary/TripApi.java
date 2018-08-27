@@ -1,6 +1,8 @@
 package lv.ctco.javaschool.app.boundary;
 
+import javafx.scene.control.Cell;
 import lv.ctco.javaschool.app.control.TripStore;
+import lv.ctco.javaschool.app.entity.domain.Place;
 import lv.ctco.javaschool.app.entity.domain.Trip;
 import lv.ctco.javaschool.app.entity.domain.TripStatus;
 import lv.ctco.javaschool.app.entity.dto.ListTripDto;
@@ -12,7 +14,9 @@ import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import java.util.Arrays;
 import java.util.Comparator;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Path("/trip")
@@ -47,5 +51,13 @@ public class TripApi {
                 .map(this::convertToTripDto)
                 .collect(Collectors.toList()));
         return listTripDto;
+    }
+
+    @GET
+    @Path("/places")
+    @Produces("application/json")
+    @RolesAllowed({"ADMIN", "USER"})
+    public List<Place> getAllPlaces(){
+            return Arrays.asList(Place.values());
     }
 }

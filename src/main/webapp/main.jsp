@@ -12,6 +12,10 @@
     <script src="http://www.w3schools.com/lib/w3data.js"></script>
 </head>
 <body onload="displayActiveTrips()">
+<div style="margin-top: 3%">
+<button style=" position: absolute;right: 80px; "  type="button" onclick="logout()">Log out</button>
+<button style=" position: absolute;right: 170px; " type="button" onclick="goMyProfile()">My Profile</button>
+</div>
 <h2 style="margin-left: 10%">Active trips</h2>
     <div class="container" id="active-trip" style="border-style:solid; height:55%;  overflow: auto; margin-left: 5%; width: 90%">
     <table class="table table-bordered" id="trips">
@@ -79,6 +83,16 @@
         if (rows > 13) {
             table.add(scrollbar.verticalAlign)
         }
+    }
+    function logout() {
+        fetch("<c:url value='/api/auth/logout'/>", {"method": "POST"})
+            .then(function (response) {
+                location.href = "/";
+            });
+    }
+
+    function goMyProfile() {
+        location.href = "/app/profile.jsp";
     }
 </script>
 </body>

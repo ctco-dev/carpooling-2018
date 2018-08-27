@@ -1,0 +1,23 @@
+h2 {
+    margin-left: 10%;
+}
+button {
+    margin-left: 5%;
+    margin-top: 1%;
+}
+#passenger-trip {
+    border-style: solid;
+    margin-left: 5%;
+    width: 90%;
+}
+#passenger-trips {
+    border: 0;
+    width: 50%;
+}
+#active-trip {
+    border-style: solid;
+    height: 55%;
+    overflow: auto;
+    margin-left: 5%;
+    width: 90%;
+}

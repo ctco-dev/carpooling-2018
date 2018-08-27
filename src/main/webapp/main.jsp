@@ -32,10 +32,10 @@
             <td>{{from}}-{{to}}</td>
             <td>{{driverInfo}}</td>
             <td>{{driverPhone}}</td>
-            <td>{{places}}</td>
+            <td class="table_places" id="places">{{places}}</td>
             <td>{{event}}</td>
             <td>
-                <button>Join</button>
+                <button type="button" class="btn btn-warning" onclick="reduceFreePlaces()">Join</button>
             </td>
         </tr>
         </tbody>
@@ -60,5 +60,27 @@
     </table>
 </div>
 <button>Save</button>
+<script>
+    function reduceFreePlaces() {
+        var places;
+        $('#trips tbody button.btn.btn-warning').on('click', function () {
+            console.log($(this));
+            places = $(this).closest('tr').find('.table_places').text();
+            console.log("Places = " + places);
+            updatePlaces(places - 1);
+        });
+    }
+    function updatePlaces(places) {
+        $('td').click(function () {
+            console.log($(this));
+            var row_index = $(this).parent().index();
+            var col_index = $(this).index();
+            console.log(row_index);
+            console.log(col_index);
+            var x = document.getElementById("trips").rows[row_index + 1].cells;
+            x[3].innerHTML = places;
+        });
+    }
+</script>
 </body>
 </html>

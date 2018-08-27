@@ -1,0 +1,70 @@
+#profile-info td {
+    padding: 2%;
+}
+.dropbtn {
+    background-color: #3498DB;
+    color: white;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+}
+.dropbtn:hover, .dropbtn:focus {
+    background-color: #2980B9;
+}
+.dropdown {
+    position: relative;
+}
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f1f1f1;
+    min-width: 70px;
+    overflow: auto;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+}
+.dropdown-content a {
+    color: black;
+    padding: 5px 10px;
+    text-decoration: none;
+    display: block;
+}
+.dropdown a:hover {
+    background-color: #ddd;
+}
+.show {
+    display: block;
+}
+h2 {
+    margin-left: 10%;
+}
+#active-trip {
+    border-style: solid;
+    height: 55%;
+    overflow: auto;
+    margin-left: 5%;
+    width: 90%;
+}
+#profile-info {
+    border: 0;
+    width: 30%;
+    margin-top: 2%;
+    margin-left: 2%;
+    display: inline-block;
+}
+#my-profile-h1 {
+    height: 10%;
+    border-bottom: solid #1C91D8 3pt;
+}
+#active-trips-main {
+    width: 65%;
+    height: 90%;
+    border-right: solid #1C91D8 3pt;
+    float: left;
+}
+#button-edit {
+    margin-left: 2%
+}
+#button-save {
+    margin-left: 1%
+}

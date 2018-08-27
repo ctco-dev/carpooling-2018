@@ -18,10 +18,13 @@ import javax.security.enterprise.credential.UsernamePasswordCredential;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -58,14 +61,14 @@ public class AuthenticationApi {
     @Path("/register")
     public Response register(UserLoginDto userLogin, @Context HttpServletRequest request, @Context HttpServletResponse response) {
         String username = userLogin.getUsername();
+        String password = userLogin.getPassword();
         String name = userLogin.getName();
         String surname = userLogin.getSurname();
         String phoneNumber = userLogin.getPhoneNumber();
-        String password = userLogin.getPassword();
         String errorCode = "UNKNOWN";
         Response.Status status = Response.Status.BAD_REQUEST;
         try {
-            User user = userStore.createUser(username, name, surname, phoneNumber, password, Role.USER);
+            User user = userStore.createUser(username, password, name, surname, phoneNumber, Role.USER);
             log.info(String.format("User is registered %s", user));
             return login(userLogin, request, response);
         } catch (UsernameAlreadyExistsException e) {
@@ -96,5 +99,4 @@ public class AuthenticationApi {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
     }
-
 }

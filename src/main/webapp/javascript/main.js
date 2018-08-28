@@ -7,10 +7,24 @@ function displayActiveTrips() {
         }
     }).then(function (response) {
         return response.json();
-
     }).then(function (trips) {
         console.log(JSON.stringify(trips));
         w3DisplayData("trips", trips);
+    });
+}
+
+function displayTripPassengers(td) {
+    fetch('/api/trip/passengers', {
+        "method": "GET",
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        }
+    }).then(function (response) {
+        return response.json();
+    }).then(function (passengers) {
+        console.log(JSON.stringify(passengers));
+        w3DisplayData("passengers", passengers);
     });
 }
 

@@ -20,3 +20,12 @@ function scrollBar() {
         table.add(scrollbar.verticalAlign)
     }
 }
+function logout() {
+    fetch('/api/auth/logout', {"method": "POST"})
+        .then(function (response) {
+            location.href = "/";
+        });
+}
+function goMyProfile() {
+    location.href = "/profile.jsp";
+}

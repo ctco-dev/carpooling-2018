@@ -6,14 +6,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="css/profile.css">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="http://www.w3schools.com/lib/w3data.js"></script>
     <script src="javascript/profile.js"></script>
-    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <script src="javascript/common.js"></script>
     <title>My profile</title>
 </head>
 <body onload="displayMyActiveTrips()">
+<div id="button-go-to-main-page">
+    <button type="button" onclick="goToMainPage()">Go back</button>
+</div>
 <div id="my-profile-h1">
     <h1>My profile</h1>
 </div>

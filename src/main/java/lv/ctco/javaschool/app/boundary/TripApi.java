@@ -8,6 +8,7 @@ import lv.ctco.javaschool.app.entity.dto.TripDto;
 import lv.ctco.javaschool.auth.entity.domain.User;
 
 import javax.annotation.security.RolesAllowed;
+import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.json.JsonNumber;
 import javax.json.JsonObject;
@@ -18,6 +19,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @Path("/trip")
+@Stateless
 public class TripApi {
 
     @Inject

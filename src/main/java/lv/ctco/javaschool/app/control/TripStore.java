@@ -31,7 +31,7 @@ public class TripStore {
                 .getResultList();
     }
 
-    public Optional<Trip> findTripById(String id) {
+    public Optional<Trip> findTripById(Long id) {
         return em.createQuery("select t from Trip t where t.id = :id", Trip.class)
                 .setParameter("id", id)
                 .getResultStream()
@@ -39,10 +39,10 @@ public class TripStore {
     }
 
     public void setTrip(int places, String id) {
-        Optional<Trip> trip = findTripById(id);
+        Optional<Trip> trip = findTripById(Long.parseLong(id));
         if (trip.isPresent()) {
             trip.get().setPlaces(places);
-            em.persist(trip);
+            em.persist(trip.get());
         } else {
             throw new IllegalStateException();
         }

@@ -43,7 +43,7 @@
             <td class="table_places" id="places">{{places}}</td>
             <td>{{event}}</td>
             <td>
-                <button type="button" class="btn btn-warning" onclick="join(this)">Join</button>
+                <button id="join-button" type="button" class="btn btn-warning" onclick="join(this)">Join</button>
             </td>
         </tr>
         </tbody>
@@ -68,28 +68,5 @@
     </table>
 </div>
 <button>Save</button>
-<script>
-    var places;
-    function join(button) {
-        var data = {};
-        places = $(button).closest('tr').find('.table_places').text() - 1;
-        var tripId = $(button).closest('tr').find('.table_id').text();
-        var id = $(button).closest('td').parent().index();
-        var x = document.getElementById("trips").rows[id + 1].cells;
-        x[3].innerHTML = places;
-        data[tripId] = places;
-        console.log("===> JSON.stringify(data): " + JSON.stringify(data));
-        fetch("<c:url value='/api/trip'/>/" + tripId, {
-            "method": "POST",
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-        }).then(function () {
-            console.log("DONE");
-        });
-    }
-</script>
 </body>
 </html>

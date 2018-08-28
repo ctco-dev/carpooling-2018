@@ -28,7 +28,6 @@ public class TripDto {
         this.places = places;
         this.time = time;
         this.isEvent = isEvent;
-        this.isEvent = isEvent;
         this.tripStatus = tripStatus;
     }
 

@@ -1,5 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <html>
 <head>
     <title>Add new Trip</title>
@@ -10,32 +11,72 @@
     <table id="new-trip" style=" border:0; width: 30%; margin-left:2%; display: inline-block;">
         <tr>
             <td><b>Departure time:</b></td>
-            <td><input name="input" type="text"></td>
+            <td><input id="departure-time" name="input" type="text"></td>
         </tr>
         <tr>
             <td><b>Start point:</b></td>
-            <td><select class="places"></select></td>
+            <td><select id="departure" class="places"></select></td>
         </tr>
         <tr>
             <td><b>Destination:</b></td>
-            <td><select class="places"></select></td>
+            <td><select id="destination" class="places"></select></td>
         </tr>
         <tr>
             <td><b>Empty seats:</b></td>
-            <td><input name="input" class="w3-hide" type="text"></td>
+            <td><input id="places" name="input" type="text"></td>
         </tr>
         <tr>
             <td><b>Event:</b></td>
-            <td></td>
+            <td><input type="checkbox" id="yes" value="yes" onclick="addEventfields()">Yes<br>
+                <input type="checkbox" id="no" value="no" onclick="removeEventfields()">No<br></td>
+        </tr>
+        <tr id="event-name" class="w3-hide">
+            <td ><b>Event name:</b></td>
+            <td><input name="input" type="text"></td>
+        </tr>
+        <tr id="event-status" class="w3-hide">
+            <td ><b>Event start (time and date):</b></td>
+            <td><input name="input" type="text"></td>
+        </tr>
+        <tr id="participants" class="w3-hide">
+            <td ><b>Participants of the event:</b></td>
+            <td><input name="input" type="text"></td>
         </tr>
     </table>
 </div>
-<td><button id="button-save" style="margin: 3%">Save</button></td>
+<td><button id="button-save" onclick="saveTrip()" style="margin: 3%">Save</button></td>
 <script>
+    function saveTrip() {
+            var departure =document.getElementById("departure")
+            var departureTime =document.getElementById("departure-time")
+            var destination=document.getElementById("destination")
+            var places=document.getElementById("places")
+        var dto = {
+            "depatrure": departure.options[departure.selectedIndex].value,
+            "destination":destination.value,
+            "places":places.value,
+            "departureTime": departureTime.value,
+            "isEvent":false,
+            "tripStatus":"ACTIVE"
+        };
+        console.log("sending data");
+        fetch("<c:url value='/api/trip/create'/>", {
+            "method": "POST",
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(dto)
+        }).then(function (response)
+        {
+            if (response.status === 200) {
+                console.log("DONE");
+            }
+        })
+    }
     function addOptionValues() {
        var select = document.getElementsByClassName("places")[0];
         var select1 = document.getElementsByClassName("places")[1];
-     //  var select = document.getElementById("places");
         var i=0;
         fetch("<c:url value="/api/trip/places"/>", {
             "method": "GET",
@@ -54,6 +95,36 @@
             });
         });
     }
+    function addEventfields(){
+        var yesChkBox= document.getElementById("yes");
+        var noChkBox=document.getElementById("no");
+        if(yesChkBox)
+        {
+            document.getElementById('event-name').classList.remove("w3-hide");
+            document.getElementById('event-status').classList.remove("w3-hide");
+            document.getElementById('participants').classList.remove("w3-hide");
+        }
+        if(noChkBox)
+        {
+            noChkBox.checked=false;
+        }
+    }
+    function removeEventfields() {
+        var yesChkBox= document.getElementById("yes");
+        var noChkBox=document.getElementById("no");
+        if(noChkBox)
+        {
+            document.getElementById('event-name').classList.add("w3-hide");
+            document.getElementById('event-status').classList.add("w3-hide");
+            document.getElementById('participants').classList.add("w3-hide");
+        }
+        if(yesChkBox)
+        {
+            yesChkBox.checked=false;
+        }
+
+    }
+
 
 </script>
 </body>

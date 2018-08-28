@@ -14,7 +14,7 @@
     <script src="javascript/main.js"></script>
 </head>
 <body onload="displayActiveTrips()">
-<div  id="logout">
+<div id="logout">
     <button type="button" onclick="logout()">Log out</button>
 </div>
 <div id="go-my-profile">

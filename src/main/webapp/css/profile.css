@@ -68,9 +68,10 @@ h2 {
 #button-save {
     margin-left: 1%
 }
-#go-back {
+#button-go-to-main-page {
     position: absolute;
     text-align: right;
     width: 90%;
-    right: 180px;
+    right: 80px;
+    margin-top: 1%;
 }

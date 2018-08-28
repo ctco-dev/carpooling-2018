@@ -11,9 +11,13 @@
     <script src="http://www.w3schools.com/lib/w3data.js"></script>
     <script src="javascript/profile.js"></script>
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <script src="javascript/common.js"></script>
     <title>My profile</title>
 </head>
 <body onload="displayMyActiveTrips()">
+<div id="go-back">
+    <button type="button" onclick="goBack()">Go Back</button>
+</div>
 <div id="my-profile-h1">
     <h1>My profile</h1>
 </div>

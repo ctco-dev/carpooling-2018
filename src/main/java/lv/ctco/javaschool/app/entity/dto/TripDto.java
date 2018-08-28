@@ -7,6 +7,7 @@ import java.util.Objects;
 
 public class TripDto {
 
+    private Long id;
     private String driverInfo;
     private String driverPhone;
     private Place from;
@@ -29,6 +30,14 @@ public class TripDto {
         this.isEvent = isEvent;
         this.isEvent = isEvent;
         this.tripStatus = tripStatus;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getDriverInfo() {

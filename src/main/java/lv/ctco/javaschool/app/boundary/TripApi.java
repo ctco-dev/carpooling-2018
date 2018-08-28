@@ -9,10 +9,12 @@ import lv.ctco.javaschool.auth.entity.domain.User;
 
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.json.JsonNumber;
+import javax.json.JsonObject;
+import javax.json.JsonValue;
+import javax.ws.rs.*;
 import java.util.Comparator;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Path("/trip")
@@ -24,6 +26,7 @@ public class TripApi {
     TripDto convertToTripDto(Trip trip) {
         User driver = trip.getDriver();
         TripDto dto = new TripDto();
+        dto.setId(trip.getId());
         dto.setDriverInfo(driver.getSurname() + " " + driver.getName());
         dto.setDriverPhone(driver.getPhoneNumber());
         dto.setEvent(trip.isEvent());
@@ -47,5 +50,15 @@ public class TripApi {
                 .map(this::convertToTripDto)
                 .collect(Collectors.toList()));
         return listTripDto;
+    }
+
+    @POST
+    @Path("/{id}")
+    @RolesAllowed({"ADMIN", "USER"})
+    public void setTrip(JsonObject field, @PathParam("id") String tripId) {
+        for (Map.Entry<String, JsonValue> pair : field.entrySet()) {
+            Integer places = ((JsonNumber) pair.getValue()).intValue();
+            tripStore.setTrip(places, tripId);
+        }
     }
 }

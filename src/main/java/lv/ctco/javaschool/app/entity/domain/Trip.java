@@ -51,6 +51,10 @@ public class Trip {
         this.tripStatus = tripStatus;
     }
 
+    public Long getId() {
+        return id;
+    }
+
     public User getDriver() {
         return driver;
     }

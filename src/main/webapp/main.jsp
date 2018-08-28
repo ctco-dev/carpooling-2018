@@ -25,6 +25,7 @@
     <table class="table table-bordered" id="trips">
         <thead>
         <tr>
+            <th>Id</th>
             <th>Route</th>
             <th>Driver</th>
             <th>Driver phone</th>
@@ -35,13 +36,14 @@
         </thead>
         <tbody>
         <tr w3-repeat="trips">
+            <td class="table_id" id="id">{{id}}</td>
             <td>{{from}}-{{to}}</td>
             <td>{{driverInfo}}</td>
             <td>{{driverPhone}}</td>
             <td class="table_places" id="places">{{places}}</td>
             <td>{{event}}</td>
             <td>
-                <button type="button" class="btn btn-warning" onclick="reduceFreePlaces()">Join</button>
+                <button type="button" class="btn btn-warning" onclick="join(this)">Join</button>
             </td>
         </tr>
         </tbody>
@@ -67,24 +69,25 @@
 </div>
 <button>Save</button>
 <script>
-    function reduceFreePlaces() {
-        var places;
-        $('#trips tbody button.btn.btn-warning').on('click', function () {
-            console.log($(this));
-            places = $(this).closest('tr').find('.table_places').text();
-            console.log("Places = " + places);
-            updatePlaces(places - 1);
-        });
-    }
-    function updatePlaces(places) {
-        $('td').click(function () {
-            console.log($(this));
-            var row_index = $(this).parent().index();
-            var col_index = $(this).index();
-            console.log(row_index);
-            console.log(col_index);
-            var x = document.getElementById("trips").rows[row_index + 1].cells;
-            x[3].innerHTML = places;
+    var places;
+    function join(button) {
+        var data = {};
+        places = $(button).closest('tr').find('.table_places').text() - 1;
+        var tripId = $(button).closest('tr').find('.table_id').text();
+        var id = $(button).closest('td').parent().index();
+        var x = document.getElementById("trips").rows[id + 1].cells;
+        x[3].innerHTML = places;
+        data[tripId] = places;
+        console.log("===> JSON.stringify(data): " + JSON.stringify(data));
+        fetch("<c:url value='/api/trip'/>/" + tripId, {
+            "method": "POST",
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        }).then(function () {
+            console.log("DONE");
         });
     }
 </script>

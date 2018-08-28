@@ -7,6 +7,7 @@ import lv.ctco.javaschool.auth.entity.domain.User;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
+import java.util.Optional;
 
 public class TripStore {
 
@@ -28,6 +29,23 @@ public class TripStore {
         return em.createQuery("select t from Trip t where t.driver = :user", Trip.class)
                 .setParameter("user", user)
                 .getResultList();
+    }
+
+    public Optional<Trip> findTripById(String id) {
+        return em.createQuery("select t from Trip t where t.id = :id", Trip.class)
+                .setParameter("id", id)
+                .getResultStream()
+                .findFirst();
+    }
+
+    public void setTrip(int places, String id) {
+        Optional<Trip> trip = findTripById(id);
+        if (trip.isPresent()) {
+            trip.get().setPlaces(places);
+            em.persist(trip);
+        } else {
+            throw new IllegalStateException();
+        }
     }
 
 }

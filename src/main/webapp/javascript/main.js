@@ -12,7 +12,6 @@ function displayActiveTrips() {
         w3DisplayData("trips", trips);
     });
 }
-
 function scrollBar() {
     var table = document.getElementById("table-active-trip");
     var rows = document.getElementById("table-active-trip").getElementsByTagName("tbody")[0].getElementsByTagName("tr").length;
@@ -20,18 +19,15 @@ function scrollBar() {
         table.add(scrollbar.verticalAlign)
     }
 }
-
 function logout() {
     fetch('/api/auth/logout', {"method": "POST"})
         .then(function (response) {
             location.href = "/";
         });
 }
-
 function goMyProfile() {
     location.href = "/profile.jsp";
 }
-
 function join(button) {
     var data = {};
     var places = $(button).closest('tr').find('.table_places').text() - 1;

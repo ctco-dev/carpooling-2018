@@ -43,7 +43,7 @@
             <td class="table_places" id="places">{{places}}</td>
             <td>{{event}}</td>
             <td>
-                <button id="join-button" type="button" class="btn btn-warning" onclick="join(this)">Join</button>
+                <button id="join-button" type="button" onclick="join(this)">Join</button>
             </td>
         </tr>
         </tbody>

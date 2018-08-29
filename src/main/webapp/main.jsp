@@ -30,6 +30,7 @@
             <th>Driver</th>
             <th>Driver phone</th>
             <th>Places</th>
+            <th>Passengers</th>
             <th>Event</th>
             <th></th>
         </tr>
@@ -41,6 +42,11 @@
             <td>{{driverInfo}}</td>
             <td>{{driverPhone}}</td>
             <td class="table_places" id="places">{{places}}</td>
+            <td>
+                <ul id="passengers">
+                    <li w3-repeat="passengers">{{username}}</li>
+                </ul>
+            </td>
             <td>{{event}}</td>
             <td>
                 <button id="join-button" type="button"

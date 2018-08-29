@@ -49,3 +49,17 @@ function join(button, tripId, rowId, places) {
         console.log("DONE");
     });
 }
+function displayTripPassengers(td) {
+    fetch('/api/trip/passengers', {
+        "method": "GET",
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        }
+    }).then(function (response) {
+        return response.json();
+    }).then(function (passengers) {
+        console.log(JSON.stringify(passengers));
+        w3DisplayData("passengers", passengers);
+    });
+}

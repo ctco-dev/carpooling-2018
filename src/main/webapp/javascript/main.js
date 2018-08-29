@@ -28,12 +28,10 @@ function logout() {
 function goMyProfile() {
     location.href = "/profile.jsp";
 }
-function join(button) {
+function join(button, tripId, rowId, places) {
     var data = {};
-    var places = $(button).closest('tr').find('.table_places').text() - 1;
-    var tripId = $(button).closest('tr').find('.table_id').text();
-    var id = $(button).closest('td').parent().index();
-    var rowCells = document.getElementById("trips").rows[id + 1].cells;
+    places = places - 1;
+    var rowCells = document.getElementById("trips").rows[rowId + 1].cells;
     rowCells[4].innerHTML = places;
     data[tripId] = places;
     console.log("===> JSON.stringify(data): " + JSON.stringify(data));

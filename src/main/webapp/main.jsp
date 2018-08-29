@@ -43,7 +43,9 @@
             <td class="table_places" id="places">{{places}}</td>
             <td>{{event}}</td>
             <td>
-                <button id="join-button" type="button" onclick="join(this)">Join</button>
+                <button id="join-button" type="button"
+                        onclick="join(this, $(this).closest('tr').find('.table_id').text(), $(this).closest('td').parent().index(), $(this).closest('tr').find('.table_places').text())">Join
+                </button>
             </td>
         </tr>
         </tbody>

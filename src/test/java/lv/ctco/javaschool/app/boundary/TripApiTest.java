@@ -14,12 +14,14 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import javax.json.Json;
+import javax.json.JsonObject;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -66,5 +68,15 @@ class TripApiTest {
             i++;
         }
         verify(tripStore, times(1)).findTripsByStatus(TripStatus.ACTIVE);
+    }
+
+    @Test
+    @DisplayName("Check calling tripStore.setTrip() method with the correct arguments")
+    void setTripPlaces() {
+        JsonObject jsonObject = Json.createObjectBuilder()
+                .add("1", 2)
+                .build();
+        tripApi.setTripPlaces(jsonObject, "1");
+        verify(tripStore, times(1)).setTrip(2, "1");
     }
 }

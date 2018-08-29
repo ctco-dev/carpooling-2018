@@ -57,7 +57,7 @@ public class TripApi {
     @POST
     @Path("/{id}")
     @RolesAllowed({"ADMIN", "USER"})
-    public void setTrip(JsonObject field, @PathParam("id") String tripId) {
+    public void setTripPlaces(JsonObject field, @PathParam("id") String tripId) {
         for (Map.Entry<String, JsonValue> pair : field.entrySet()) {
             Integer places = ((JsonNumber) pair.getValue()).intValue();
             tripStore.setTrip(places, tripId);

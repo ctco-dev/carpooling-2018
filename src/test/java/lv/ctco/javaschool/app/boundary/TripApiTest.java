@@ -71,12 +71,12 @@ class TripApiTest {
     }
 
     @Test
-    @DisplayName("Check calling tripStore.setTrip() method with the correct arguments")
+    @DisplayName("Check calling tripStore.setTripPlaces() method with the correct arguments")
     void setTripPlaces() {
         JsonObject jsonObject = Json.createObjectBuilder()
                 .add("1", 2)
                 .build();
         tripApi.setTripPlaces(jsonObject, "1");
-        verify(tripStore, times(1)).setTrip(2, "1");
+        verify(tripStore, times(1)).setTripPlaces(2, "1");
     }
 }

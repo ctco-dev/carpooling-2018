@@ -64,7 +64,7 @@ public class TripApi {
     public void setTripPlaces(JsonObject field, @PathParam("id") String tripId) {
         for (Map.Entry<String, JsonValue> pair : field.entrySet()) {
             Integer places = ((JsonNumber) pair.getValue()).intValue();
-            tripStore.setTrip(places, tripId);
+            tripStore.setTripPlaces(places, tripId);
         }
     }
 }

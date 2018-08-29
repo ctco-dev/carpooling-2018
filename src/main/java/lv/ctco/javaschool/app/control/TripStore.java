@@ -38,7 +38,7 @@ public class TripStore {
                 .findFirst();
     }
 
-    public void setTrip(int places, String id) {
+    public void setTripPlaces(int places, String id) {
         Optional<Trip> trip = findTripById(Long.parseLong(id));
         if (trip.isPresent()) {
             trip.get().setPlaces(places);

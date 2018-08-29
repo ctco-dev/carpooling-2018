@@ -3,7 +3,6 @@ package lv.ctco.javaschool.app.entity.domain;
 import lv.ctco.javaschool.auth.entity.domain.User;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
 @Table(name = "trips")
@@ -31,12 +30,6 @@ public class Trip {
 
     @Enumerated(EnumType.STRING)
     private TripStatus tripStatus;
-
-    @OneToMany
-    @JoinTable(name = "user_trip",
-            joinColumns = @JoinColumn(name = "trip_id"),
-            inverseJoinColumns = @JoinColumn(name = "user_id"))
-    private List<User> passengers;
 
     public Trip() {
     }
@@ -109,13 +102,5 @@ public class Trip {
 
     public void setTripStatus(TripStatus tripStatus) {
         this.tripStatus = tripStatus;
-    }
-
-    public List<User> getPassengers() {
-        return passengers;
-    }
-
-    public void setPassengers(List<User> passengers) {
-        this.passengers = passengers;
     }
 }

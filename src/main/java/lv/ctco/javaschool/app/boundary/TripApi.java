@@ -6,8 +6,6 @@ import lv.ctco.javaschool.app.entity.domain.TripStatus;
 import lv.ctco.javaschool.app.entity.dto.ListTripDto;
 import lv.ctco.javaschool.app.entity.dto.TripDto;
 import lv.ctco.javaschool.auth.entity.domain.User;
-import lv.ctco.javaschool.auth.entity.dto.ListUserLoginDto;
-import lv.ctco.javaschool.auth.entity.dto.UserLoginDto;
 
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
@@ -54,26 +52,6 @@ public class TripApi {
                 .map(this::convertToTripDto)
                 .collect(Collectors.toList()));
         return listTripDto;
-    }
-
-    @GET
-    @Path("/passengers/{id}")
-    @Produces("application/json")
-    @RolesAllowed({"ADMIN", "USER"})
-    public ListUserLoginDto getTripPassengers(JsonObject field, @PathParam("id") String tripId) {
-        ListUserLoginDto listUserLoginDto = new ListUserLoginDto();
-        listUserLoginDto.setPassengers(tripStore.findUsersByTrip(tripStore.findTripById(Long.parseLong(tripId)).get())
-                .stream()
-                .sorted(Comparator.comparing(User::getUsername))
-                .map(this::convertToUserLoginDto)
-                .collect(Collectors.toList()));
-        return listUserLoginDto;
-    }
-
-    private UserLoginDto convertToUserLoginDto(User user) {
-        UserLoginDto dto = new UserLoginDto();
-        dto.setUsername(user.getUsername());
-        return dto;
     }
 
     @POST

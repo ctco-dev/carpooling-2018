@@ -13,7 +13,7 @@
     <script src="http://www.w3schools.com/lib/w3data.js"></script>
     <script src="javascript/main.js"></script>
 </head>
-<body onload="displayActiveTrips();">
+<body onload="displayActiveTrips()">
 <div id="logout">
     <button type="button" onclick="logout()">Log out</button>
 </div>
@@ -30,7 +30,6 @@
             <th>Driver</th>
             <th>Driver phone</th>
             <th>Places</th>
-            <th>Passengers</th>
             <th>Event</th>
             <th></th>
         </tr>
@@ -42,11 +41,6 @@
             <td>{{driverInfo}}</td>
             <td>{{driverPhone}}</td>
             <td class="table_places" id="places">{{places}}</td>
-            <td><SCRIPT type="text/javascript">displayTripPassengers(this.getParent());</SCRIPT>{{passengers}}
-                <ul id="passengers">
-                    <li w3-repeat="passengers">{{username}}</li>
-                </ul>
-            </td>
             <td>{{event}}</td>
             <td>
                 <button id="join-button" type="button" class="btn btn-warning" onclick="join(this)">Join</button>

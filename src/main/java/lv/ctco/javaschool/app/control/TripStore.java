@@ -20,14 +20,8 @@ public class TripStore {
     }
 
     public List<Trip> findTripsByStatus(TripStatus tripStatus) {
-        return em.createQuery("select t from Trip t where t.passengers = :status", Trip.class)
+        return em.createQuery("select t from Trip t where t.tripStatus = :status", Trip.class)
                 .setParameter("status", tripStatus)
-                .getResultList();
-    }
-
-    public List<User> findUsersByTrip(Trip trip) {
-        return em.createQuery("SELECT u FROM User AS u WHERE :trip MEMBER OF u.trips", User.class)
-                .setParameter("trip", trip)
                 .getResultList();
     }
 

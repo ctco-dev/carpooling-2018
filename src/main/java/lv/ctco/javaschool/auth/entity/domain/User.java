@@ -1,11 +1,8 @@
 package lv.ctco.javaschool.auth.entity.domain;
 
 import lv.ctco.javaschool.app.entity.domain.Car;
-import lv.ctco.javaschool.app.entity.domain.Trip;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -25,9 +22,6 @@ public class User {
 
     @OneToOne
     private Car car;
-
-    @ManyToMany(mappedBy = "passengers")
-    private List<Trip> trips = new ArrayList<>();
 
     public User() {
     }
@@ -98,13 +92,5 @@ public class User {
 
     public void setCar(Car car) {
         this.car = car;
-    }
-
-    public List<Trip> getTrips() {
-        return trips;
-    }
-
-    public void setTrips(List<Trip> trips) {
-        this.trips = trips;
     }
 }

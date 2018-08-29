@@ -13,21 +13,6 @@ function displayActiveTrips() {
     });
 }
 
-function displayTripPassengers(td) {
-    fetch('/api/trip/passengers', {
-        "method": "GET",
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        }
-    }).then(function (response) {
-        return response.json();
-    }).then(function (passengers) {
-        console.log(JSON.stringify(passengers));
-        w3DisplayData("passengers", passengers);
-    });
-}
-
 function scrollBar() {
     var table = document.getElementById("table-active-trip");
     var rows = document.getElementById("table-active-trip").getElementsByTagName("tbody")[0].getElementsByTagName("tr").length;

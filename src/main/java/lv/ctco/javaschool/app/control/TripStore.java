@@ -6,10 +6,12 @@ import lv.ctco.javaschool.app.entity.domain.Trip;
 import lv.ctco.javaschool.app.entity.domain.TripStatus;
 import lv.ctco.javaschool.auth.entity.domain.User;
 
+import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
 
+@Stateless
 public class TripStore {
 
     @PersistenceContext
@@ -31,17 +33,9 @@ public class TripStore {
                 .setParameter("user", user)
                 .getResultList();
     }
-    public Trip createTrip(User driver, Place departure, Place destination,Integer places,String depatureTime, Boolean isEvent, TripStatus tripStatus ){
-        Trip trip=new Trip();
-        trip.setDriver(driver);
-        trip.setDeparture(departure);
-        trip.setDestination(destination);
-        trip.setPlaces(places);
-        trip.setDepartureTime(depatureTime);
-        trip.setEvent(isEvent);
-        trip.setTripStatus(tripStatus);
+    public void addTrip(Trip trip)
+    {
         em.persist(trip);
-        return trip;
     }
 }
 

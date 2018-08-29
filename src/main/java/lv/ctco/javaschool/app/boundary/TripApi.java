@@ -12,6 +12,12 @@ import lv.ctco.javaschool.auth.entity.domain.User;
 
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
+import javax.json.Json;
+import javax.json.JsonObject;
+import javax.json.JsonString;
+import javax.json.JsonValue;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.GET;
@@ -22,6 +28,7 @@ import java.sql.Driver;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import javax.ws.rs.core.Context;
@@ -29,6 +36,9 @@ import javax.ws.rs.core.Response;
 
 @Path("/trip")
 public class TripApi {
+    @PersistenceContext
+    private EntityManager em;
+
     private Logger log = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
     @Inject
     private UserStore userStore;
@@ -73,20 +83,48 @@ public class TripApi {
     }
 
     @POST
-    @Path("/create")
-    @Produces("application/json")
     @RolesAllowed({"ADMIN","USER"})
-    public void createNewTrip(TripDto createTrip)
-    {
+    @Path("/create")
+    public void createNewTrip(JsonObject field){
         User user=userStore.getCurrentUser();
-        Place departure=createTrip.getFrom();
-        Place destination=createTrip.getTo();
-        Integer places=createTrip.getPlaces();
-        String departureTime=createTrip.getTime();
-        TripStatus tripStatus=createTrip.getTripStatus();
-        Boolean isEvent=createTrip.isEvent();
-
-        Trip trip=tripStore.createTrip(user,departure,destination,places,departureTime,isEvent,tripStatus);
-        log.info(String.format("Trip is created %s", trip));
+        Trip trip= new Trip();
+        trip.setDriver(user);
+        for (Map.Entry<String, JsonValue> pair : field.entrySet()) {
+            String addr = pair.getKey();
+            String value = ((JsonString) pair.getValue()).getString();
+            trip=setFieldsToTrip(trip,addr,value);
+        }
+        tripStore.addTrip(trip);
+    }
+    private Trip setFieldsToTrip(Trip trip, String addr, String value)throws IllegalArgumentException {
+        switch (addr){
+            case("departure"):
+                Place departure= Place.valueOf(value);
+                trip.setDeparture(departure);
+                break;
+            case("destination"):
+                Place destination= Place.valueOf(value);
+                trip.setDestination(destination);
+                break;
+            case ("places"):
+                int places=Integer.parseInt(value);
+                trip.setPlaces(places);
+                break;
+            case("departureTime"):
+                trip.setDepartureTime(value);
+                break;
+            case ("isEvent"):
+                boolean isEvent=Boolean.parseBoolean(value);
+                trip.setEvent(isEvent);
+                break;
+            case ("tripStatus"):
+                TripStatus status=TripStatus.valueOf(value);
+                trip.setTripStatus(status);
+                break;
+            default:
+                throw new IllegalArgumentException(addr+value);
+        }
+        return trip;
     }
 }
+

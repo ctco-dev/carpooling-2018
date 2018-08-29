@@ -37,7 +37,7 @@ public class UserStore {
                 .getResultList();
         return user.isEmpty() ? Optional.empty() : Optional.of(user.get(0));
     }
-    
+
     public User createUser(String username, String password, String name, String surname, String phoneNumber, Role role) throws InvalidUsernameException, InvalidPasswordException, UsernameAlreadyExistsException {
         username = username == null ? null : username.trim();
         validateUsername(username);

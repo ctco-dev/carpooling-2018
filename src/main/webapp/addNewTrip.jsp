@@ -46,34 +46,6 @@
 </div>
 <td><button id="button-save" onclick="saveTrip()" style="margin: 3%">Save</button></td>
 <script>
-    function saveTrip() {
-            var departure =document.getElementById("departure")
-            var departureTime =document.getElementById("departure-time")
-            var destination=document.getElementById("destination")
-            var places=document.getElementById("places")
-        var dto = {
-            "depatrure": departure.options[departure.selectedIndex].value,
-            "destination":destination.value,
-            "places":places.value,
-            "departureTime": departureTime.value,
-            "isEvent":false,
-            "tripStatus":"ACTIVE"
-        };
-        console.log("sending data");
-        fetch("<c:url value='/api/trip/create'/>", {
-            "method": "POST",
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(dto)
-        }).then(function (response)
-        {
-            if (response.status === 200) {
-                console.log("DONE");
-            }
-        })
-    }
     function addOptionValues() {
        var select = document.getElementsByClassName("places")[0];
         var select1 = document.getElementsByClassName("places")[1];
@@ -88,7 +60,6 @@
             return response.json();
 
         }).then(function (trips) {
-            console.log(JSON.stringify(trips));
             trips.forEach(function (c) {
                 select.add( new Option( c ) );
                 select1.add( new Option( c ) );
@@ -122,10 +93,36 @@
         {
             yesChkBox.checked=false;
         }
-
     }
 
 
+    function saveTrip() {
+        var departure =document.getElementById("departure")
+        var departureTime =document.getElementById("departure-time")
+        var destination=document.getElementById("destination")
+        var places=document.getElementById("places")
+        var dto = {
+            "departure": departure.options[departure.selectedIndex].value,
+            "destination":destination.options[destination.selectedIndex].value,
+            "places":places.value,
+            "departureTime": departureTime.value,
+            "isEvent":"false",
+            "tripStatus":"ACTIVE"
+        };
+        console.log("sending data");
+        console.log(JSON.stringify(dto))
+        fetch("<c:url value='/api/trip/create'/>", {
+            "method": "POST",
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(dto)
+        }).then(function (response)
+        {
+            location.href = "<c:url value='/main.jsp'/>";
+        })
+    }
 </script>
 </body>
 </html>

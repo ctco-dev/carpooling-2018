@@ -33,8 +33,8 @@ function join(button) {
     var places = $(button).closest('tr').find('.table_places').text() - 1;
     var tripId = $(button).closest('tr').find('.table_id').text();
     var id = $(button).closest('td').parent().index();
-    var x = document.getElementById("trips").rows[id + 1].cells;
-    x[4].innerHTML = places;
+    var rowCells = document.getElementById("trips").rows[id + 1].cells;
+    rowCells[4].innerHTML = places;
     data[tripId] = places;
     console.log("===> JSON.stringify(data): " + JSON.stringify(data));
     fetch('/api/trip/' + tripId, {

@@ -46,12 +46,8 @@
             <label for="phoneNumber-txt">Enter your phone number</label>
         </p>
         <p>
-            <button id="login-btn" type="button" class="w3-button w3-section w3-teal w3-ripple" onclick="login()">Log
-                in
-            </button>
-            <button id="register-btn" type="button" class="w3-button w3-section w3-teal w3-ripple w3-hide"
-                    onclick="register()">Register
-            </button>
+            <button id="login-btn" type="button" class="w3-button w3-section w3-teal w3-ripple" onclick="login()">Log in</button>
+            <button id="register-btn" type="button" class="w3-button w3-section w3-teal w3-ripple w3-hide"onclick="register()">Register</button>
         </p>
     </form>
 </div>

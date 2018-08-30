@@ -76,4 +76,9 @@ public class UserStore {
                 .setParameter("trip", trip)
                 .getResultList();
     }
+
+    public User getCurrentUser() {
+        String username = securityContext.getCallerPrincipal().getName();
+        return findUserByUsername(username).orElseThrow(IllegalStateException::new);
+    }
 }

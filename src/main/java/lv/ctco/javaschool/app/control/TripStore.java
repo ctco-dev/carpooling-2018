@@ -38,10 +38,13 @@ public class TripStore {
                 .findFirst();
     }
 
-    public void setTripPlaces(int places, String id) {
+    public void setTripPlaces(int places, User user, String id) {
         Optional<Trip> trip = findTripById(Long.parseLong(id));
         if (trip.isPresent()) {
             trip.get().setPlaces(places);
+            List<User> passengers = trip.get().getPassengers();
+            passengers.add(user);
+            trip.get().setPassengers(passengers);
             em.persist(trip.get());
         } else {
             throw new IllegalStateException();

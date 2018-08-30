@@ -18,12 +18,15 @@ import org.mockito.MockitoAnnotations;
 
 import javax.json.Json;
 import javax.json.JsonObject;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -88,7 +91,7 @@ class TripApiTest {
 
     @Test
     @DisplayName("Check getting sorted list of UserLoginDto and calling tripStore.findTripsById() and userStore.findUsersByTrip()")
-    void getTripPassengers() {
+    void getTripPassengersByTripIdTest() {
         List<UserLoginDto> userLoginDtos = new ArrayList<>();
         UserLoginDto userLoginDto1 = new UserLoginDto("bastard", "pass1", "Hans", "Landa", "1111111");
         UserLoginDto userLoginDto2 = new UserLoginDto("vader", "pass2", "Anakin", "Skywalker", "2222222");
@@ -112,4 +115,19 @@ class TripApiTest {
             i++;
         }
     }
+
+    @Test
+    @DisplayName("Check for throwing the NumberFormatException when getTripPassengersByTripId() method is called with an invalid argument")
+    void getTripPassengersByTripIdTestForNumberFormatException() {
+        assertThrows(NumberFormatException.class, () -> tripApi.getTripPassengersByTripId("one"));
+    }
+
+
+    @Test
+    @DisplayName("Check for throwing the NoSuchElementException when getTripPassengersByTripId() method is called with a nonexistent trip id")
+    void getTripPassengersByTripIdTestForNoSuchElementException() {
+        when(tripStore.findTripById(42L)).thenReturn(Optional.empty());
+        assertThrows(NoSuchElementException.class, () -> tripApi.getTripPassengersByTripId("42"));
+    }
+
 }

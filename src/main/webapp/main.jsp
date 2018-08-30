@@ -26,7 +26,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr w3-repeat="trips">
+            <tr w3-repeat="trips">
             <td>{{from}}-{{to}}</td>
             <td>{{driverInfo}}</td>
             <td>{{driverPhone}}</td>
@@ -57,7 +57,6 @@
 </div>
 <button style="margin-left: 5%; margin-top: 1%">Save</button>
 <script>
-    var j=0;
     function displayActiveTrips() {
         fetch("<c:url value="/api/trip/active"/>", {
             "method": "GET",

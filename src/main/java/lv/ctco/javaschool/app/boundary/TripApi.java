@@ -1,7 +1,7 @@
 package lv.ctco.javaschool.app.boundary;
 
-import javafx.scene.control.Cell;
 import lv.ctco.javaschool.app.control.TripStore;
+import lv.ctco.javaschool.app.entity.domain.Event;
 import lv.ctco.javaschool.app.entity.domain.Place;
 import lv.ctco.javaschool.app.entity.domain.Trip;
 import lv.ctco.javaschool.app.entity.domain.TripStatus;
@@ -12,27 +12,21 @@ import lv.ctco.javaschool.auth.entity.domain.User;
 
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
-import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonString;
 import javax.json.JsonValue;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
-import java.sql.Driver;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.Response;
 
 @Path("/trip")
 public class TripApi {
@@ -48,6 +42,7 @@ public class TripApi {
 
     TripDto convertToTripDto(Trip trip) {
         User driver = trip.getDriver();
+        Event event = trip.getEvent();
         TripDto dto = new TripDto();
         dto.setDriverInfo(driver.getSurname() + " " + driver.getName());
         dto.setDriverPhone(driver.getPhoneNumber());
@@ -57,6 +52,8 @@ public class TripApi {
         dto.setPlaces(trip.getPlaces());
         dto.setTime(trip.getDepartureTime());
         dto.setTripStatus(trip.getTripStatus());
+        dto.setEventName(event.getEventName());
+        dto.setEventStartTime(event.getEventStartTime());
         return dto;
     }
 

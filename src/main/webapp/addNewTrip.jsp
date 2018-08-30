@@ -5,6 +5,9 @@
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="css/addNewTrip.css">
     <script src="javascript/addNewTrip.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="http://www.w3schools.com/lib/w3data.js"></script>
     <title>Add new Trip</title>
 </head>
 <body onload="addOptionValues()">
@@ -29,8 +32,8 @@
         </tr>
         <tr>
             <td><b>Event:</b></td>
-            <td><input type="checkbox" id="yes" value="yes" onclick="addEventfields()">Yes<br>
-                <input type="checkbox" id="no" value="no" onclick="removeEventfields()">No<br></td>
+            <td><input type="checkbox" id="yes" value="yes" onclick="addRemoveEvent()">Yes<br>
+                <input type="checkbox" id="no" value="no" onclick="addRemoveEvent()">No<br></td>
         </tr>
         <tr id="event-name" class="w3-hide">
             <td ><b>Event name:</b></td>
@@ -46,6 +49,17 @@
         </tr>
     </table>
 </div>
-<td><button id="button-save" onclick="saveTrip()">Save</button></td>
+<td><button id="button-save" onclick="tripdto(), displayEvents()">Save</button></td>
+<table>
+    <tr w3-repeat="events">
+        <td>{{from}}-{{to}}</td>
+        <td>{{driverInfo}}</td>
+        <td>{{driverPhone}}</td>
+        <td>{{places}}</td>
+        <td>{{event}}</td>
+        <td>{{eventName}}</td>
+        <td>{{eventStartTime}}</td>
+    </tr>
+</table>
 </body>
 </html>

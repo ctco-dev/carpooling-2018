@@ -31,21 +31,18 @@ function switchRegistration() {
     var name = document.getElementById("name-grp");
     var surname = document.getElementById("surname-grp");
     var phoneNumber = document.getElementById("phoneNumber-grp");
+    var group = document.getElementById("name-surname-phone");
     if (checkbox.checked) {
+        group.classList.remove("w3-hide");
         pwd2.classList.remove("w3-hide");
-        name.classList.remove("w3-hide");
-        surname.classList.remove("w3-hide");
-        phoneNumber.classList.remove("w3-hide");
         loginBtn.classList.add("w3-hide");
         registerBtn.classList.remove("w3-hide");
     } else {
+        group.classList.add("w3-hide");
         pwd2.classList.add("w3-hide");
         loginBtn.classList.remove("w3-hide");
         registerBtn.classList.add("w3-hide");
-        name.classList.add("w3-hide");
-        surname.classList.add("w3-hide");
-        phoneNumber.classList.add("w3-hide");
-    }
+     }
 }
 function login() {
     hideError();

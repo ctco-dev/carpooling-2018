@@ -33,18 +33,20 @@
             <input id="password2-txt" class="w3-input" type="password" style="width:90%" required>
             <label for="password2-txt">Repeat Password</label>
         </p>
-        <p id="name-grp" class="w3-hide">
+        <div class="w3-hide" id="name-surname-phone">
+        <p id="name-grp">
             <input id="name-txt" class="w3-input" type="text" style="width:90%" required>
             <label for="name-txt">Enter your name</label>
         </p>
-        <p id="surname-grp" class="w3-hide">
+        <p id="surname-grp">
             <input id="surname-txt" class="w3-input" type="text" style="width:90%" required>
             <label for="surname-txt">Enter your surname</label>
         </p>
-        <p id="phoneNumber-grp" class="w3-hide">
+        <p id="phoneNumber-grp">
             <input id="phoneNumber-txt" class="w3-input" type="text" style="width:90%" required>
             <label for="phoneNumber-txt">Enter your phone number</label>
         </p>
+        </div>
         <p>
             <button id="login-btn" type="button" class="w3-button w3-section w3-teal w3-ripple" onclick="login()">Log in</button>
             <button id="register-btn" type="button" class="w3-button w3-section w3-teal w3-ripple w3-hide"onclick="collectDto()">Register</button>

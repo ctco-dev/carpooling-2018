@@ -1,17 +1,27 @@
+function eventDto(){
+    var event_name=document.getElementById("name");
+    var event_time=document.getElementById("time") ;
+    var dto = {
+        "event_name":event_name.value,
+        "event-time":event_time.value
+    };
+    saveEvent(dto);
+}
 function tripdto() {
     var yesChkBox= document.getElementById("yes");
-    var departure =document.getElementById("departure")
-    var departureTime =document.getElementById("departure-time")
-    var destination=document.getElementById("destination")
-    var places=document.getElementById("places")
+    var departure =document.getElementById("departure");
+    var departureTime =document.getElementById("departure-time");
+    var destination=document.getElementById("destination");
+    var places=document.getElementById("places");
     var isEvent;
+    var event_id;
     if(yesChkBox.checked)
     {
-        var isEvent="true"
+        var isEvent="true";
     }
     else
     {
-        var isEvent="false"
+        var isEvent="false";
     }
     var dto = {
         "departure": departure.options[departure.selectedIndex].value,
@@ -19,7 +29,8 @@ function tripdto() {
         "places":places.value,
         "departureTime": departureTime.value,
         "isEvent":isEvent,
-        "tripStatus":"ACTIVE"
+        "tripStatus":"ACTIVE",
+        "event_id":event_id.value
     };
     saveTrip(dto);
 }
@@ -48,7 +59,7 @@ function addRemoveEvent(){
     {
         noChkBox.checked=false;
         document.getElementById('event-name').classList.remove("w3-hide");
-        document.getElementById('event-status').classList.remove("w3-hide");
+        document.getElementById('event-time').classList.remove("w3-hide");
         document.getElementById('participants').classList.remove("w3-hide");
 
     }
@@ -56,14 +67,14 @@ function addRemoveEvent(){
     {
         yesChkBox.checked=false;
         document.getElementById('event-name').classList.add("w3-hide");
-        document.getElementById('event-status').classList.add("w3-hide");
+        document.getElementById('event-time').classList.add("w3-hide");
         document.getElementById('participants').classList.add("w3-hide");
     }
 }
 function saveTrip(values) {
     console.log("sending data");
     console.log(JSON.stringify(values))
-    fetch('/api/trip/create', {
+    fetch('/api/trip/createTrip', {
         "method": "POST",
         headers: {
             'Accept': 'application/json',
@@ -72,21 +83,21 @@ function saveTrip(values) {
         body: JSON.stringify(values)
     }).then(function (response)
     {
-        // location.href = "/main.jsp";
+        location.href = "/main.jsp";
     })
 }
-function displayEvents() {
-    fetch('/api/trip/active', {
-        "method": "GET",
+function saveEvent(values) {
+    console.log("sending data");
+    console.log(JSON.stringify(values))
+    fetch('/api/trip/createEvent', {
+        "method": "POST",
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
-        }
-    }).then(function (response) {
-        return response.json();
-
-    }).then(function (events) {
-        console.log(JSON.stringify(events));
-        w3DisplayData("events", events);
-    });
+        },
+        body: JSON.stringify(values)
+    }).then(function (response)
+    {
+        location.href = "/main.jsp";
+    })
 }

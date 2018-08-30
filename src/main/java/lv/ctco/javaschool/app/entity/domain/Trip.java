@@ -17,7 +17,7 @@ public class Trip {
     @JoinColumn(name = "driver_id")
     private User driver;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "event_id")
     private Event event;
 
@@ -43,7 +43,7 @@ public class Trip {
 
     public Trip(User driver, Event event, Place departure, Place destination, int places, String departureTime, boolean isEvent, TripStatus tripStatus) {
         this.driver = driver;
-        this.event = event;
+        this.event=event;
         this.departure = departure;
         this.destination = destination;
         this.places = places;

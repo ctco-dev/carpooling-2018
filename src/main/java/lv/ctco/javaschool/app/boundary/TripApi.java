@@ -42,7 +42,7 @@ public class TripApi {
 
     TripDto convertToTripDto(Trip trip) {
         User driver = trip.getDriver();
-        Event event = trip.getEvent();
+        Event event =trip.getEvent();
         TripDto dto = new TripDto();
         dto.setDriverInfo(driver.getSurname() + " " + driver.getName());
         dto.setDriverPhone(driver.getPhoneNumber());
@@ -81,7 +81,26 @@ public class TripApi {
 
     @POST
     @RolesAllowed({"ADMIN","USER"})
-    @Path("/create")
+    @Path("/createEvent")
+    public void createNewEvent(JsonObject field){
+        User user=userStore.getCurrentUser();
+        Event event= new Event();
+        for (Map.Entry<String, JsonValue> pair : field.entrySet()) {
+            String addr = pair.getKey();
+            String value = ((JsonString) pair.getValue()).getString();
+            if(addr=="eventName"){
+                event.setEventName(value);
+            }
+            if (addr=="evemtTime") {
+                event.setEventStartTime(value);
+            }
+        }
+        tripStore.addEvent(event);
+    }
+
+    @POST
+    @RolesAllowed({"ADMIN","USER"})
+    @Path("/createTrip")
     public void createNewTrip(JsonObject field){
         User user=userStore.getCurrentUser();
         Trip trip= new Trip();

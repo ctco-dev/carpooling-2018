@@ -36,11 +36,11 @@
                 <input type="checkbox" id="no" value="no" onclick="addRemoveEvent()">No<br></td>
         </tr>
         <tr id="event-name" class="w3-hide">
-            <td ><b>Event name:</b></td>
+            <td id="name"><b>Event name:</b></td>
             <td><input name="input" type="text"></td>
         </tr>
-        <tr id="event-status" class="w3-hide">
-            <td ><b>Event start (time and date):</b></td>
+        <tr id="event-time" class="w3-hide">
+            <td id="time"><b>Event start (time and date):</b></td>
             <td><input name="input" type="text"></td>
         </tr>
         <tr id="participants" class="w3-hide">
@@ -49,17 +49,6 @@
         </tr>
     </table>
 </div>
-<td><button id="button-save" onclick="tripdto(), displayEvents()">Save</button></td>
-<table>
-    <tr w3-repeat="events">
-        <td>{{from}}-{{to}}</td>
-        <td>{{driverInfo}}</td>
-        <td>{{driverPhone}}</td>
-        <td>{{places}}</td>
-        <td>{{event}}</td>
-        <td>{{eventName}}</td>
-        <td>{{eventStartTime}}</td>
-    </tr>
-</table>
+<td><button id="button-save" onclick="tripdto()">Save</button></td>
 </body>
 </html>

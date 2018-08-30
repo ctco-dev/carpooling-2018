@@ -22,6 +22,8 @@
             <th>Driver phone</th>
             <th>Places</th>
             <th>Event</th>
+            <th>Event Name</th>
+            <th>Event start time</th>
             <th></th>
         </tr>
         </thead>
@@ -32,7 +34,9 @@
             <td>{{driverPhone}}</td>
             <td>{{places}}</td>
             <td>{{event}}</td>
-            <td><button>Join</button></td>
+                <td>{{eventName}}</td>
+                <td>{{eventStartTime}}</td>
+                <td><button>Join</button></td>
         </tr>
         </tbody>
     </table>

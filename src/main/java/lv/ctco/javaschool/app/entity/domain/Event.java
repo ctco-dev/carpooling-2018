@@ -14,20 +14,18 @@ public class Event {
     private String eventName;
     private String eventStartTime;
 
-
-    private Event() {
+    public Event() {
     }
     public Event(String eventName,String eventStartTime) {
         this.eventName=eventName;
         this.eventStartTime= eventStartTime;
     }
 
-
     public String getEventName() {
         return eventName;
     }
 
-    public void setEventName(String carModel) {
+    public void setEventName(String eventName) {
         this.eventName= eventName;
     }
 

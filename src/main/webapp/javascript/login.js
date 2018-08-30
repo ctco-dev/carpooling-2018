@@ -28,9 +28,6 @@ function switchRegistration() {
     var pwd2 = document.getElementById("password2-grp");
     var loginBtn = document.getElementById("login-btn");
     var registerBtn = document.getElementById("register-btn");
-    var name = document.getElementById("name-grp");
-    var surname = document.getElementById("surname-grp");
-    var phoneNumber = document.getElementById("phoneNumber-grp");
     var group = document.getElementById("name-surname-phone");
     if (checkbox.checked) {
         group.classList.remove("w3-hide");

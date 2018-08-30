@@ -1,3 +1,25 @@
+function collectDto(){
+    var usernameTxt = document.getElementById("username-txt");
+    var password1Txt = document.getElementById("password1-txt");
+    var password2Txt = document.getElementById("password2-txt");
+    var name = document.getElementById("name-txt");
+    var surname = document.getElementById("surname-txt");
+    var phoneNumber = document.getElementById("phoneNumber-txt");
+    var pwd1 = password1Txt.value;
+    var pwd2 = password2Txt.value;
+    if (pwd1 !== pwd2) {
+        showError("Passwords doesn't match!")
+        return;
+    }
+    var dto = {
+        "username": usernameTxt.value,
+        "password": pwd1,
+        "name": name.value,
+        "surname": surname.value,
+        "phoneNumber": phoneNumber.value
+    }
+    register(dto)
+}
 function switchRegistration() {
     hideError();
     var checkbox = document.getElementById("register-cb");
@@ -51,27 +73,8 @@ function login() {
         }
     })
 }
-function register() {
+function register(data) {
     hideError();
-    var usernameTxt = document.getElementById("username-txt");
-    var password1Txt = document.getElementById("password1-txt");
-    var password2Txt = document.getElementById("password2-txt");
-    var name = document.getElementById("name-txt");
-    var surname = document.getElementById("surname-txt");
-    var phoneNumber = document.getElementById("phoneNumber-txt");
-    var pwd1 = password1Txt.value;
-    var pwd2 = password2Txt.value;
-    if (pwd1 !== pwd2) {
-        showError("Passwords doesn't match!")
-        return;
-    }
-    var dto = {
-        "username": usernameTxt.value,
-        "password": pwd1,
-        "name": name.value,
-        "surname": surname.value,
-        "phoneNumber": phoneNumber.value
-    };
     console.log("sending registration data");
     fetch('/api/auth/register', {
         "method": "POST",
@@ -79,7 +82,7 @@ function register() {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify(dto)
+        body: JSON.stringify(data)
     }).then(function (response) {
         if (response.status === 200) {
             console.log("registration success");

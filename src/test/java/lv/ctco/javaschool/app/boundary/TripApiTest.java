@@ -14,6 +14,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import javax.json.Json;
+import javax.json.JsonObject;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -66,5 +68,15 @@ class TripApiTest {
             i++;
         }
         verify(tripStore, times(1)).findTripsByStatus(TripStatus.ACTIVE);
+    }
+
+    @Test
+    @DisplayName("Check calling tripStore.setTripPlaces() method with the correct arguments")
+    void setTripPlaces() {
+        JsonObject jsonObject = Json.createObjectBuilder()
+                .add("1", 2)
+                .build();
+        tripApi.setTripPlaces(jsonObject, "1");
+        verify(tripStore, times(1)).setTripPlaces(2, "1");
     }
 }

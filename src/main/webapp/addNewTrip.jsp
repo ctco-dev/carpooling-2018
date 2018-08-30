@@ -1,13 +1,15 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <html>
 <head>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="css/addNewTrip.css">
+    <script src="javascript/addNewTrip.js"></script>
     <title>Add new Trip</title>
 </head>
 <body onload="addOptionValues()">
 <div>
-    <h2 style="margin-left: 10%">Add new trip:</h2>
+    <h2>Add new trip:</h2>
     <table id="new-trip" style=" border:0; width: 30%; margin-left:2%; display: inline-block;">
         <tr>
             <td><b>Departure time:</b></td>
@@ -44,85 +46,6 @@
         </tr>
     </table>
 </div>
-<td><button id="button-save" onclick="saveTrip()" style="margin: 3%">Save</button></td>
-<script>
-    function addOptionValues() {
-       var select = document.getElementsByClassName("places")[0];
-        var select1 = document.getElementsByClassName("places")[1];
-        var i=0;
-        fetch("<c:url value="/api/trip/places"/>", {
-            "method": "GET",
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            }
-        }).then(function (response) {
-            return response.json();
-
-        }).then(function (trips) {
-            trips.forEach(function (c) {
-                select.add( new Option( c ) );
-                select1.add( new Option( c ) );
-            });
-        });
-    }
-    function addEventfields(){
-        var yesChkBox= document.getElementById("yes");
-        var noChkBox=document.getElementById("no");
-        if(yesChkBox)
-        {
-            document.getElementById('event-name').classList.remove("w3-hide");
-            document.getElementById('event-status').classList.remove("w3-hide");
-            document.getElementById('participants').classList.remove("w3-hide");
-        }
-        if(noChkBox)
-        {
-            noChkBox.checked=false;
-        }
-    }
-    function removeEventfields() {
-        var yesChkBox= document.getElementById("yes");
-        var noChkBox=document.getElementById("no");
-        if(noChkBox)
-        {
-            document.getElementById('event-name').classList.add("w3-hide");
-            document.getElementById('event-status').classList.add("w3-hide");
-            document.getElementById('participants').classList.add("w3-hide");
-        }
-        if(yesChkBox)
-        {
-            yesChkBox.checked=false;
-        }
-    }
-
-
-    function saveTrip() {
-        var departure =document.getElementById("departure")
-        var departureTime =document.getElementById("departure-time")
-        var destination=document.getElementById("destination")
-        var places=document.getElementById("places")
-        var dto = {
-            "departure": departure.options[departure.selectedIndex].value,
-            "destination":destination.options[destination.selectedIndex].value,
-            "places":places.value,
-            "departureTime": departureTime.value,
-            "isEvent":"false",
-            "tripStatus":"ACTIVE"
-        };
-        console.log("sending data");
-        console.log(JSON.stringify(dto))
-        fetch("<c:url value='/api/trip/create'/>", {
-            "method": "POST",
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(dto)
-        }).then(function (response)
-        {
-            location.href = "<c:url value='/main.jsp'/>";
-        })
-    }
-</script>
+<td><button id="button-save" onclick="saveTrip()">Save</button></td>
 </body>
 </html>

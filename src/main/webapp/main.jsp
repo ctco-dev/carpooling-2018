@@ -15,10 +15,10 @@
 </head>
 <body onload="displayActiveTrips()">
 <div id="logout">
-    <button type="button" onclick="logout()">Log out</button>
+    <button type="button" class="btn btn-link" onclick="logout()">Log out</button>
 </div>
 <div id="go-my-profile">
-    <button type="button" onclick="goMyProfile()">My Profile</button>
+    <button type="button" class="btn btn-link" onclick="goMyProfile()">My Profile</button>
 </div>
 <h2>Active trips</h2>
 <div class="container" id="active-trip">
@@ -61,7 +61,7 @@
     <div id="passenger_list">
     </div>
 </div>
-<button>Add trip</button>
+<button type="button" class="btn btn-success">Add trip</button>
 <h2>No active trips for your destination. Add your own trip</h2>
 <div class="container" id="passenger-trip">
     <table id="passenger-trips">
@@ -79,6 +79,6 @@
         </tr>
     </table>
 </div>
-<button>Save</button>
+<button type="button" class="btn btn-success">Save</button>
 </body>
 </html>

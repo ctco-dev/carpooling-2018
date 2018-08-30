@@ -49,8 +49,15 @@ function join(button, tripId, rowId, places) {
         console.log("DONE");
     });
 }
-function displayTripPassengers(td) {
-    fetch('/api/trip/passengers', {
+function showPassengers(tripId) {
+    var listDiv = document.getElementById("passenger_list");
+    while (listDiv.firstChild) {
+        listDiv.removeChild(listDiv.firstChild);
+    }
+    var ol = document.createElement('OL');
+    var passenger_list = [];
+    var i = 0;
+    fetch('/api/trip/' + tripId + '/passengers', {
         "method": "GET",
         headers: {
             'Accept': 'application/json',
@@ -60,6 +67,16 @@ function displayTripPassengers(td) {
         return response.json();
     }).then(function (passengers) {
         console.log(JSON.stringify(passengers));
-        w3DisplayData("passengers", passengers);
+        passengers.forEach(function (p) {
+            passenger_list[i] = p.name + " " + p.surname;
+            i++;
+        });
+    }).then(function () {
+        for (var j = 0; j < passenger_list.length; j++) {
+            var li = document.createElement('LI');
+            li.appendChild(document.createTextNode(passenger_list[j]));
+            ol.appendChild(li);
+        }
+        listDiv.appendChild(ol);
     });
 }

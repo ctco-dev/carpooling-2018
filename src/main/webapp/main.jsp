@@ -43,19 +43,23 @@
             <td>{{driverPhone}}</td>
             <td class="table_places" id="places">{{places}}</td>
             <td>
-                <ul id="passengers">
-                    <li w3-repeat="passengers">{{username}}</li>
-                </ul>
+                <div id="passengers">
+                    <input type="button" class="passengers_list" id="create" value="passengers"
+                           onclick="showPassengers($(this).closest('tr').find('.table_id').text())">
+                </div>
             </td>
             <td>{{event}}</td>
             <td>
                 <button id="join-button" type="button"
-                        onclick="join(this, $(this).closest('tr').find('.table_id').text(), $(this).closest('td').parent().index(), $(this).closest('tr').find('.table_places').text())">Join
+                        onclick="join(this, $(this).closest('tr').find('.table_id').text(), $(this).closest('td').parent().index(), $(this).closest('tr').find('.table_places').text())">
+                    Join
                 </button>
             </td>
         </tr>
         </tbody>
     </table>
+    <div id="passenger_list">
+    </div>
 </div>
 <button>Add trip</button>
 <h2>No active trips for your destination. Add your own trip</h2>

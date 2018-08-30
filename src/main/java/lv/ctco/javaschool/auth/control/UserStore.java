@@ -1,6 +1,6 @@
 package lv.ctco.javaschool.auth.control;
 
-import lv.ctco.javaschool.app.entity.domain.Car;
+import lv.ctco.javaschool.app.entity.domain.Trip;
 import lv.ctco.javaschool.auth.control.exceptions.InvalidPasswordException;
 import lv.ctco.javaschool.auth.control.exceptions.InvalidUsernameException;
 import lv.ctco.javaschool.auth.control.exceptions.UsernameAlreadyExistsException;
@@ -69,5 +69,11 @@ public class UserStore {
         if (password == null || password.length() < MIN_PASSWORD_LENGTH || password.startsWith(" ") || password.endsWith(" ")) {
             throw new InvalidPasswordException();
         }
+    }
+
+    public List<User> findUsersByTrip(Trip trip) {
+        return em.createQuery("SELECT u FROM User AS u WHERE :trip MEMBER OF u.trips", User.class)
+                .setParameter("trip", trip)
+                .getResultList();
     }
 }

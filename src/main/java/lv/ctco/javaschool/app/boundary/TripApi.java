@@ -5,8 +5,8 @@ import lv.ctco.javaschool.app.entity.domain.Trip;
 import lv.ctco.javaschool.app.entity.domain.TripStatus;
 import lv.ctco.javaschool.app.entity.dto.ListTripDto;
 import lv.ctco.javaschool.app.entity.dto.TripDto;
+import lv.ctco.javaschool.auth.control.UserStore;
 import lv.ctco.javaschool.auth.entity.domain.User;
-import lv.ctco.javaschool.auth.entity.dto.ListUserLoginDto;
 import lv.ctco.javaschool.auth.entity.dto.UserLoginDto;
 
 import javax.annotation.security.RolesAllowed;
@@ -21,6 +21,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import java.util.Comparator;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -30,6 +31,9 @@ public class TripApi {
 
     @Inject
     private TripStore tripStore;
+
+    @Inject
+    private UserStore userStore;
 
     TripDto convertToTripDto(Trip trip) {
         User driver = trip.getDriver();
@@ -71,21 +75,24 @@ public class TripApi {
     }
 
     @GET
-    @Path("/passengers/{id}")
+    @Path("/{id}/passengers")
     @Produces("application/json")
     @RolesAllowed({"ADMIN", "USER"})
-    public ListUserLoginDto getTripPassengers(JsonObject field, @PathParam("id") String tripId) {
-        ListUserLoginDto listUserLoginDto = new ListUserLoginDto();
-        listUserLoginDto.setPassengers(tripStore.findUsersByTrip(tripStore.findTripById(Long.parseLong(tripId)).get())
+    public List<UserLoginDto> getTripPassengersByTripId(@PathParam("id") String tripId) {
+        return userStore.findUsersByTrip(tripStore.findTripById(Long.parseLong(tripId)).get())
                 .stream()
-                .sorted(Comparator.comparing(User::getUsername))
+                .sorted(Comparator.comparing(User::getName))
                 .map(this::convertToUserLoginDto)
-                .collect(Collectors.toList()));
-        return listUserLoginDto;
+                .collect(Collectors.toList());
     }
+
     private UserLoginDto convertToUserLoginDto(User user) {
         UserLoginDto dto = new UserLoginDto();
         dto.setUsername(user.getUsername());
+        dto.setPassword(user.getPassword());
+        dto.setName(user.getName());
+        dto.setSurname(user.getSurname());
+        dto.setPhoneNumber(user.getPhoneNumber());
         return dto;
     }
 }

@@ -25,6 +25,7 @@
     <table class="table table-bordered" id="trips">
         <thead>
         <tr>
+            <th>Id</th>
             <th>Route</th>
             <th>Driver</th>
             <th>Driver phone</th>
@@ -35,13 +36,16 @@
         </thead>
         <tbody>
         <tr w3-repeat="trips">
+            <td class="table_id" id="id">{{id}}</td>
             <td>{{from}}-{{to}}</td>
             <td>{{driverInfo}}</td>
             <td>{{driverPhone}}</td>
-            <td>{{places}}</td>
+            <td class="table_places" id="places">{{places}}</td>
             <td>{{event}}</td>
             <td>
-                <button>Join</button>
+                <button id="join-button" type="button"
+                        onclick="join(this, $(this).closest('tr').find('.table_id').text(), $(this).closest('td').parent().index(), $(this).closest('tr').find('.table_places').text())">Join
+                </button>
             </td>
         </tr>
         </tbody>

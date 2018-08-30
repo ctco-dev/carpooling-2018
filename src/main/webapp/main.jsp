@@ -44,13 +44,13 @@
             <td class="table_places" id="places">{{places}}</td>
             <td>
                 <div id="passengers">
-                    <input type="button" class="passengers_list" id="create" value="passengers"
-                           onclick="showPassengers($(this).closest('tr').find('.table_id').text())">
+                    <button type="button" class="btn btn-primary" onclick="showPassengers($(this).closest('tr').find('.table_id').text())">passengers
+                    </button>
                 </div>
             </td>
             <td>{{event}}</td>
             <td>
-                <button id="join-button" type="button"
+                <button id="join-button" type="button" class="btn btn-primary"
                         onclick="join(this, $(this).closest('tr').find('.table_id').text(), $(this).closest('td').parent().index(), $(this).closest('tr').find('.table_places').text())">
                     Join
                 </button>
@@ -61,7 +61,7 @@
     <div id="passenger_list">
     </div>
 </div>
-<button type="button" class="btn btn-success">Add trip</button>
+<button type="button" class="btn btn-primary">Add trip</button>
 <h2>No active trips for your destination. Add your own trip</h2>
 <div class="container" id="passenger-trip">
     <table id="passenger-trips">
@@ -79,6 +79,6 @@
         </tr>
     </table>
 </div>
-<button type="button" class="btn btn-success">Save</button>
+<button type="button" class="btn btn-primary">Save</button>
 </body>
 </html>

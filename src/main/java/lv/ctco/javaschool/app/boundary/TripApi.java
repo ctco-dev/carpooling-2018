@@ -35,7 +35,6 @@ import java.util.stream.Collectors;
 
 @Stateless
 @Path("/trip")
-@Stateless
 public class TripApi {
     @PersistenceContext
     private EntityManager em;
@@ -85,7 +84,6 @@ public class TripApi {
             tripStore.setTripPlaces(places, tripId);
         }
     }
-}
 
     @GET
     @Path("/places")

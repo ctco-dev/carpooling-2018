@@ -3,11 +3,11 @@
 <html>
 <head>
     <title>Car pooling service</title>
+    <link rel="stylesheet" type="text/css" href="../css/main2.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <meta http-equiv="refresh" content="30"/>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/main.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="http://www.w3schools.com/lib/w3data.js"></script>
@@ -51,7 +51,7 @@
         </tbody>
     </table>
 </div>
-<button>Add trip</button>
+<a href="addNewTrip.jsp"><button>Add trip</button></a>
 <h2>No active trips for your destination. Add your own trip</h2>
 <div class="container" id="passenger-trip">
     <table id="passenger-trips">

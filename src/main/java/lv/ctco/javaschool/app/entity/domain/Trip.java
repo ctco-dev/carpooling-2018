@@ -60,7 +60,7 @@ public class Trip {
     }
 
     public void setDriver(User driver) {
-        this.driver = driver;
+        this.driver = driver;k
     }
 
     public Place getDeparture() {

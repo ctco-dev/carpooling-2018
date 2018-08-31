@@ -1,6 +1,7 @@
 package lv.ctco.javaschool.app.boundary;
 
 import lv.ctco.javaschool.app.control.TripStore;
+import lv.ctco.javaschool.app.control.exceptions.UserNotFoundException;
 import lv.ctco.javaschool.app.entity.domain.Place;
 import lv.ctco.javaschool.app.entity.domain.Trip;
 import lv.ctco.javaschool.app.entity.domain.TripStatus;
@@ -91,7 +92,7 @@ class TripApiTest {
 
     @Test
     @DisplayName("Check getting sorted list of UserLoginDto and calling tripStore.findTripsById() and userStore.findUsersByTrip()")
-    void getTripPassengersByTripIdTest() {
+    void getTripPassengersByTripIdTest() throws UserNotFoundException {
         List<UserLoginDto> userLoginDtos = new ArrayList<>();
         UserLoginDto userLoginDto1 = new UserLoginDto("bastard", "pass1", "Hans", "Landa", "1111111");
         UserLoginDto userLoginDto2 = new UserLoginDto("vader", "pass2", "Anakin", "Skywalker", "2222222");
@@ -105,29 +106,21 @@ class TripApiTest {
         Trip trip = new Trip();
         when(tripStore.findTripById(1L)).thenReturn(Optional.of(trip));
         when(userStore.findUsersByTrip(trip)).thenReturn(users);
-        tripApi.getTripPassengersByTripId("1");
+        tripApi.getTripPassengersByTripId(1L);
         verify(tripStore, times(1)).findTripById(1L);
         verify(userStore, times(1)).findUsersByTrip(trip);
         int i = 0;
         for (UserLoginDto userLoginDto :
-                tripApi.getTripPassengersByTripId("1")) {
+                tripApi.getTripPassengersByTripId(1L)) {
             assertEquals(userLoginDtos.get(i), userLoginDto);
             i++;
         }
     }
 
     @Test
-    @DisplayName("Check for throwing the NumberFormatException when getTripPassengersByTripId() method is called with an invalid argument")
-    void getTripPassengersByTripIdTestForNumberFormatException() {
-        assertThrows(NumberFormatException.class, () -> tripApi.getTripPassengersByTripId("one"));
-    }
-
-
-    @Test
-    @DisplayName("Check for throwing the NoSuchElementException when getTripPassengersByTripId() method is called with a nonexistent trip id")
+    @DisplayName("Check for throwing the UserNotFoundException when getTripPassengersByTripId() method is called with a nonexistent trip id")
     void getTripPassengersByTripIdTestForNoSuchElementException() {
-        when(tripStore.findTripById(42L)).thenReturn(Optional.empty());
-        assertThrows(NoSuchElementException.class, () -> tripApi.getTripPassengersByTripId("42"));
+        assertThrows(UserNotFoundException.class, () -> tripApi.getTripPassengersByTripId(42L));
     }
 
 }

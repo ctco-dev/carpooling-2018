@@ -1,6 +1,7 @@
 package lv.ctco.javaschool.app.boundary;
 
 import lv.ctco.javaschool.app.control.TripStore;
+import lv.ctco.javaschool.app.control.exceptions.UserNotFoundException;
 import lv.ctco.javaschool.app.entity.domain.Place;
 import lv.ctco.javaschool.app.entity.domain.Trip;
 import lv.ctco.javaschool.app.entity.domain.TripStatus;
@@ -16,9 +17,6 @@ import javax.inject.Inject;
 import javax.json.JsonNumber;
 import javax.json.JsonObject;
 import javax.json.JsonValue;
-import javax.json.JsonObject;
-import javax.json.JsonString;
-import javax.json.JsonValue;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.ws.rs.GET;
@@ -30,8 +28,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
-import java.util.List;
-import java.util.Map;
+import java.util.Optional;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
@@ -117,12 +114,17 @@ public class TripApi {
     @Path("/{id}/passengers")
     @Produces("application/json")
     @RolesAllowed({"ADMIN", "USER"})
-    public List<UserLoginDto> getTripPassengersByTripId(@PathParam("id") String tripId) {
-        return userStore.findUsersByTrip(tripStore.findTripById(Long.parseLong(tripId)).get())
-                .stream()
-                .sorted(Comparator.comparing(User::getName))
-                .map(this::convertToUserLoginDto)
-                .collect(Collectors.toList());
+    public List<UserLoginDto> getTripPassengersByTripId(@PathParam("id") Long tripId) throws UserNotFoundException {
+        Optional<Trip> tripOptional = tripStore.findTripById(tripId);
+        if (tripOptional.isPresent()) {
+            return userStore.findUsersByTrip(tripOptional.get())
+                    .stream()
+                    .sorted(Comparator.comparing(User::getName))
+                    .map(this::convertToUserLoginDto)
+                    .collect(Collectors.toList());
+        } else {
+            throw new UserNotFoundException();
+        }
     }
 
     private UserLoginDto convertToUserLoginDto(User user) {

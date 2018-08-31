@@ -7,21 +7,20 @@ import java.util.Objects;
 
 public class TripDto {
 
-        private String driverInfo;
-        private String driverPhone;
-        private Place from;
-        private Place to;
-        private int places;
+    private long id;
+    private String driverInfo;
+    private String driverPhone;
+    private Place from;
+    private Place to;
+    private int places;
     private String time;
     private boolean isEvent;
     private TripStatus tripStatus;
-    private String eventName;
-    private String eventStartTime;
 
     public TripDto() {
     }
 
-    public TripDto(String driverInfo, String driverPhone, Place from, Place to, int places, String time, boolean isEvent, TripStatus tripStatus,String eventName, String eventStartTime) {
+    public TripDto(String driverInfo, String driverPhone, Place from, Place to, int places, String time, boolean isEvent, TripStatus tripStatus) {
         this.driverInfo = driverInfo;
         this.driverPhone = driverPhone;
         this.from = from;
@@ -30,8 +29,14 @@ public class TripDto {
         this.time = time;
         this.isEvent = isEvent;
         this.tripStatus = tripStatus;
-        this.eventName=eventName;
-        this.eventStartTime=eventStartTime;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getDriverInfo() {
@@ -98,21 +103,6 @@ public class TripDto {
         this.tripStatus = tripStatus;
     }
 
-    public String getEventName() {
-        return eventName;
-    }
-
-    public void setEventName(String eventName) {
-        this.eventName = eventName;
-    }
-
-    public String getEventStartTime() {
-        return eventStartTime;
-    }
-
-    public void setEventStartTime(String eventStartTime) {
-        this.eventStartTime = eventStartTime;
-    }
 
     @Override
     public boolean equals(Object o) {
@@ -126,13 +116,12 @@ public class TripDto {
                 from == tripDto.from &&
                 to == tripDto.to &&
                 Objects.equals(time, tripDto.time) &&
-                tripStatus == tripDto.tripStatus &&
-                Objects.equals(eventName,tripDto.eventName) &&
-                Objects.equals(eventStartTime,tripDto.eventStartTime);
+                tripStatus == tripDto.tripStatus;
+
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(driverInfo, driverPhone, from, to, places, time, isEvent, tripStatus,eventName,eventStartTime);
+        return Objects.hash(driverInfo, driverPhone, from, to, places, time, isEvent, tripStatus);
     }
 }

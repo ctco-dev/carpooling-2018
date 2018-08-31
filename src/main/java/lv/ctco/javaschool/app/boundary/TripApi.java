@@ -111,9 +111,6 @@ public class TripApi {
             case ("isEvent"):
                 isEvent = Boolean.parseBoolean(value);
                 trip.setEvent(isEvent);
-                if (isEvent) {
-
-                }
                 break;
             case ("tripStatus"):
                 TripStatus status = TripStatus.valueOf(value);

@@ -1,6 +1,5 @@
 package lv.ctco.javaschool.auth.control;
 
-import lv.ctco.javaschool.app.entity.domain.Car;
 import lv.ctco.javaschool.auth.control.exceptions.InvalidPasswordException;
 import lv.ctco.javaschool.auth.control.exceptions.InvalidUsernameException;
 import lv.ctco.javaschool.auth.control.exceptions.UsernameAlreadyExistsException;
@@ -70,4 +69,11 @@ public class UserStore {
             throw new InvalidPasswordException();
         }
     }
+    public User getCurrentUser() {
+    String username = securityContext.getCallerPrincipal()
+            .getName();
+    return findUserByUsername(username)
+            .orElseThrow(IllegalStateException::new);
+    }
 }
+

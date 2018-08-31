@@ -4,11 +4,13 @@ import lv.ctco.javaschool.app.entity.domain.Trip;
 import lv.ctco.javaschool.app.entity.domain.TripStatus;
 import lv.ctco.javaschool.auth.entity.domain.User;
 
+import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
 import java.util.Optional;
 
+@Stateless
 public class TripStore {
 
     @PersistenceContext
@@ -48,4 +50,7 @@ public class TripStore {
         }
     }
 
+    public void addTrip(Trip trip) {
+        em.persist(trip);
+    }
 }

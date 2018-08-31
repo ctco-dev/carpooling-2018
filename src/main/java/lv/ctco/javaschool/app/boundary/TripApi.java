@@ -12,6 +12,9 @@ import lv.ctco.javaschool.auth.entity.domain.User;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import javax.json.JsonNumber;
+import javax.json.JsonObject;
+import javax.json.JsonValue;
 import javax.json.JsonObject;
 import javax.json.JsonString;
 import javax.json.JsonValue;
@@ -20,9 +23,11 @@ import javax.persistence.PersistenceContext;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.Map;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -30,6 +35,7 @@ import java.util.stream.Collectors;
 
 @Stateless
 @Path("/trip")
+@Stateless
 public class TripApi {
     @PersistenceContext
     private EntityManager em;
@@ -44,6 +50,7 @@ public class TripApi {
     TripDto convertToTripDto(Trip trip) {
         User driver = trip.getDriver();
         TripDto dto = new TripDto();
+        dto.setId(trip.getId());
         dto.setDriverInfo(driver.getSurname() + " " + driver.getName());
         dto.setDriverPhone(driver.getPhoneNumber());
         dto.setEvent(trip.isEvent());
@@ -68,6 +75,17 @@ public class TripApi {
                 .collect(Collectors.toList()));
         return listTripDto;
     }
+
+    @POST
+    @Path("/{id}")
+    @RolesAllowed({"ADMIN", "USER"})
+    public void setTripPlaces(JsonObject field, @PathParam("id") String tripId) {
+        for (Map.Entry<String, JsonValue> pair : field.entrySet()) {
+            Integer places = ((JsonNumber) pair.getValue()).intValue();
+            tripStore.setTripPlaces(places, tripId);
+        }
+    }
+}
 
     @GET
     @Path("/places")

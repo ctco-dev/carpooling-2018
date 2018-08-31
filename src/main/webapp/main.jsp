@@ -7,17 +7,25 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/main.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="http://www.w3schools.com/lib/w3data.js"></script>
+    <script src="javascript/main.js"></script>
 </head>
 <body onload="displayActiveTrips()">
-<h2 style="margin-left: 10%">Active trips</h2>
-<div class="container" id="active-trip"
-     style="border-style:solid; height:55%;  overflow: auto; margin-left: 5%; width: 90%">
+<div id="logout">
+    <button type="button" onclick="logout()">Log out</button>
+</div>
+<div id="go-my-profile">
+    <button type="button" onclick="goMyProfile()">My Profile</button>
+</div>
+<h2>Active trips</h2>
+<div class="container" id="active-trip">
     <table class="table table-bordered" id="trips">
         <thead>
         <tr>
+            <th>Id</th>
             <th>Route</th>
             <th>Driver</th>
             <th>Driver phone</th>
@@ -28,24 +36,25 @@
         </thead>
         <tbody>
         <tr w3-repeat="trips">
+            <td class="table_id" id="id">{{id}}</td>
             <td>{{from}}-{{to}}</td>
             <td>{{driverInfo}}</td>
             <td>{{driverPhone}}</td>
-            <td>{{places}}</td>
+            <td class="table_places" id="places">{{places}}</td>
             <td>{{event}}</td>
             <td>
-                <button>Join</button>
+                <button id="join-button" type="button"
+                        onclick="join(this, $(this).closest('tr').find('.table_id').text(), $(this).closest('td').parent().index(), $(this).closest('tr').find('.table_places').text())">Join
+                </button>
             </td>
         </tr>
         </tbody>
     </table>
 </div>
-<a href="addNewTrip.jsp" style="color: inherit">
-    <button style="margin-left: 5%; margin-top: 1%">Add trip</button>
-</a>
-<h2 style="margin-left: 10%">No active trips for your destination. Add your own trip</h2>
-<div class="container" id="passenger-trip" style="border-style:solid; margin-left: 5%; width: 90%">
-    <table id="passenger-trips" style="border:0; width:50%">
+<button>Add trip</button>
+<h2>No active trips for your destination. Add your own trip</h2>
+<div class="container" id="passenger-trip">
+    <table id="passenger-trips">
         <tr>
             <td>Destination</td>
             <td><input type="text" id="destination"></td>
@@ -60,30 +69,6 @@
         </tr>
     </table>
 </div>
-<button style="margin-left: 5%; margin-top: 1%">Save</button>
-<script>
-    function displayActiveTrips() {
-        fetch("<c:url value="/api/trip/active"/>", {
-            "method": "GET",
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            }
-        }).then(function (response) {
-            return response.json();
-
-        }).then(function (trips) {
-            console.log(JSON.stringify(trips));
-            w3DisplayData("trips", trips);
-        });
-    }
-    function scrollBar() {
-        var table = document.getElementById("table-active-trip");
-        var rows = document.getElementById("table-active-trip").getElementsByTagName("tbody")[0].getElementsByTagName("tr").length;
-        if (rows > 13) {
-            table.add(scrollbar.verticalAlign)
-        }
-    }
-</script>
+<button>Save</button>
 </body>
 </html>

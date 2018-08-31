@@ -7,7 +7,7 @@ import java.util.Objects;
 
 public class TripDto {
 
-    private long id;
+    private Long id;
     private String driverInfo;
     private String driverPhone;
     private Place from;
@@ -27,6 +27,7 @@ public class TripDto {
         this.to = to;
         this.places = places;
         this.time = time;
+        this.isEvent = isEvent;
         this.isEvent = isEvent;
         this.tripStatus = tripStatus;
     }
@@ -103,7 +104,6 @@ public class TripDto {
         this.tripStatus = tripStatus;
     }
 
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -117,7 +117,6 @@ public class TripDto {
                 to == tripDto.to &&
                 Objects.equals(time, tripDto.time) &&
                 tripStatus == tripDto.tripStatus;
-
     }
 
     @Override

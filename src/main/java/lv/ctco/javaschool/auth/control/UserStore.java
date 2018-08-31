@@ -69,11 +69,4 @@ public class UserStore {
             throw new InvalidPasswordException();
         }
     }
-    public User getCurrentUser() {
-        String username = securityContext.getCallerPrincipal()
-                .getName();
-        return findUserByUsername(username)
-                .orElseThrow(IllegalStateException::new);
-    }
-
 }

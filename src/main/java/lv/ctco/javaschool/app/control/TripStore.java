@@ -43,9 +43,11 @@ public class TripStore {
         if (trip.isPresent()) {
             trip.get().setPlaces(places);
             List<User> passengers = trip.get().getPassengers();
-            passengers.add(user);
-            trip.get().setPassengers(passengers);
-            em.persist(trip.get());
+            if (!passengers.contains(user)) {
+                passengers.add(user);
+                trip.get().setPassengers(passengers);
+                em.persist(trip.get());
+            }
         } else {
             throw new IllegalStateException();
         }

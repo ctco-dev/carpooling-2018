@@ -88,6 +88,7 @@ public class AuthenticationApi {
                 .entity(errorDto)
                 .build();
     }
+
     @POST
     @Path("/logout")
     public Response logout(@Context HttpServletRequest request) {

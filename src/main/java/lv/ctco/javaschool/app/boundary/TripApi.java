@@ -67,11 +67,11 @@ public class TripApi {
     @POST
     @Path("/{id}")
     @RolesAllowed({"ADMIN", "USER"})
-    public void setTripPlaces(JsonObject field, @PathParam("id") String tripId) {
+    public void setTripPlacesAndUser(JsonObject field, @PathParam("id") String tripId) {
         User user = userStore.getCurrentUser();
         for (Map.Entry<String, JsonValue> pair : field.entrySet()) {
             Integer places = ((JsonNumber) pair.getValue()).intValue();
-            tripStore.setTripPlaces(places, user, tripId);
+            tripStore.setTripPlacesAndUser(places, user, tripId);
         }
     }
 

@@ -30,7 +30,11 @@ function goMyProfile() {
 }
 function join(button, tripId, rowId, places) {
     var data = {};
-    places = places - 1;
+    if (places > 0) {
+        places = places - 1;
+    } else {
+        button.disabled = true;
+    }
     var rowCells = document.getElementById("trips").rows[rowId + 1].cells;
     rowCells[4].innerHTML = places;
     data[tripId] = places;

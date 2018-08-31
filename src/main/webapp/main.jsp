@@ -60,7 +60,7 @@
     <div id="passenger_list">
     </div>
 </div>
-<button type="button" class="btn btn-primary">Add trip</button>
+<a href="addNewTrip.jsp"><button type="button" class="btn btn-primary">Add trip</button></a>
 <h2>No active trips for your destination. Add your own trip</h2>
 <div class="container" id="passenger-trip">
     <table id="passenger-trips">

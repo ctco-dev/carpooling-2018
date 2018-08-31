@@ -71,6 +71,13 @@ public class UserStore {
         }
     }
 
+    public User getCurrentUser() {
+        String username = securityContext.getCallerPrincipal()
+                .getName();
+        return findUserByUsername(username)
+                .orElseThrow(IllegalStateException::new);
+    }
+
     public List<User> findUsersByTrip(Trip trip) {
         return em.createQuery("SELECT u FROM User AS u WHERE :trip MEMBER OF u.trips", User.class)
                 .setParameter("trip", trip)

@@ -1,7 +1,6 @@
 package lv.ctco.javaschool.app.boundary;
 
 import lv.ctco.javaschool.app.control.TripStore;
-import lv.ctco.javaschool.app.entity.domain.Event;
 import lv.ctco.javaschool.app.entity.domain.Place;
 import lv.ctco.javaschool.app.entity.domain.Trip;
 import lv.ctco.javaschool.app.entity.domain.TripStatus;
@@ -42,7 +41,6 @@ public class TripApi {
 
     TripDto convertToTripDto(Trip trip) {
         User driver = trip.getDriver();
-        Event event =trip.getEvent();
         TripDto dto = new TripDto();
         dto.setDriverInfo(driver.getSurname() + " " + driver.getName());
         dto.setDriverPhone(driver.getPhoneNumber());
@@ -52,8 +50,6 @@ public class TripApi {
         dto.setPlaces(trip.getPlaces());
         dto.setTime(trip.getDepartureTime());
         dto.setTripStatus(trip.getTripStatus());
-        dto.setEventName(event.getEventName());
-        dto.setEventStartTime(event.getEventStartTime());
         return dto;
     }
 
@@ -75,70 +71,56 @@ public class TripApi {
     @Path("/places")
     @Produces("application/json")
     @RolesAllowed({"ADMIN", "USER"})
-    public List<Place> getAllPlaces(){
-            return Arrays.asList(Place.values());
+    public List<Place> getAllPlaces() {
+        return Arrays.asList(Place.values());
     }
 
     @POST
-    @RolesAllowed({"ADMIN","USER"})
-    @Path("/createEvent")
-    public void createNewEvent(JsonObject field){
-        User user=userStore.getCurrentUser();
-        Event event= new Event();
-        for (Map.Entry<String, JsonValue> pair : field.entrySet()) {
-            String addr = pair.getKey();
-            String value = ((JsonString) pair.getValue()).getString();
-            if(addr=="eventName"){
-                event.setEventName(value);
-            }
-            if (addr=="evemtTime") {
-                event.setEventStartTime(value);
-            }
-        }
-        tripStore.addEvent(event);
-    }
-
-    @POST
-    @RolesAllowed({"ADMIN","USER"})
+    @RolesAllowed({"ADMIN", "USER"})
     @Path("/createTrip")
-    public void createNewTrip(JsonObject field){
-        User user=userStore.getCurrentUser();
-        Trip trip= new Trip();
+    public void createNewTrip(JsonObject field) {
+        User user = userStore.getCurrentUser();
+        Trip trip = new Trip();
         trip.setDriver(user);
         for (Map.Entry<String, JsonValue> pair : field.entrySet()) {
             String addr = pair.getKey();
             String value = ((JsonString) pair.getValue()).getString();
-            trip=setFieldsToTrip(trip,addr,value);
+            trip = setFieldsToTrip(trip, addr, value);
         }
         tripStore.addTrip(trip);
     }
-    private Trip setFieldsToTrip(Trip trip, String addr, String value)throws IllegalArgumentException {
-        switch (addr){
-            case("departure"):
-                Place departure= Place.valueOf(value);
+
+    private Trip setFieldsToTrip(Trip trip, String addr, String value) throws IllegalArgumentException {
+        boolean isEvent;
+        switch (addr) {
+            case ("departure"):
+                Place departure = Place.valueOf(value);
                 trip.setDeparture(departure);
                 break;
-            case("destination"):
-                Place destination= Place.valueOf(value);
+            case ("destination"):
+                Place destination = Place.valueOf(value);
                 trip.setDestination(destination);
                 break;
             case ("places"):
-                int places=Integer.parseInt(value);
+                int places = Integer.parseInt(value);
                 trip.setPlaces(places);
                 break;
-            case("departureTime"):
+            case ("departureTime"):
                 trip.setDepartureTime(value);
                 break;
             case ("isEvent"):
-                boolean isEvent=Boolean.parseBoolean(value);
+                isEvent = Boolean.parseBoolean(value);
                 trip.setEvent(isEvent);
+                if (isEvent) {
+
+                }
                 break;
             case ("tripStatus"):
-                TripStatus status=TripStatus.valueOf(value);
+                TripStatus status = TripStatus.valueOf(value);
                 trip.setTripStatus(status);
                 break;
             default:
-                throw new IllegalArgumentException(addr+value);
+                throw new IllegalArgumentException(addr + value);
         }
         return trip;
     }

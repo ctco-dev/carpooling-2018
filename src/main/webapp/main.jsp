@@ -13,7 +13,8 @@
 </head>
 <body onload="displayActiveTrips()">
 <h2 style="margin-left: 10%">Active trips</h2>
-    <div class="container" id="active-trip" style="border-style:solid; height:55%;  overflow: auto; margin-left: 5%; width: 90%">
+<div class="container" id="active-trip"
+     style="border-style:solid; height:55%;  overflow: auto; margin-left: 5%; width: 90%">
     <table class="table table-bordered" id="trips">
         <thead>
         <tr>
@@ -22,26 +23,26 @@
             <th>Driver phone</th>
             <th>Places</th>
             <th>Event</th>
-            <th>Event Name</th>
-            <th>Event start time</th>
             <th></th>
         </tr>
         </thead>
         <tbody>
-            <tr w3-repeat="trips">
+        <tr w3-repeat="trips">
             <td>{{from}}-{{to}}</td>
             <td>{{driverInfo}}</td>
             <td>{{driverPhone}}</td>
             <td>{{places}}</td>
             <td>{{event}}</td>
-                <td>{{eventName}}</td>
-                <td>{{eventStartTime}}</td>
-                <td><button>Join</button></td>
+            <td>
+                <button>Join</button>
+            </td>
         </tr>
         </tbody>
     </table>
 </div>
-<a href="addNewTrip.jsp" style="color: inherit"><button style="margin-left: 5%; margin-top: 1%">Add trip</button></a>
+<a href="addNewTrip.jsp" style="color: inherit">
+    <button style="margin-left: 5%; margin-top: 1%">Add trip</button>
+</a>
 <h2 style="margin-left: 10%">No active trips for your destination. Add your own trip</h2>
 <div class="container" id="passenger-trip" style="border-style:solid; margin-left: 5%; width: 90%">
     <table id="passenger-trips" style="border:0; width:50%">

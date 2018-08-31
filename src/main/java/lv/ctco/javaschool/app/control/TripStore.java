@@ -1,8 +1,5 @@
 package lv.ctco.javaschool.app.control;
 
-import javafx.scene.control.Cell;
-import lv.ctco.javaschool.app.entity.domain.Event;
-import lv.ctco.javaschool.app.entity.domain.Place;
 import lv.ctco.javaschool.app.entity.domain.Trip;
 import lv.ctco.javaschool.app.entity.domain.TripStatus;
 import lv.ctco.javaschool.auth.entity.domain.User;
@@ -37,10 +34,6 @@ public class TripStore {
     public void addTrip(Trip trip)
     {
         em.persist(trip);
-    }
-    public void addEvent(Event event)
-    {
-        em.persist(event);
     }
 }
 

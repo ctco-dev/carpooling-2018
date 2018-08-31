@@ -1,7 +1,6 @@
 package lv.ctco.javaschool.app.entity.domain;
 
 import lv.ctco.javaschool.auth.entity.domain.User;
-import lv.ctco.javaschool.app.entity.domain.Event;
 
 import javax.persistence.*;
 
@@ -16,10 +15,6 @@ public class Trip {
     @ManyToOne
     @JoinColumn(name = "driver_id")
     private User driver;
-
-    @ManyToOne
-    @JoinColumn(name = "event_id")
-    private Event event;
 
     @Enumerated(EnumType.STRING)
     private Place departure;
@@ -41,9 +36,8 @@ public class Trip {
     public Trip() {
     }
 
-    public Trip(User driver, Event event, Place departure, Place destination, int places, String departureTime, boolean isEvent, TripStatus tripStatus) {
+    public Trip(User driver, Place departure, Place destination, int places, String departureTime, boolean isEvent, TripStatus tripStatus) {
         this.driver = driver;
-        this.event=event;
         this.departure = departure;
         this.destination = destination;
         this.places = places;
@@ -58,14 +52,6 @@ public class Trip {
 
     public void setDriver(User driver) {
         this.driver = driver;
-    }
-
-    public Event getEvent() {
-        return event;
-    }
-
-    public void setEvent(Event event) {
-        this.event = event;
     }
 
     public Place getDeparture() {

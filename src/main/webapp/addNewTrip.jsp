@@ -13,7 +13,7 @@
 <body onload="addOptionValues()">
 <div>
     <h2>Add new trip:</h2>
-    <table id="new-trip" style=" border:0; width: 30%; margin-left:2%; display: inline-block;">
+    <table id="new-trip">
         <tr>
             <td><b>Departure time:</b></td>
             <td><input id="departure-time" name="input" type="text"></td>
@@ -36,12 +36,12 @@
                 <input type="checkbox" id="no" value="no" onclick="addRemoveEvent()">No<br></td>
         </tr>
         <tr id="event-name" class="w3-hide">
-            <td id="name"><b>Event name:</b></td>
-            <td><input name="input" type="text"></td>
+            <td ><b>Event name:</b></td>
+            <td><input name="input" id="name" type="text"></td>
         </tr>
         <tr id="event-time" class="w3-hide">
-            <td id="time"><b>Event start (time and date):</b></td>
-            <td><input name="input" type="text"></td>
+            <td ><b>Event start (time and date):</b></td>
+            <td><input name="input" id="time" type="text"></td>
         </tr>
         <tr id="participants" class="w3-hide">
             <td ><b>Participants of the event:</b></td>

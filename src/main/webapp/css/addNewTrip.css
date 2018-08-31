@@ -1,7 +1,14 @@
-h2{
+h2 {
     margin-left: 10%
 }
-#button-save{
+
+#button-save {
     margin: 3%
 }
 
+#new-trip {
+    border: 0;
+    width: 30%;
+    margin-left: 2%;
+    display: inline-block;
+}

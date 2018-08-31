@@ -1,6 +1,5 @@
 package lv.ctco.javaschool.app.entity.dto;
 
-import lv.ctco.javaschool.app.entity.domain.Event;
 import lv.ctco.javaschool.app.entity.domain.Place;
 import lv.ctco.javaschool.app.entity.domain.TripStatus;
 

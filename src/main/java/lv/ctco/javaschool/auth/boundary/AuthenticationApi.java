@@ -59,7 +59,7 @@ public class AuthenticationApi {
 
     @POST
     @Path("/register")
-        public Response register(UserLoginDto userLogin, @Context HttpServletRequest request, @Context HttpServletResponse response) {
+    public Response register(UserLoginDto userLogin, @Context HttpServletRequest request, @Context HttpServletResponse response) {
         String username = userLogin.getUsername();
         String password = userLogin.getPassword();
         String name = userLogin.getName();
@@ -88,6 +88,7 @@ public class AuthenticationApi {
                 .entity(errorDto)
                 .build();
     }
+
     @POST
     @Path("/logout")
     public Response logout(@Context HttpServletRequest request) {

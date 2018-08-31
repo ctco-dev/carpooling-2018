@@ -12,10 +12,10 @@ function tripdto() {
         var isEvent = "false";
     }
     var dto = {
-        "departure": departure.options[departure.selectedIndex].value,
-        "destination": destination.options[destination.selectedIndex].value,
+        "to": departure.options[departure.selectedIndex].value,
+        "from": destination.options[destination.selectedIndex].value,
         "places": places.value,
-        "departureTime": departureTime.value,
+        "time": departureTime.value,
         "isEvent": isEvent,
         "tripStatus": "ACTIVE",
     };

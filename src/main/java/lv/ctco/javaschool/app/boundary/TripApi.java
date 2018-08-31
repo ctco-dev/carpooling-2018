@@ -10,6 +10,7 @@ import lv.ctco.javaschool.auth.control.UserStore;
 import lv.ctco.javaschool.auth.entity.domain.User;
 
 import javax.annotation.security.RolesAllowed;
+import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.json.JsonObject;
 import javax.json.JsonString;
@@ -27,12 +28,13 @@ import java.util.Map;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
+@Stateless
 @Path("/trip")
 public class TripApi {
     @PersistenceContext
     private EntityManager em;
 
-    private Logger log = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+    private final static Logger LOGGER = Logger.getLogger(TripApi.class.getName());
     @Inject
     private UserStore userStore;
 
@@ -78,48 +80,19 @@ public class TripApi {
     @POST
     @RolesAllowed({"ADMIN", "USER"})
     @Path("/createTrip")
-    public void createNewTrip(JsonObject field) {
+    public void createNewTrip(TripDto dto) {
         User user = userStore.getCurrentUser();
-        Trip trip = new Trip();
-        trip.setDriver(user);
-        for (Map.Entry<String, JsonValue> pair : field.entrySet()) {
-            String addr = pair.getKey();
-            String value = ((JsonString) pair.getValue()).getString();
-            trip = setFieldsToTrip(trip, addr, value);
-        }
-        tripStore.addTrip(trip);
-    }
+        Trip trip=new Trip();
 
-    private Trip setFieldsToTrip(Trip trip, String addr, String value) throws IllegalArgumentException {
-        boolean isEvent;
-        switch (addr) {
-            case ("departure"):
-                Place departure = Place.valueOf(value);
-                trip.setDeparture(departure);
-                break;
-            case ("destination"):
-                Place destination = Place.valueOf(value);
-                trip.setDestination(destination);
-                break;
-            case ("places"):
-                int places = Integer.parseInt(value);
-                trip.setPlaces(places);
-                break;
-            case ("departureTime"):
-                trip.setDepartureTime(value);
-                break;
-            case ("isEvent"):
-                isEvent = Boolean.parseBoolean(value);
-                trip.setEvent(isEvent);
-                break;
-            case ("tripStatus"):
-                TripStatus status = TripStatus.valueOf(value);
-                trip.setTripStatus(status);
-                break;
-            default:
-                throw new IllegalArgumentException(addr + value);
-        }
-        return trip;
+        trip.setDriver(user);
+        trip.setEvent(dto.isEvent());
+        trip.setDeparture(dto.getFrom());
+        trip.setDestination(dto.getTo());
+        trip.setPlaces(dto.getPlaces());
+        trip.setDepartureTime(dto.getTime());
+        trip.setTripStatus(dto.getTripStatus());
+
+        em.persist(trip);
     }
 }
 

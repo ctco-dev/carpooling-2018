@@ -31,8 +31,8 @@ public class TripStore {
                 .setParameter("user", user)
                 .getResultList();
     }
-    public void addTrip(Trip trip)
-    {
+
+    public void addTrip(Trip trip) {
         em.persist(trip);
     }
 }

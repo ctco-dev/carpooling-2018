@@ -23,7 +23,6 @@ import javax.json.JsonObject;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -78,18 +77,6 @@ class TripApiTest {
             i++;
         }
         verify(tripStore, times(1)).findTripsByStatus(TripStatus.ACTIVE);
-    }
-
-    @Test
-    @DisplayName("Check calling tripStore.setTripPlaces() method with the correct arguments")
-    void setTripPlacesAndUser() {
-        User user = new User();
-        when(userStore.getCurrentUser()).thenReturn(user);
-        JsonObject jsonObject = Json.createObjectBuilder()
-                .add("1", 2)
-                .build();
-        tripApi.setTripPlacesAndUser(jsonObject, "1");
-        verify(tripStore, times(1)).setTripPlacesAndUser(2, user,"1");
     }
 
     @Test

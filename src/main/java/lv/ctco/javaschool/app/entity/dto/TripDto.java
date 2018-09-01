@@ -31,7 +31,6 @@ public class TripDto {
         this.places = places;
         this.time = time;
         this.isEvent = isEvent;
-        this.isEvent = isEvent;
         this.tripStatus = tripStatus;
     }
 
@@ -110,6 +109,7 @@ public class TripDto {
     public List<UserLoginDto> getPassengers() {
         return passengers;
     }
+
     public void setPassengers(List<UserLoginDto> passengers) {
         this.passengers = passengers;
     }

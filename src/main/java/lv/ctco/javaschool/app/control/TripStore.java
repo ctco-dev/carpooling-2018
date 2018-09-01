@@ -40,21 +40,6 @@ public class TripStore {
                 .findFirst();
     }
 
-    public void setTripPlacesAndUser(int places, User user, String id) {
-        Optional<Trip> trip = findTripById(Long.parseLong(id));
-        if (trip.isPresent()) {
-            trip.get().setPlaces(places);
-            List<User> passengers = trip.get().getPassengers();
-            if (!passengers.contains(user)) {
-                passengers.add(user);
-                trip.get().setPassengers(passengers);
-                em.persist(trip.get());
-            }
-        } else {
-            throw new IllegalStateException();
-        }
-    }
-
     public void addTrip(Trip trip) {
         em.persist(trip);
     }

@@ -16,7 +16,7 @@
 </head>
 <body onload="displayMyActiveTrips()">
 <div id="button-go-to-main-page">
-    <button type="button" onclick="goToMainPage()">Go back</button>
+    <button type="button" class="btn btn-primary" onclick="goToMainPage()">Go back</button>
 </div>
 <div id="my-profile-h1">
     <h1>My profile</h1>
@@ -50,7 +50,7 @@
         </table>
     </div>
 </div>
-<div>
+<div id="profile-info-h2">
     <h2>Profile info:</h2>
     <table id="profile-info">
         <tr>
@@ -91,10 +91,10 @@
         </tr>
     </table>
     <td>
-        <button id="button-edit" onclick="editField()">Edit</button>
+        <button id="button-edit" class="btn btn-primary" onclick="editField()">Edit</button>
     </td>
     <td>
-        <button id="button-save">Save</button>
+        <button id="button-save" class="btn btn-primary">Save</button>
     </td>
 </div>
 </body>

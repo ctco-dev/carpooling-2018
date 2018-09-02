@@ -35,14 +35,20 @@
 .show {
     display: block;
 }
-h2 {
-    margin-left: 10%;
+#active-trips-main h2 {
+    margin-left: 7%;
+    margin-top: 3%;
+}
+#profile-info-h2 h2 {
+    padding-left: 1300px;
+    padding-top: 30px;
 }
 #active-trip {
     border-style: solid;
     height: 55%;
     overflow: auto;
     margin-left: 5%;
+    margin-top: 3%;
     width: 90%;
 }
 #profile-info {
@@ -55,6 +61,8 @@ h2 {
 #my-profile-h1 {
     height: 10%;
     border-bottom: solid #1C91D8 3pt;
+    padding-left: 5%;
+    padding-top: 1%;
 }
 #active-trips-main {
     width: 65%;
@@ -63,15 +71,17 @@ h2 {
     float: left;
 }
 #button-edit {
-    margin-left: 2%
+    margin-left: 3%;
+    margin-top: 30px;
 }
 #button-save {
-    margin-left: 1%
+    margin-left: 2%;
+    margin-top: 30px;
 }
 #button-go-to-main-page {
     position: absolute;
     text-align: right;
     width: 90%;
     right: 80px;
-    margin-top: 1%;
+    margin-top: 2%;
 }

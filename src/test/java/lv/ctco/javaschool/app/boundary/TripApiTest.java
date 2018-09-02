@@ -149,7 +149,7 @@ class TripApiTest {
 
     @Test
     @DisplayName("Check for throwing the UserNotFoundException when getTripPassengersByTripId() method is called with a nonexistent trip id")
-    void getTripPassengersByTripIdTestForNoSuchElementException() {
+    void getTripPassengersByTripIdTestForUserNotFoundException() {
         assertThrows(UserNotFoundException.class, () -> tripApi.getTripPassengersByTripId(42L));
     }
 

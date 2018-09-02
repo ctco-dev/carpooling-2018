@@ -45,7 +45,7 @@ window.onclick = function (event) {
     }
 }
 function displayMyActiveTrips() {
-    fetch('/api/trip/active/driver', {
+    fetch('/api/trip/driver', {
         "method": "GET",
         headers: {
             'Accept': 'application/json',

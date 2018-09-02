@@ -96,6 +96,31 @@ class TripApiTest {
     }
 
     @Test
+    @DisplayName("Check getting sorted list of TripDto and calling tripStore.findTripsByUser() method with the correct argument")
+    void getTripsForDriver() {
+        List<Trip> driverTrips = new ArrayList<>();
+        Trip trip4 = new Trip(user1, Place.IMANTA, Place.CTCO, 2, "08:00", false, TripStatus.ACTIVE);
+        Trip trip5 = new Trip(user1, Place.CTCO, Place.IMANTA, 2, "19:00", false, TripStatus.ACTIVE);
+        Collections.addAll(driverTrips, trip1, trip4, trip5);
+        List<TripDto> tripDtos = new ArrayList<>();
+        TripDto tripDto1 = new TripDto("Landa Hans", "1111111", Place.AGENSKALNS, Place.CTCO, 3, "09:00", false, TripStatus.ACTIVE);
+        TripDto tripDto2 = new TripDto("Landa Hans", "1111111", Place.IMANTA, Place.CTCO, 2, "08:00", false, TripStatus.ACTIVE);
+        TripDto tripDto3 = new TripDto("Landa Hans", "1111111", Place.CTCO, Place.IMANTA, 2, "19:00", false, TripStatus.ACTIVE);
+        Collections.addAll(tripDtos, tripDto2, tripDto1, tripDto3);
+        ListTripDto listTripDto = new ListTripDto();
+        listTripDto.setTrips(tripDtos);
+        when(tripStore.findTripsByUser(user1)).thenReturn(driverTrips);
+        when(userStore.getCurrentUser()).thenReturn(user1);
+        int i = 0;
+        for (TripDto tripDto :
+                tripApi.getTripsForDriver().getTrips()) {
+            assertEquals(tripDtos.get(i), tripDto);
+            i++;
+        }
+        verify(tripStore, times(1)).findTripsByUser(user1);
+    }
+
+    @Test
     @DisplayName("Check getting Response.Status.OK and calling userStore.getCurrentUser(), tripStore.findTripById() methods with the correct arguments")
     void setTripPlacesAndUserTestFor200ResponseStatusCode() throws TripNotFoundException {
         User user = new User();

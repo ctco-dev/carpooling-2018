@@ -58,10 +58,10 @@ public class TripApi {
     }
 
     @GET
-    @Path("/active/driver")
+    @Path("/driver")
     @Produces("application/json")
     @RolesAllowed({"ADMIN", "USER"})
-    public ListTripDto getActiveTripsForDriver() {
+    public ListTripDto getTripsForDriver() {
         User currentUser = userStore.getCurrentUser();
         ListTripDto listTripDto = new ListTripDto();
         listTripDto.setTrips(tripStore.findTripsByUser(currentUser)

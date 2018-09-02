@@ -1,8 +1,12 @@
 package lv.ctco.javaschool.app.entity.domain;
 
+import lv.ctco.javaschool.auth.entity.domain.User;
+
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -15,6 +19,9 @@ public class Car {
     private String carModel;
     private String carColor;
     private String carNumber;
+
+    @OneToOne(fetch=FetchType.LAZY, mappedBy="car")
+    private User driver;
 
     public String getCarModel() {
         return carModel;

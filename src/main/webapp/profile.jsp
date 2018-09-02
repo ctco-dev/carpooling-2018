@@ -14,7 +14,7 @@
     <script src="javascript/common.js"></script>
     <title>My profile | C.T.Co Car pooling service</title>
 </head>
-<body onload="displayMyActiveTrips()">
+<body onload="displayMyActiveTrips(); displayUserData()">
 <div id="button-go-to-main-page">
     <button type="button" class="btn btn-primary" onclick="goToMainPage()">Go back</button>
 </div>
@@ -55,46 +55,40 @@
     <table id="profile-info">
         <tr>
             <td><b>User name:</b></td>
-            <td><p class="text">test
-                <p></p>
-            <td><input name="input" class="w3-hide" type="text"></td>
+            <td><p id="p_name" class="text"></p>
+            <td><input id="name" name="input" class="w3-hide" type="text"></td>
         </tr>
         <tr>
-            <td><b>Name Surname:</b></td>
-            <td><p class="text">test1
-                <p>
-            <td><input name="input" class="w3-hide" type="text"></td>
+            <td><b>User surname:</b></td>
+            <td><p id="p_surname" class="text"><p>
+            <td><input id="surname" name="input" class="w3-hide" type="text"></td>
         </tr>
         <tr>
             <td><b>Phone number:</b></td>
-            <td><p class="text">test2
-                <p>
-            <td><input name="input" class="w3-hide" type="text"></td>
+            <td><p id="p_phone" class="text"><p>
+            <td><input id="phoneNumber" name="input" class="w3-hide" type="text"></td>
         </tr>
         <tr>
-            <td><b>Car info (Color, model):</b></td>
-            <td><p class="text">test3
-                <p>
-            <td><input name="input" class="w3-hide" type="text"></td>
+            <td><b>Car model:</b></td>
+            <td><p id="p_carmodel" class="text"><p>
+            <td><input id="carModel" name="input" class="w3-hide" type="text"></td>
+        </tr>
+        <tr>
+            <td><b>Car color:</b></td>
+            <td><p id="p_carcolor" class="text"><p>
+            <td><input id="carColor" name="input" class="w3-hide" type="text"></td>
         </tr>
         <tr>
             <td><b>Car number:</b></td>
-            <td><p class="text">test4
-                <p>
-            <td><input name="input" class="w3-hide" type="text"></td>
-        </tr>
-        <tr>
-            <td><b>Password:</b></td>
-            <td><p class="text">test5
-                <p>
-            <td><input name="input" class="w3-hide" type="text"></td>
+            <td><p id="p_carnumber" class="text"><p>
+            <td><input id="carNumber" name="input" class="w3-hide" type="text"></td>
         </tr>
     </table>
     <td>
-        <button id="button-edit" class="btn btn-primary" onclick="editField()">Edit</button>
+        <button id="button-edit" class="btn btn-primary" onclick="editFields()">Edit</button>
     </td>
     <td>
-        <button id="button-save" class="btn btn-primary">Save</button>
+        <button id="button-save" class="btn btn-primary" onclick="submitUserDto()">Save</button>
     </td>
 </div>
 </body>

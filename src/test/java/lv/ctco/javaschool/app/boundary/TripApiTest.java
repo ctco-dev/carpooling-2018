@@ -1,10 +1,12 @@
 package lv.ctco.javaschool.app.boundary;
 
 import lv.ctco.javaschool.app.control.TripStore;
+import lv.ctco.javaschool.app.control.exceptions.TripNotFoundException;
 import lv.ctco.javaschool.app.control.exceptions.UserNotFoundException;
 import lv.ctco.javaschool.app.entity.domain.Place;
 import lv.ctco.javaschool.app.entity.domain.Trip;
 import lv.ctco.javaschool.app.entity.domain.TripStatus;
+import lv.ctco.javaschool.app.entity.dto.JoinTripDto;
 import lv.ctco.javaschool.app.entity.dto.ListTripDto;
 import lv.ctco.javaschool.app.entity.dto.TripDto;
 import lv.ctco.javaschool.auth.control.UserStore;
@@ -17,9 +19,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import javax.json.Json;
-import javax.json.JsonObject;
-
+import javax.ws.rs.core.Response;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -44,6 +44,10 @@ class TripApiTest {
     private TripApi tripApi;
 
     private List<TripDto> tripDtos;
+    private List<User> users;
+    private User user1;
+    private User user2;
+    private User user3;
 
     @BeforeEach
     void init() {
@@ -59,6 +63,11 @@ class TripApiTest {
         TripDto tripDto3 = new TripDto("Bagrov Danila", "3333333", Place.IMANTA, Place.CTCO, 3, "08:30", false, TripStatus.ACTIVE);
         Collections.addAll(tripDtos, tripDto3, tripDto1, tripDto2);
         listTripDto.setTrips(tripDtos);
+        users = new ArrayList<>();
+        user1 = new User("bastard", "pass1", "Hans", "Landa", "1111111");
+        user2 = new User("vader", "pass2", "Anakin", "Skywalker", "2222222");
+        user3 = new User("brother", "pass3", "Danila", "Bagrov", "3333333");
+        Collections.addAll(users, user1, user2, user3);
     }
 
     @Test
@@ -80,6 +89,43 @@ class TripApiTest {
     }
 
     @Test
+    @DisplayName("Check getting Response.Status.OK and calling userStore.getCurrentUser(), tripStore.findTripById() methods with the correct arguments")
+    void setTripPlacesAndUserTestFor200ResponseStatusCode() throws TripNotFoundException {
+        User user = new User();
+        JoinTripDto joinTripDto = new JoinTripDto();
+        joinTripDto.setPlaces(2);
+        Trip trip = new Trip();
+        trip.setId(2L);
+        trip.setPassengers(users);
+        when(userStore.getCurrentUser()).thenReturn(user);
+        when(tripStore.findTripById(2L)).thenReturn(Optional.of(trip));
+        assertEquals(Response.Status.OK.getStatusCode(), tripApi.setTripPlacesAndUser(joinTripDto, 2L).getStatus());
+        verify(userStore, times(1)).getCurrentUser();
+        verify(tripStore, times(1)).findTripById(2L);
+    }
+
+    @Test
+    @DisplayName("Check getting Response.Status.METHOD_NOT_ALLOWED and calling userStore.getCurrentUser(), tripStore.findTripById() methods with the correct arguments")
+    void setTripPlacesAndUserTestForFor405ResponseStatusCode() throws TripNotFoundException {
+        JoinTripDto joinTripDto = new JoinTripDto();
+        joinTripDto.setPlaces(2);
+        Trip trip = new Trip();
+        trip.setId(2L);
+        trip.setPassengers(users);
+        when(userStore.getCurrentUser()).thenReturn(user1);
+        when(tripStore.findTripById(2L)).thenReturn(Optional.of(trip));
+        assertEquals(Response.Status.METHOD_NOT_ALLOWED.getStatusCode(), tripApi.setTripPlacesAndUser(joinTripDto, 2L).getStatus());
+        verify(userStore, times(1)).getCurrentUser();
+        verify(tripStore, times(1)).findTripById(2L);
+    }
+
+    @Test
+    @DisplayName("Check for throwing the TripNotFoundException when setTripPlacesAndUser() method is called with a nonexistent trip id")
+    void setTripPlacesAndUserTestForTripNotFoundException() {
+        assertThrows(TripNotFoundException.class, () -> tripApi.setTripPlacesAndUser(new JoinTripDto(), 42L));
+    }
+
+    @Test
     @DisplayName("Check getting sorted list of UserLoginDto and calling tripStore.findTripsById() and userStore.findUsersByTrip()")
     void getTripPassengersByTripIdTest() throws UserNotFoundException {
         List<UserLoginDto> userLoginDtos = new ArrayList<>();
@@ -87,11 +133,6 @@ class TripApiTest {
         UserLoginDto userLoginDto2 = new UserLoginDto("vader", "pass2", "Anakin", "Skywalker", "2222222");
         UserLoginDto userLoginDto3 = new UserLoginDto("brother", "pass3", "Danila", "Bagrov", "3333333");
         Collections.addAll(userLoginDtos, userLoginDto2, userLoginDto3, userLoginDto1);
-        List<User> users = new ArrayList<>();
-        User user1 = new User("bastard", "pass1", "Hans", "Landa", "1111111");
-        User user2 = new User("vader", "pass2", "Anakin", "Skywalker", "2222222");
-        User user3 = new User("brother", "pass3", "Danila", "Bagrov", "3333333");
-        Collections.addAll(users, user1, user2, user3);
         Trip trip = new Trip();
         when(tripStore.findTripById(1L)).thenReturn(Optional.of(trip));
         when(userStore.findUsersByTrip(trip)).thenReturn(users);

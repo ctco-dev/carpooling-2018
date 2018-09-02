@@ -23,6 +23,15 @@ public class Car {
     @OneToOne(fetch=FetchType.LAZY, mappedBy="car")
     private User driver;
 
+    public Car() {
+    }
+
+    public Car(String carModel, String carColor, String carNumber) {
+        this.carModel = carModel;
+        this.carColor = carColor;
+        this.carNumber = carNumber;
+    }
+
     public String getCarModel() {
         return carModel;
     }

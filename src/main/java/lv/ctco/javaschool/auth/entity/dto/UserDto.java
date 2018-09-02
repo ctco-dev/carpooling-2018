@@ -1,5 +1,7 @@
 package lv.ctco.javaschool.auth.entity.dto;
 
+import java.util.Objects;
+
 public class UserDto {
 
     private String name;
@@ -8,6 +10,18 @@ public class UserDto {
     private String carModel;
     private String carColor;
     private String carNumber;
+
+    public UserDto() {
+    }
+
+    public UserDto(String name, String surname, String phoneNumber, String carModel, String carColor, String carNumber) {
+        this.name = name;
+        this.surname = surname;
+        this.phoneNumber = phoneNumber;
+        this.carModel = carModel;
+        this.carColor = carColor;
+        this.carNumber = carNumber;
+    }
 
     public String getName() {
         return name;
@@ -55,5 +69,24 @@ public class UserDto {
 
     public void setCarNumber(String carNumber) {
         this.carNumber = carNumber;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        UserDto userDto = (UserDto) o;
+        return Objects.equals(name, userDto.name) &&
+                Objects.equals(surname, userDto.surname) &&
+                Objects.equals(phoneNumber, userDto.phoneNumber) &&
+                Objects.equals(carModel, userDto.carModel) &&
+                Objects.equals(carColor, userDto.carColor) &&
+                Objects.equals(carNumber, userDto.carNumber);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(name, surname, phoneNumber, carModel, carColor, carNumber);
     }
 }

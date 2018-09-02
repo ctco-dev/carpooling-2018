@@ -1,4 +1,4 @@
-package lv.ctco.javaschool.auth.entity.dto;
+package lv.ctco.javaschool.app.entity.dto;
 
 public class CarDto {
     private String carModel;

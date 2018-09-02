@@ -39,6 +39,8 @@ public class UserResourceApi {
     @Path("/update")
     public Response updateUserData(UserDto userDto) {
         User user = userStore.getCurrentUser();
+        user.setName(userDto.getName());
+        user.setSurname(userDto.getSurname());
         user.setPhoneNumber(userDto.getPhoneNumber());
         Car car = user.getCar();
         car.setCarModel(userDto.getCarModel());

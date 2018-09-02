@@ -54,12 +54,12 @@
     <h2>Profile info:</h2>
     <table id="profile-info">
         <tr>
-            <td><b>User name:</b></td>
+            <td><b>Name:</b></td>
             <td><p id="p_name" class="text"></p>
             <td><input id="name" name="input" class="w3-hide" type="text"></td>
         </tr>
         <tr>
-            <td><b>User surname:</b></td>
+            <td><b>Surname:</b></td>
             <td><p id="p_surname" class="text"><p>
             <td><input id="surname" name="input" class="w3-hide" type="text"></td>
         </tr>

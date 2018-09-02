@@ -57,6 +57,21 @@ public class TripApi {
         return listTripDto;
     }
 
+    @GET
+    @Path("/active/driver")
+    @Produces("application/json")
+    @RolesAllowed({"ADMIN", "USER"})
+    public ListTripDto getActiveTripsForDriver() {
+        User currentUser = userStore.getCurrentUser();
+        ListTripDto listTripDto = new ListTripDto();
+        listTripDto.setTrips(tripStore.findTripsByUser(currentUser)
+                .stream()
+                .sorted(Comparator.comparing(Trip::getDepartureTime))
+                .map(this::convertToTripDto)
+                .collect(Collectors.toList()));
+        return listTripDto;
+    }
+
     private TripDto convertToTripDto(Trip trip) {
         User driver = trip.getDriver();
         TripDto dto = new TripDto();

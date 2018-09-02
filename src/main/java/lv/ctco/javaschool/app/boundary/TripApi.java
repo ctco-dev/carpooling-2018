@@ -105,7 +105,7 @@ public class TripApi {
     @POST
     @RolesAllowed({"ADMIN", "USER"})
     @Path("/createTrip")
-    public void createNewTrip(TripDto dto) {
+    public Response createNewTrip(TripDto dto) {
         User user = userStore.getCurrentUser();
         Trip trip = new Trip();
         trip.setDriver(user);
@@ -116,6 +116,7 @@ public class TripApi {
         trip.setDepartureTime(dto.getTime());
         trip.setTripStatus(dto.getTripStatus());
         em.persist(trip);
+        return Response.status(Response.Status.CREATED).build();
     }
 
     @GET

@@ -18,6 +18,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import javax.persistence.EntityManager;
 import javax.ws.rs.core.Response;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -38,6 +39,9 @@ class TripApiTest {
 
     @Mock
     private UserStore userStore;
+
+    @Mock
+    EntityManager em;
 
     @InjectMocks
     private TripApi tripApi;
@@ -152,4 +156,13 @@ class TripApiTest {
         assertThrows(ValidationException.class, () -> tripApi.getTripPassengersByTripId(42L));
     }
 
+    @Test
+    @DisplayName("Check getting Response.Status.CREATED and calling userStore.getCurrentUser(), em.persist() methods")
+    void createNewTrip() {
+        when(userStore.getCurrentUser()).thenReturn(user1);
+        TripDto tripDto = new TripDto("Landa Hans", "1111111", Place.AGENSKALNS, Place.CTCO, 3, "09:00", false, TripStatus.ACTIVE);
+        assertEquals(Response.Status.CREATED.getStatusCode(), tripApi.createNewTrip(tripDto).getStatus());
+        verify(userStore, times(1)).getCurrentUser();
+        verify(em, times(1)).persist(any(Trip.class));
+    }
 }

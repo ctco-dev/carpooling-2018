@@ -122,7 +122,7 @@ public class TripApi {
     @Path("/{id}/passengers")
     @Produces("application/json")
     @RolesAllowed({"ADMIN", "USER"})
-    public List<UserLoginDto> getTripPassengersByTripId(@PathParam("id") Long tripId) throws UserNotFoundException {
+    public List<UserLoginDto> getTripPassengersByTripId(@PathParam("id") Long tripId) {
         Optional<Trip> tripOptional = tripStore.findTripById(tripId);
         if (tripOptional.isPresent()) {
             return userStore.findUsersByTrip(tripOptional.get())

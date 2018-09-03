@@ -33,3 +33,9 @@ button {
     width: 90%;
     right: 180px;
 }
+#go-add-event {
+    position: absolute;
+    text-align: right;
+    width: 90%;
+    right: 280px;
+}

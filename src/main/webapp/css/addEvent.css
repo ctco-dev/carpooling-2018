@@ -1,0 +1,17 @@
+#adding{
+    display: inline-block;
+
+}
+
+#myEventTable {
+    border: solid;
+    display: inline-block;
+    margin-top: 0px;
+}
+tr{
+    border: thin;
+}
+
+#name {
+    width: 173px;
+}

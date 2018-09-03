@@ -19,6 +19,9 @@
 <div id="go-my-profile">
     <button type="button" class="btn btn-link" onclick="goMyProfile()">My Profile</button>
 </div>
+<div id="go-add-event">
+    <button type="button" class="btn btn-link" onclick="goAddEvent()">Add New Event</button>
+</div>
 <h2>Active trips</h2>
 <div class="container" id="active-trip">
     <table class="table table-bordered" id="trips">

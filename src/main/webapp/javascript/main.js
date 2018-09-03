@@ -80,3 +80,7 @@ function showPassengers(tripId) {
         listDiv.appendChild(ol);
     });
 }
+
+function goAddEvent(){
+    location.href = "/addEvent.jsp";
+}

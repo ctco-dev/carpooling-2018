@@ -21,7 +21,7 @@ function scrollBar() {
 }
 function logout() {
     fetch('/api/auth/logout', {"method": "POST"})
-        .then(function (response) {
+        .then(function () {
             location.href = "/";
         });
 }
@@ -30,24 +30,33 @@ function goMyProfile() {
 }
 function join(button, tripId, rowId, places) {
     var data = {};
-    places = places - 1;
-    var rowCells = document.getElementById("trips").rows[rowId + 1].cells;
-    rowCells[4].innerHTML = places;
-    data[tripId] = places;
-    console.log("===> JSON.stringify(data): " + JSON.stringify(data));
-    fetch('/api/trip/' + tripId, {
-        "method": "POST",
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
-    }).then(function () {
-        if (places <= 0) {
-            button.disabled = true;
-        }
-        console.log("DONE");
-    });
+    if (places > 0) {
+        data = {"places": places};
+        fetch('/api/trip/' + tripId, {
+            "method": "POST",
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        }).then(function (response) {
+                if (places > 0) {
+                    if (response.status === 400) {
+                        button.disabled = true;
+                        alert("You have already joined this trip");
+                    } else {
+                        places = places - 1;
+                        var rowCells = document.getElementById("trips").rows[rowId + 1].cells;
+                        rowCells[4].innerHTML = places;
+                        alert("You joined the trip");
+                    }
+                }
+            }
+        );
+    } else {
+        button.disabled = true;
+        alert("There are no free places for this trip");
+    }
 }
 function showPassengers(tripId) {
     var listDiv = document.getElementById("passenger_list");

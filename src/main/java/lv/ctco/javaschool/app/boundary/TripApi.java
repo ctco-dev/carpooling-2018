@@ -75,7 +75,7 @@ public class TripApi {
     @POST
     @Path("/{id}")
     @RolesAllowed({"ADMIN", "USER"})
-    public Response setTripPlacesAndUser(JoinTripDto joinTripDto, @PathParam("id") Long tripId) throws TripNotFoundException {
+    public Response setTripPlacesAndUser(JoinTripDto joinTripDto, @PathParam("id") Long tripId) {
         User user = userStore.getCurrentUser();
         Optional<Trip> tripOptional = tripStore.findTripById(tripId);
         if (tripOptional.isPresent()) {

@@ -1,5 +1,6 @@
 package lv.ctco.javaschool.app.control;
 
+import lv.ctco.javaschool.app.entity.domain.Event;
 import lv.ctco.javaschool.app.entity.domain.Trip;
 import lv.ctco.javaschool.app.entity.domain.TripStatus;
 import lv.ctco.javaschool.auth.entity.domain.User;
@@ -7,6 +8,8 @@ import lv.ctco.javaschool.auth.entity.domain.User;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
@@ -43,4 +46,18 @@ public class TripStore {
     public void addTrip(Trip trip) {
         em.persist(trip);
     }
+
+    private String getCurrentTime(){
+        LocalDateTime dt = LocalDateTime.now();
+        return dt.format(DateTimeFormatter.ofPattern("dd.MM.yyyy kk:mm"));
+    }
+
+    public List<Event> findAllEvents(){
+        return em.createQuery(
+                        "select e from Event e " +
+                           "where e.eventDateTime >= :newDT", Event.class)
+                .setParameter("newDT",   getCurrentTime() )
+                .getResultList();
+    }
+
 }

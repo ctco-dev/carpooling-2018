@@ -5,7 +5,7 @@ public enum Place {
     CENTRS,
     IMANTA,
     ZOLITUDE,
-    KENGARAKS,
+    KENGARAGS,
     ZIEPNIEKALNS,
     AGENSKALNS,
     MEZCIEMS,

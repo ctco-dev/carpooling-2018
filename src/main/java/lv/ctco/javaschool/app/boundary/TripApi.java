@@ -3,9 +3,11 @@ package lv.ctco.javaschool.app.boundary;
 import lv.ctco.javaschool.app.control.TripStore;
 import lv.ctco.javaschool.app.control.exceptions.TripNotFoundException;
 import lv.ctco.javaschool.app.control.exceptions.UserNotFoundException;
+import lv.ctco.javaschool.app.entity.domain.Event;
 import lv.ctco.javaschool.app.entity.domain.Place;
 import lv.ctco.javaschool.app.entity.domain.Trip;
 import lv.ctco.javaschool.app.entity.domain.TripStatus;
+import lv.ctco.javaschool.app.entity.dto.EventDto;
 import lv.ctco.javaschool.app.entity.dto.JoinTripDto;
 import lv.ctco.javaschool.app.entity.dto.ListTripDto;
 import lv.ctco.javaschool.app.entity.dto.TripDto;
@@ -24,6 +26,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
@@ -160,4 +163,43 @@ public class TripApi {
         dto.setPhoneNumber(user.getPhoneNumber());
         return dto;
     }
+
+    @GET
+    @Path("/events")
+    @Produces("application/json")
+    @RolesAllowed({"ADMIN", "USER"})
+    public List<EventDto> getAllEventsForUser() {
+        User user = userStore.getCurrentUser();
+        return tripStore.findAllEvents()
+                .stream()
+                .sorted(Comparator.comparing(Event::getEventDateTime))
+                .map(e ->{
+                    if (e.getParticipants().contains(user)){
+                        return convertEventToEventDto(e);
+                    } else return null;
+                }).collect(Collectors.toList());
+    }
+
+    EventDto convertEventToEventDto(Event event){
+        return new EventDto( event.getEventName(), event.getEventDateTime(), event.getEventDestination() );
+    }
+
+    @POST
+    @RolesAllowed({"ADMIN", "USER"})
+    @Path("/createEvent")
+    public Response createNewEvent(EventDto dto) {
+        Event event = new Event();
+        event.setEventName( dto.getEventName() );
+        event.setEventDateTime( dto.getEventDateTime() );
+        event.setEventDestination( dto.getEventPlace() );
+        for(String u: dto.getUsernames()){
+            Optional<User> participant = userStore.findUserByUsername( u );
+            if (participant.isPresent()) {
+                event.getParticipants().add( participant.get() );
+            }
+        }
+        em.persist(event);
+        return Response.status(Response.Status.CREATED).build();
+    }
+
 }

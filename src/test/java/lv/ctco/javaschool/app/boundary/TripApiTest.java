@@ -91,8 +91,8 @@ class TripApiTest {
     }
 
     @Test
-    @DisplayName("Check getting Response.Status.OK and calling userStore.getCurrentUser(), tripStore.findTripById() methods with the correct arguments")
-    void setTripPlacesAndUserTestFor200ResponseStatusCode() throws ValidationException {
+    @DisplayName("Check calling userStore.getCurrentUser(), tripStore.findTripById() methods with the correct arguments")
+    void setTripPlacesAndUserTest() {
         User user = new User();
         JoinTripDto joinTripDto = new JoinTripDto();
         joinTripDto.setPlaces(2);
@@ -100,21 +100,21 @@ class TripApiTest {
         trip1.setPassengers(users);
         when(userStore.getCurrentUser()).thenReturn(user);
         when(tripStore.findTripById(2L)).thenReturn(Optional.of(trip1));
-        assertEquals(Response.Status.OK.getStatusCode(), tripApi.setTripPlacesAndUser(joinTripDto, 2L).getStatus());
+        tripApi.setTripPlacesAndUser(joinTripDto, 2L);
         verify(userStore, times(1)).getCurrentUser();
         verify(tripStore, times(1)).findTripById(2L);
     }
 
     @Test
     @DisplayName("Check for throwing the ValidationException and calling userStore.getCurrentUser(), tripStore.findTripById() methods with the correct arguments")
-    void setTripPlacesAndUserTestForFor405ResponseStatusCode() throws ValidationException {
+    void setTripPlacesAndUserTestForFor405ResponseStatusCode() {
         JoinTripDto joinTripDto = new JoinTripDto();
         joinTripDto.setPlaces(2);
         trip2.setId(2L);
         trip2.setPassengers(users);
         when(userStore.getCurrentUser()).thenReturn(user1);
         when(tripStore.findTripById(2L)).thenReturn(Optional.of(trip2));
-        assertThrows(ValidationException.class, () -> tripApi.setTripPlacesAndUser(joinTripDto, 2L).getStatus());
+        assertThrows(ValidationException.class, () -> tripApi.setTripPlacesAndUser(joinTripDto, 2L));
         verify(userStore, times(1)).getCurrentUser();
         verify(tripStore, times(1)).findTripById(2L);
     }
@@ -127,7 +127,7 @@ class TripApiTest {
 
     @Test
     @DisplayName("Check getting sorted list of UserLoginDto and calling tripStore.findTripsById() and userStore.findUsersByTrip()")
-    void getTripPassengersByTripIdTest() throws ValidationException {
+    void getTripPassengersByTripIdTest() {
         List<UserLoginDto> userLoginDtos = new ArrayList<>();
         UserLoginDto userLoginDto1 = new UserLoginDto("bastard", "pass1", "Hans", "Landa", "1111111");
         UserLoginDto userLoginDto2 = new UserLoginDto("vader", "pass2", "Anakin", "Skywalker", "2222222");

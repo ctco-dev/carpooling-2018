@@ -41,14 +41,14 @@ function join(button, tripId, rowId, places) {
             body: JSON.stringify(data)
         }).then(function (response) {
                 if (places > 0) {
-                    if (response.status === 200) {
+                    if (response.status === 400) {
+                        button.disabled = true;
+                        alert("You have already joined this trip");
+                    } else {
                         places = places - 1;
                         var rowCells = document.getElementById("trips").rows[rowId + 1].cells;
                         rowCells[4].innerHTML = places;
                         alert("You joined the trip");
-                    } else if (response.status === 400) {
-                        button.disabled = true;
-                        alert("You have already joined this trip");
                     }
                 }
             }

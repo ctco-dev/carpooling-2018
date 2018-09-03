@@ -13,6 +13,7 @@ import lv.ctco.javaschool.app.entity.dto.ListTripDto;
 import lv.ctco.javaschool.app.entity.dto.TripDto;
 import lv.ctco.javaschool.auth.control.UserStore;
 import lv.ctco.javaschool.auth.entity.domain.User;
+import lv.ctco.javaschool.auth.entity.dto.UserDto;
 import lv.ctco.javaschool.auth.entity.dto.UserLoginDto;
 
 import javax.annotation.security.RolesAllowed;
@@ -31,6 +32,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 @Stateless
@@ -164,6 +166,13 @@ public class TripApi {
         return dto;
     }
 
+    private UserDto convertToUserDto(User user) {
+        UserDto dto = new UserDto();
+        dto.setName(user.getName());
+        dto.setSurname(user.getSurname());
+        return dto;
+    }
+
     @GET
     @Path("/events")
     @Produces("application/json")
@@ -180,7 +189,7 @@ public class TripApi {
                 }).collect(Collectors.toList());
     }
 
-    EventDto convertEventToEventDto(Event event){
+    private EventDto convertEventToEventDto(Event event){
         return new EventDto( event.getEventName(), event.getEventDateTime(), event.getEventDestination() );
     }
 
@@ -194,12 +203,20 @@ public class TripApi {
         event.setEventDestination( dto.getEventPlace() );
         for(String u: dto.getUsernames()){
             Optional<User> participant = userStore.findUserByUsername( u );
-            if (participant.isPresent()) {
-                event.getParticipants().add( participant.get() );
-            }
+            participant.ifPresent(user -> event.getParticipants().add(user));
         }
         em.persist(event);
         return Response.status(Response.Status.CREATED).build();
     }
 
+    @GET
+    @Path("/getUsers")
+    @Produces("application/json")
+    @RolesAllowed({"ADMIN", "USER"})
+    public List<UserDto> getUsersForEvent() {
+      List<User> users= userStore.getAllUsers();
+     return users.stream()
+              .map(this::convertToUserDto)
+              .collect(Collectors.toList());
+    }
 }

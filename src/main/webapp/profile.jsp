@@ -12,7 +12,7 @@
     <script src="http://www.w3schools.com/lib/w3data.js"></script>
     <script src="javascript/profile.js"></script>
     <script src="javascript/common.js"></script>
-    <title>My profile</title>
+    <title>My profile | C.T.Co Car pooling service</title>
 </head>
 <body onload="displayMyActiveTrips()">
 <div id="button-go-to-main-page">

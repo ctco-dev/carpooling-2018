@@ -2,7 +2,9 @@ package lv.ctco.javaschool.app.entity.dto;
 
 import lv.ctco.javaschool.app.entity.domain.Place;
 import lv.ctco.javaschool.app.entity.domain.TripStatus;
+import lv.ctco.javaschool.auth.entity.dto.UserLoginDto;
 
+import java.util.List;
 import java.util.Objects;
 
 public class TripDto {
@@ -16,6 +18,7 @@ public class TripDto {
     private String time;
     private boolean isEvent;
     private TripStatus tripStatus;
+    private List<UserLoginDto> passengers;
 
     public TripDto() {
     }
@@ -102,6 +105,13 @@ public class TripDto {
 
     public void setTripStatus(TripStatus tripStatus) {
         this.tripStatus = tripStatus;
+    }
+
+    public List<UserLoginDto> getPassengers() {
+        return passengers;
+    }
+    public void setPassengers(List<UserLoginDto> passengers) {
+        this.passengers = passengers;
     }
 
     @Override

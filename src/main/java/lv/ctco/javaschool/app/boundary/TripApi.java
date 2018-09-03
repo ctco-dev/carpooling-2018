@@ -1,6 +1,7 @@
 package lv.ctco.javaschool.app.boundary;
 
 import lv.ctco.javaschool.app.control.TripStore;
+import lv.ctco.javaschool.app.control.exceptions.UserNotFoundException;
 import lv.ctco.javaschool.app.entity.domain.Place;
 import lv.ctco.javaschool.app.entity.domain.Trip;
 import lv.ctco.javaschool.app.entity.domain.TripStatus;
@@ -8,15 +9,13 @@ import lv.ctco.javaschool.app.entity.dto.ListTripDto;
 import lv.ctco.javaschool.app.entity.dto.TripDto;
 import lv.ctco.javaschool.auth.control.UserStore;
 import lv.ctco.javaschool.auth.entity.domain.User;
+import lv.ctco.javaschool.auth.entity.dto.UserLoginDto;
 
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.json.JsonNumber;
 import javax.json.JsonObject;
-import javax.json.JsonValue;
-import javax.json.JsonObject;
-import javax.json.JsonString;
 import javax.json.JsonValue;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -27,9 +26,9 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import java.util.Arrays;
 import java.util.Comparator;
-import java.util.Map;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
@@ -110,5 +109,31 @@ public class TripApi {
 
         em.persist(trip);
     }
-}
 
+    @GET
+    @Path("/{id}/passengers")
+    @Produces("application/json")
+    @RolesAllowed({"ADMIN", "USER"})
+    public List<UserLoginDto> getTripPassengersByTripId(@PathParam("id") Long tripId) {
+        Optional<Trip> tripOptional = tripStore.findTripById(tripId);
+        if (tripOptional.isPresent()) {
+            return userStore.findUsersByTrip(tripOptional.get())
+                    .stream()
+                    .sorted(Comparator.comparing(User::getName))
+                    .map(this::convertToUserLoginDto)
+                    .collect(Collectors.toList());
+        } else {
+            throw new UserNotFoundException();
+        }
+    }
+
+    private UserLoginDto convertToUserLoginDto(User user) {
+        UserLoginDto dto = new UserLoginDto();
+        dto.setUsername(user.getUsername());
+        dto.setPassword(user.getPassword());
+        dto.setName(user.getName());
+        dto.setSurname(user.getSurname());
+        dto.setPhoneNumber(user.getPhoneNumber());
+        return dto;
+    }
+}

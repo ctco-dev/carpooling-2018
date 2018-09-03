@@ -80,7 +80,7 @@ public class TripApi {
         if (tripOptional.isPresent()) {
             Trip trip = tripOptional.get();
             if (trip.getPassengers().contains(user)) {
-                return Response.status(Response.Status.BAD_REQUEST).build();
+                throw new ValidationException("The user have already joined this trip");
             } else {
                 List<User> passengers = trip.getPassengers();
                 passengers.add(user);
@@ -89,7 +89,7 @@ public class TripApi {
                 return Response.status(Response.Status.OK).build();
             }
         } else {
-            throw new ValidationException();
+            throw new ValidationException("There is no such trip");
         }
     }
 
@@ -130,7 +130,7 @@ public class TripApi {
                     .map(this::convertToUserLoginDto)
                     .collect(Collectors.toList());
         } else {
-            throw new ValidationException();
+            throw new ValidationException("There is no such trip");
         }
     }
 

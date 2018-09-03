@@ -9,9 +9,6 @@ public class ValidationExceptionMapper implements ExceptionMapper<ValidationExce
 
     @Override
     public Response toResponse(ValidationException ex) {
-        return Response.status(404)
-                .entity(ex.getMessage())
-                .type("text/plain")
-                .build();
+        return Response.status(Response.Status.BAD_REQUEST).entity(ex.getMessage()).build();
     }
 }

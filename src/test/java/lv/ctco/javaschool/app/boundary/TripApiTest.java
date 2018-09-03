@@ -106,7 +106,7 @@ class TripApiTest {
     }
 
     @Test
-    @DisplayName("Check getting Response.Status.METHOD_NOT_ALLOWED and calling userStore.getCurrentUser(), tripStore.findTripById() methods with the correct arguments")
+    @DisplayName("Check for throwing the ValidationException and calling userStore.getCurrentUser(), tripStore.findTripById() methods with the correct arguments")
     void setTripPlacesAndUserTestForFor405ResponseStatusCode() throws ValidationException {
         JoinTripDto joinTripDto = new JoinTripDto();
         joinTripDto.setPlaces(2);
@@ -114,7 +114,7 @@ class TripApiTest {
         trip2.setPassengers(users);
         when(userStore.getCurrentUser()).thenReturn(user1);
         when(tripStore.findTripById(2L)).thenReturn(Optional.of(trip2));
-        assertEquals(Response.Status.BAD_REQUEST.getStatusCode(), tripApi.setTripPlacesAndUser(joinTripDto, 2L).getStatus());
+        assertThrows(ValidationException.class, () -> tripApi.setTripPlacesAndUser(joinTripDto, 2L).getStatus());
         verify(userStore, times(1)).getCurrentUser();
         verify(tripStore, times(1)).findTripById(2L);
     }

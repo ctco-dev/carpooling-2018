@@ -21,7 +21,8 @@ public class Event {
     private Long id;
 
     private String eventName;
-    private String eventDateTime;
+    private String eventDate;
+    private String eventTime;
 
     @Enumerated(EnumType.STRING)
     private Place eventDestination;
@@ -46,12 +47,6 @@ public class Event {
         this.eventName = eventName;
     }
 
-    public String getEventDateTime() {
-        return eventDateTime;
-    }
-    public void setEventDateTime(String eventDateTime) {
-        this.eventDateTime = eventDateTime;
-    }
 
     public Place getEventDestination() {
         return eventDestination;
@@ -66,4 +61,11 @@ public class Event {
     public void setParticipants(List<User> participants) {
         this.participants = participants;
     }
+
+    public String getEventDate() { return eventDate; }
+    public void setEventDate(String eventDate) { this.eventDate = eventDate; }
+
+    public String getEventTime() { return eventTime; }
+    public void setEventTime(String eventTime) { this.eventTime = eventTime; }
+
 }

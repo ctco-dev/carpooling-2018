@@ -181,7 +181,7 @@ public class TripApi {
         User user = userStore.getCurrentUser();
         return tripStore.findAllEvents()
                 .stream()
-                .sorted(Comparator.comparing(Event::getEventDateTime))
+                .sorted(Comparator.comparing(Event::getEventDate))
                 .map(e ->{
                     if (e.getParticipants().contains(user)){
                         return convertEventToEventDto(e);
@@ -190,23 +190,26 @@ public class TripApi {
     }
 
     private EventDto convertEventToEventDto(Event event){
-        return new EventDto( event.getEventName(), event.getEventDateTime(), event.getEventDestination() );
+        return new EventDto( event.getEventName(), event.getEventDate(),event.getEventTime(), event.getEventDestination());
     }
 
     @POST
     @RolesAllowed({"ADMIN", "USER"})
     @Path("/createEvent")
     public Response createNewEvent(EventDto dto) {
+        System.out.println(dto);
         Event event = new Event();
         event.setEventName( dto.getEventName() );
-        event.setEventDateTime( dto.getEventDateTime() );
+        event.setEventDate( dto.getEventDate() );
+        event.setEventTime(dto.getEventTime());
         event.setEventDestination( dto.getEventPlace() );
-        for(String u: dto.getUsernames()){
-            Optional<User> participant = userStore.findUserByUsername( u );
-            participant.ifPresent(user -> event.getParticipants().add(user));
-        }
+//        for(String u: dto.getUsernames()){
+//            Optional<User> participant = userStore.findUserByUsername( u );
+//            participant.ifPresent(user -> event.getParticipants().add(user));
+//        }
         em.persist(event);
         return Response.status(Response.Status.CREATED).build();
+
     }
 
     @GET

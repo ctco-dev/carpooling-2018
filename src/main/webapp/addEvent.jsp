@@ -6,6 +6,8 @@
     <link rel="stylesheet" href="/resources/demos/style.css">
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.10.0/jquery.timepicker.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.10.0/jquery.timepicker.css" crossorigin="anonymous">
     <link rel="stylesheet" href="css/addEvent.css">
     <script src="javascript/addEvent.js"></script>
 </head>
@@ -46,9 +48,6 @@
 <script>
     $( function() {
         $( "#datepicker" ).datepicker();
-    } );
-
-    $( function() {
         $("#timepicker").timepicker();
     } );
 </script>

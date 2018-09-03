@@ -8,6 +8,7 @@ import lv.ctco.javaschool.auth.entity.domain.User;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -47,16 +48,21 @@ public class TripStore {
         em.persist(trip);
     }
 
-    private String getCurrentTime(){
-        LocalDateTime dt = LocalDateTime.now();
-        return dt.format(DateTimeFormatter.ofPattern("dd.MM.yyyy kk:mm"));
+//    private String getCurrentTime(){
+//        LocalDateTime dt = LocalDateTime.now();
+//        return dt.format(DateTimeFormatter.ofPattern("dd.MM.yyyy kk:mm"));
+//    }
+
+    private String getCurrentDate(){
+        LocalDate dt = LocalDate.now();
+        return dt.format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
     }
 
     public List<Event> findAllEvents(){
         return em.createQuery(
                         "select e from Event e " +
-                           "where e.eventDateTime >= :newDT", Event.class)
-                .setParameter("newDT",   getCurrentTime() )
+                           "where e.eventDate >= :newDT", Event.class)
+                .setParameter("newDT",   getCurrentDate() )
                 .getResultList();
     }
 

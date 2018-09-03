@@ -7,24 +7,30 @@ import java.util.List;
 
 public class EventDto {
     private String eventName;
-    private String eventDateTime;
+    private String eventDate;
+    private String eventTime;
     private Place eventPlace;
-    private List<String> usernames;
+    //private List<String> usernames;
 
-    public EventDto(String name, String dateTime, Place place){
+
+    public EventDto() {
+    }
+
+    public EventDto(String name, String date, String time, Place place ){
         this.eventName=name;
-        this.eventDateTime=dateTime;
+        this.eventDate=date;
+        this.eventTime=time;
         this.eventPlace=place;
-        this.usernames=null;
+        //this.usernames=null;
     }
 
-    public List<String> getUsernames() {
-        return usernames;
-    }
-
-    public void setUsernames(List<String> usernames) {
-        this.usernames = usernames;
-    }
+//    public List<String> getUsernames() {
+//        return usernames;
+//    }
+//
+//    public void setUsernames(List<String> usernames) {
+//        this.usernames = usernames;
+//    }
 
     public String getEventName() {
         return eventName;
@@ -33,12 +39,6 @@ public class EventDto {
         this.eventName = eventName;
     }
 
-    public String getEventDateTime() {
-        return eventDateTime;
-    }
-    public void setEventDateTime(String eventDateTime) {
-        this.eventDateTime = eventDateTime;
-    }
 
     public Place getEventPlace() {
         return eventPlace;
@@ -47,4 +47,9 @@ public class EventDto {
         this.eventPlace = eventPlace;
     }
 
+    public String getEventDate() { return eventDate; }
+    public void setEventDate(String eventDate) { this.eventDate = eventDate; }
+
+    public String getEventTime() { return eventTime; }
+    public void setEventTime(String eventTime) { this.eventTime = eventTime; }
 }

@@ -3,14 +3,14 @@ function buildEventDto() {
     var eventDate = document.getElementById("datepicker");
     var eventTime = document.getElementById("timepicker");
     var eventPlace = document.getElementById("place");
-    var user = document.getElementById("participants")
+   // var user = document.getElementById("participants")
 
     var dto = {
+        "eventDate": eventDate.value,
         "eventName": eventName.value,
         "eventPlace": eventPlace.options[eventPlace.selectedIndex].value,
-        "date": eventDate.value,
-        "time": eventTime.value,
-        "usernames": user.options[user.selectedIndex].value
+        "eventTime": eventTime.value,
+       // "usernames": user.options[user.selectedIndex].value
     };
     addNewEvent(dto);
 
@@ -26,6 +26,8 @@ function showMyEvents() {
     }).then(function (response) {
         return response.json();
     }).then(function (events) {
+        console.log(events);
+        var table=document.getElementById("events");
         events.forEach(function (e) {
             var row = table.insertRow();
             var cell1 = row.insertCell(0);
@@ -33,7 +35,8 @@ function showMyEvents() {
             var cell3 = row.insertCell(2);
             var cell4 = row.insertCell(3);
             cell1.innerHTML = e.eventName;
-            //cell2.innerHTML=e.eventDateT;
+            cell2.innerHTML=e.eventDate;
+            cell3.innerHTML=e.eventTime;
             cell4.innerHTML = e.eventPlace;
         });
     });

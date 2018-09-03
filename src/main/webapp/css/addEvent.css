@@ -1,17 +1,36 @@
-#adding{
-    display: inline-block;
-
-}
 
 #myEventTable {
-    border: solid;
-    display: inline-block;
-    margin-top: 0px;
+    justify-content: center;
+    margin-left: 30%;
+
 }
-tr{
-    border: thin;
+
+#events{
+    border: solid;
+}
+
+#newEvent{
+    position: absolute;
+    margin-left: 40%;
+}
+
+
+th {
+    border: 1px solid;
 }
 
 #name {
     width: 173px;
+}
+
+#tableHeader {
+    text-align: center;
+    font-weight: bold;
+    padding: 20px;
+}
+
+#formHeader {
+    text-align: center;
+    font-weight: bold;
+    padding: 20px;
 }

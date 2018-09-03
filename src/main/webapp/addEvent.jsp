@@ -2,12 +2,33 @@
 <html>
 <head>
     <title>Add Event</title>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="/resources/demos/style.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <link rel="stylesheet" href="css/addEvent.css">
     <script src="javascript/addEvent.js"></script>
 </head>
 <body onload="addOptionValues(),showUsers()">
-<div id="adding">
-    <form id="newEvent" method="post">
+
+<p id="tableHeader">My Events</p>
+<div id="myEventTable" class="container">
+    <table id="events">
+        <thead>
+        <tr>
+            <th>Event Name</th>
+            <th>Event Date</th>
+            <th>Event Time</th>
+            <th>Event Place</th>
+        </tr>
+        </thead>
+    </table>
+
+</div>
+
+<p id="formHeader">Add New Event</p>
+<div id="newEvent">
+    <form  method="post">
         <p><b>Name of Event</b></p>
         <p><textarea name="name" id="name"></textarea></p>
         <p><b>Date</b></p>
@@ -19,20 +40,17 @@
         <p><b>Participants</b></p>
         <p><select id="participants" class="users"></select></p>
     </form>
-
     <button id="addEvent" onclick="buildEventDto()">Add</button>
 </div>
 
-<div id="myEventTable">
-    <table id="events">
-        <tr>
-            <th>Event Name</th>
-            <th>Event Date</th>
-            <th>Event Time</th>
-        </tr>
-    </table>
+<script>
+    $( function() {
+        $( "#datepicker" ).datepicker();
+    } );
 
-</div>
-
+    $( function() {
+        $("#timepicker").timepicker();
+    } );
+</script>
 </body>
 </html>

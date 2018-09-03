@@ -46,7 +46,7 @@ function join(button, tripId, rowId, places) {
                         var rowCells = document.getElementById("trips").rows[rowId + 1].cells;
                         rowCells[4].innerHTML = places;
                         alert("You joined the trip");
-                    } else if (response.status === 405) {
+                    } else if (response.status === 400) {
                         button.disabled = true;
                         alert("You have already joined this trip");
                     }

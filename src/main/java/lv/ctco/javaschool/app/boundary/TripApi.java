@@ -1,8 +1,7 @@
 package lv.ctco.javaschool.app.boundary;
 
 import lv.ctco.javaschool.app.control.TripStore;
-import lv.ctco.javaschool.app.control.exceptions.TripNotFoundException;
-import lv.ctco.javaschool.app.control.exceptions.UserNotFoundException;
+import lv.ctco.javaschool.app.control.exceptions.ValidationException;
 import lv.ctco.javaschool.app.entity.domain.Place;
 import lv.ctco.javaschool.app.entity.domain.Trip;
 import lv.ctco.javaschool.app.entity.domain.TripStatus;
@@ -81,7 +80,7 @@ public class TripApi {
         if (tripOptional.isPresent()) {
             Trip trip = tripOptional.get();
             if (trip.getPassengers().contains(user)) {
-                return Response.status(Response.Status.METHOD_NOT_ALLOWED).build();
+                return Response.status(Response.Status.BAD_REQUEST).build();
             } else {
                 List<User> passengers = trip.getPassengers();
                 passengers.add(user);
@@ -90,7 +89,7 @@ public class TripApi {
                 return Response.status(Response.Status.OK).build();
             }
         } else {
-            throw new TripNotFoundException();
+            throw new ValidationException();
         }
     }
 
@@ -131,7 +130,7 @@ public class TripApi {
                     .map(this::convertToUserLoginDto)
                     .collect(Collectors.toList());
         } else {
-            throw new UserNotFoundException();
+            throw new ValidationException();
         }
     }
 

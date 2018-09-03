@@ -1,8 +1,7 @@
 package lv.ctco.javaschool.app.boundary;
 
 import lv.ctco.javaschool.app.control.TripStore;
-import lv.ctco.javaschool.app.control.exceptions.TripNotFoundException;
-import lv.ctco.javaschool.app.control.exceptions.UserNotFoundException;
+import lv.ctco.javaschool.app.control.exceptions.ValidationException;
 import lv.ctco.javaschool.app.entity.domain.Place;
 import lv.ctco.javaschool.app.entity.domain.Trip;
 import lv.ctco.javaschool.app.entity.domain.TripStatus;
@@ -93,7 +92,7 @@ class TripApiTest {
 
     @Test
     @DisplayName("Check getting Response.Status.OK and calling userStore.getCurrentUser(), tripStore.findTripById() methods with the correct arguments")
-    void setTripPlacesAndUserTestFor200ResponseStatusCode() throws TripNotFoundException {
+    void setTripPlacesAndUserTestFor200ResponseStatusCode() throws ValidationException {
         User user = new User();
         JoinTripDto joinTripDto = new JoinTripDto();
         joinTripDto.setPlaces(2);
@@ -108,27 +107,27 @@ class TripApiTest {
 
     @Test
     @DisplayName("Check getting Response.Status.METHOD_NOT_ALLOWED and calling userStore.getCurrentUser(), tripStore.findTripById() methods with the correct arguments")
-    void setTripPlacesAndUserTestForFor405ResponseStatusCode() throws TripNotFoundException {
+    void setTripPlacesAndUserTestForFor405ResponseStatusCode() throws ValidationException {
         JoinTripDto joinTripDto = new JoinTripDto();
         joinTripDto.setPlaces(2);
         trip2.setId(2L);
         trip2.setPassengers(users);
         when(userStore.getCurrentUser()).thenReturn(user1);
         when(tripStore.findTripById(2L)).thenReturn(Optional.of(trip2));
-        assertEquals(Response.Status.METHOD_NOT_ALLOWED.getStatusCode(), tripApi.setTripPlacesAndUser(joinTripDto, 2L).getStatus());
+        assertEquals(Response.Status.BAD_REQUEST.getStatusCode(), tripApi.setTripPlacesAndUser(joinTripDto, 2L).getStatus());
         verify(userStore, times(1)).getCurrentUser();
         verify(tripStore, times(1)).findTripById(2L);
     }
 
     @Test
-    @DisplayName("Check for throwing the TripNotFoundException when setTripPlacesAndUser() method is called with a nonexistent trip id")
-    void setTripPlacesAndUserTestForTripNotFoundException() {
-        assertThrows(TripNotFoundException.class, () -> tripApi.setTripPlacesAndUser(new JoinTripDto(), 42L));
+    @DisplayName("Check for throwing the ValidationException when setTripPlacesAndUser() method is called with a nonexistent trip id")
+    void setTripPlacesAndUserTestForValidationException() {
+        assertThrows(ValidationException.class, () -> tripApi.setTripPlacesAndUser(new JoinTripDto(), 42L));
     }
 
     @Test
     @DisplayName("Check getting sorted list of UserLoginDto and calling tripStore.findTripsById() and userStore.findUsersByTrip()")
-    void getTripPassengersByTripIdTest() throws UserNotFoundException {
+    void getTripPassengersByTripIdTest() throws ValidationException {
         List<UserLoginDto> userLoginDtos = new ArrayList<>();
         UserLoginDto userLoginDto1 = new UserLoginDto("bastard", "pass1", "Hans", "Landa", "1111111");
         UserLoginDto userLoginDto2 = new UserLoginDto("vader", "pass2", "Anakin", "Skywalker", "2222222");
@@ -148,9 +147,9 @@ class TripApiTest {
     }
 
     @Test
-    @DisplayName("Check for throwing the UserNotFoundException when getTripPassengersByTripId() method is called with a nonexistent trip id")
+    @DisplayName("Check for throwing the ValidationException when getTripPassengersByTripId() method is called with a nonexistent trip id")
     void getTripPassengersByTripIdTestForUserNotFoundException() {
-        assertThrows(UserNotFoundException.class, () -> tripApi.getTripPassengersByTripId(42L));
+        assertThrows(ValidationException.class, () -> tripApi.getTripPassengersByTripId(42L));
     }
 
 }

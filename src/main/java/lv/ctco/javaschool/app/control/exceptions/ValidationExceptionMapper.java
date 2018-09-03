@@ -5,10 +5,10 @@ import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
 
 @Provider
-public class UserNotFoundExceptionMapper implements ExceptionMapper<UserNotFoundException> {
+public class ValidationExceptionMapper implements ExceptionMapper<ValidationException> {
 
     @Override
-    public Response toResponse(UserNotFoundException ex) {
+    public Response toResponse(ValidationException ex) {
         return Response.status(404)
                 .entity(ex.getMessage())
                 .type("text/plain")

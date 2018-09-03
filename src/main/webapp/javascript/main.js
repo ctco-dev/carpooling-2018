@@ -28,6 +28,7 @@ function logout() {
 function goMyProfile() {
     location.href = "/profile.jsp";
 }
+
 function join(button, tripId, rowId, places) {
     var data = {};
     if (places > 0) {
@@ -88,4 +89,9 @@ function showPassengers(tripId) {
         }
         listDiv.appendChild(ol);
     });
+
+}
+
+function goAddEvent(){
+    location.href = "/addEvent.jsp";
 }

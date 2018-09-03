@@ -1,8 +1,7 @@
 package lv.ctco.javaschool.app.boundary;
 
 import lv.ctco.javaschool.app.control.TripStore;
-import lv.ctco.javaschool.app.control.exceptions.TripNotFoundException;
-import lv.ctco.javaschool.app.control.exceptions.UserNotFoundException;
+import lv.ctco.javaschool.app.control.exceptions.ValidationException;
 import lv.ctco.javaschool.app.entity.domain.Place;
 import lv.ctco.javaschool.app.entity.domain.Trip;
 import lv.ctco.javaschool.app.entity.domain.TripStatus;
@@ -90,22 +89,21 @@ public class TripApi {
     @POST
     @Path("/{id}")
     @RolesAllowed({"ADMIN", "USER"})
-    public Response setTripPlacesAndUser(JoinTripDto joinTripDto, @PathParam("id") Long tripId) throws TripNotFoundException {
+    public void setTripPlacesAndUser(JoinTripDto joinTripDto, @PathParam("id") Long tripId) {
         User user = userStore.getCurrentUser();
         Optional<Trip> tripOptional = tripStore.findTripById(tripId);
         if (tripOptional.isPresent()) {
             Trip trip = tripOptional.get();
             if (trip.getPassengers().contains(user)) {
-                return Response.status(Response.Status.METHOD_NOT_ALLOWED).build();
+                throw new ValidationException("The user have already joined this trip");
             } else {
                 List<User> passengers = trip.getPassengers();
                 passengers.add(user);
                 trip.setPassengers(passengers);
                 trip.setPlaces(joinTripDto.getPlaces() - 1);
-                return Response.status(Response.Status.OK).build();
             }
         } else {
-            throw new TripNotFoundException();
+            throw new ValidationException("There is no such trip");
         }
     }
 
@@ -138,7 +136,7 @@ public class TripApi {
     @Path("/{id}/passengers")
     @Produces("application/json")
     @RolesAllowed({"ADMIN", "USER"})
-    public List<UserLoginDto> getTripPassengersByTripId(@PathParam("id") Long tripId) throws UserNotFoundException {
+    public List<UserLoginDto> getTripPassengersByTripId(@PathParam("id") Long tripId) {
         Optional<Trip> tripOptional = tripStore.findTripById(tripId);
         if (tripOptional.isPresent()) {
             return userStore.findUsersByTrip(tripOptional.get())
@@ -147,7 +145,7 @@ public class TripApi {
                     .map(this::convertToUserLoginDto)
                     .collect(Collectors.toList());
         } else {
-            throw new UserNotFoundException();
+            throw new ValidationException("There is no such trip");
         }
     }
 

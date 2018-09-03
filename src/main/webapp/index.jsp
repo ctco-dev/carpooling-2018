@@ -8,6 +8,7 @@
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
 <link rel="stylesheet" href="css/index.css">
+<link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico" />
 <body>
 <div class="bgimg w3-display-container w3-animate-opacity w3-text-white">
     <div class="w3-display-middle">

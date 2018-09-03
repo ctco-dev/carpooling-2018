@@ -23,7 +23,8 @@ public class User {
     private String surname;
     private String phoneNumber;
 
-    @OneToOne
+    @OneToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="car_id")
     private Car car;
 
     @ManyToMany(mappedBy = "passengers")

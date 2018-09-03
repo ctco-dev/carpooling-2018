@@ -64,6 +64,10 @@ public class Trip {
         return id;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public User getDriver() {
         return driver;
     }

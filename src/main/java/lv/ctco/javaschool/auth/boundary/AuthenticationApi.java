@@ -1,13 +1,13 @@
 package lv.ctco.javaschool.auth.boundary;
 
+import lv.ctco.javaschool.auth.control.UserStore;
 import lv.ctco.javaschool.auth.control.exceptions.InvalidPasswordException;
 import lv.ctco.javaschool.auth.control.exceptions.InvalidUsernameException;
-import lv.ctco.javaschool.auth.control.UserStore;
 import lv.ctco.javaschool.auth.control.exceptions.UsernameAlreadyExistsException;
 import lv.ctco.javaschool.auth.entity.domain.Role;
 import lv.ctco.javaschool.auth.entity.domain.User;
-import lv.ctco.javaschool.auth.entity.dto.UserLoginDto;
 import lv.ctco.javaschool.auth.entity.dto.ErrorDto;
+import lv.ctco.javaschool.auth.entity.dto.UserLoginDto;
 
 import javax.inject.Inject;
 import javax.json.Json;
@@ -18,13 +18,10 @@ import javax.security.enterprise.credential.UsernamePasswordCredential;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -59,7 +56,7 @@ public class AuthenticationApi {
 
     @POST
     @Path("/register")
-        public Response register(UserLoginDto userLogin, @Context HttpServletRequest request, @Context HttpServletResponse response) {
+    public Response register(UserLoginDto userLogin, @Context HttpServletRequest request, @Context HttpServletResponse response) {
         String username = userLogin.getUsername();
         String password = userLogin.getPassword();
         String name = userLogin.getName();

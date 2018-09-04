@@ -47,8 +47,8 @@
 
 <script>
     $( function() {
-        $( "#datepicker" ).datepicker();
-        $("#timepicker").timepicker();
+        $( "#datepicker" ).datepicker({ dateFormat: 'dd.mm.yy' });
+        $("#timepicker").timepicker({ timeFormat: 'H:i', show2400: true, step: 15 });
     } );
 </script>
 </body>

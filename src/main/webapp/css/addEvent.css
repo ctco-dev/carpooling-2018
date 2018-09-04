@@ -1,23 +1,34 @@
 #myEventTable {
     justify-content: center;
     margin-left: 30%;
-    width: 500px;
-    height: 40px;
 }
 
-#events{
-    border-style: solid;
+#events {
+    border-collapse: collapse;
+    border-color: lightgrey;
+    outline: solid;
+    align: center;
     width: 500px;
-    height: 40px;
 }
 
-#newEvent{
+#newEvent {
+    align: center;
     position: absolute;
     margin-left: 40%;
 }
 
-tr,td{
-    border: thick black;
+tr {
+    text-align: center;
+}
+
+th {
+    background: #a8dbff;
+    text-align: center;
+}
+
+th, td {
+    border-collapse: collapse;
+    border: 1px solid lightgrey;
 }
 
 #name {
@@ -39,3 +50,4 @@ tr,td{
 textarea {
     resize: none;
 }
+

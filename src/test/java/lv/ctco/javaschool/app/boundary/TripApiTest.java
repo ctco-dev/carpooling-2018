@@ -31,6 +31,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -59,6 +60,7 @@ class TripApiTest {
     private Trip trip2;
     private Trip trip3;
     private List<Event> events;
+    private List<Event> emptyEvents;
     private Event event1;
     private Event event2;
     private Event event3;
@@ -82,6 +84,7 @@ class TripApiTest {
         trip3 = new Trip(user3, Place.IMANTA, Place.CTCO, 3, "08:30", false, TripStatus.ACTIVE);
         Collections.addAll(trips, trip1, trip2, trip3);
 
+        emptyEvents=new ArrayList<>();
         events = new ArrayList<>();
         event1 = new Event("Team-building", "22/09/2018", "12:00", Place.BOLDERAJA);
         event2 = new Event("Christmas-party", "23/12/2018", "19:00", Place.CTCO);
@@ -261,4 +264,13 @@ class TripApiTest {
         assertEquals("16:00",eventDto2.getEventTime());
         assertEquals(Place.CTCO,eventDto2.getEventPlace());
     }
+
+    @Test
+    @DisplayName("Check if eventListDto is empty")
+    void checkIfGettingEventsReturnsEmptyDto(){
+        when(tripStore.findAllEvents()).thenReturn(emptyEvents);
+        List<EventDto> result=tripApi.getAllEvents();
+        assertTrue(result.isEmpty());
+    }
+
 }

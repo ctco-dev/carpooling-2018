@@ -4,14 +4,19 @@
 <head>
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="css/addNewTrip.css">
+    <link rel="stylesheet" href="css/common.css">
     <link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico" />
     <script src="javascript/addNewTrip.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="http://www.w3schools.com/lib/w3data.js"></script>
+    <script src="javascript/common.js"></script>
     <title>Add new Trip</title>
 </head>
 <body onload="addOptionValues()">
+<div id="button-go-to-main-page">
+    <button type="button" class="btn btn-link" onclick="goToMainPage()">Go back</button>
+</div>
 <div>
     <h2>Add new trip:</h2>
     <table id="new-trip">

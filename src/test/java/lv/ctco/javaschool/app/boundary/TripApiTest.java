@@ -2,8 +2,6 @@ package lv.ctco.javaschool.app.boundary;
 
 import lv.ctco.javaschool.app.control.TripStore;
 import lv.ctco.javaschool.app.control.exceptions.ValidationException;
-import lv.ctco.javaschool.app.control.exceptions.TripNotFoundException;
-import lv.ctco.javaschool.app.control.exceptions.UserNotFoundException;
 import lv.ctco.javaschool.app.entity.domain.Event;
 import lv.ctco.javaschool.app.entity.domain.Place;
 import lv.ctco.javaschool.app.entity.domain.Trip;

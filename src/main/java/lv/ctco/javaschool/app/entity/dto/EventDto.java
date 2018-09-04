@@ -15,6 +15,13 @@ public class EventDto {
     public EventDto() {
     }
 
+    public EventDto(String eventName, String eventDate, String eventTime, Place eventPlace) {
+        this.eventName = eventName;
+        this.eventDate = eventDate;
+        this.eventTime = eventTime;
+        this.eventPlace = eventPlace;
+    }
+
     public List<String> getUsernames() {
         return usernames;
     }

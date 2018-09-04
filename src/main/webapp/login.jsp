@@ -6,10 +6,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <link rel="stylesheet" href="css/login.css">
+<link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico" />
 <script src="http://www.w3schools.com/lib/w3data.js"></script>
 <script src="javascript/login.js"></script>
 <body>
-<header class="w3-container w3-teal">
+<header class="w3-container w3-indigo">
     <h1>Login or Register</h1>
 </header>
 <div class="w3-container w3-half w3-margin-top">
@@ -49,8 +50,8 @@
         </p>
         </div>
         <p>
-            <button id="login-btn" type="button" class="w3-button w3-section w3-teal w3-ripple" onclick="login()">Log in</button>
-            <button id="register-btn" type="button" class="w3-button w3-section w3-teal w3-ripple w3-hide" onclick="collectDto()">Register</button>
+            <button id="login-btn" type="button" class="w3-button w3-section w3-indigo w3-ripple" onclick="login()">Log in</button>
+            <button id="register-btn" type="button" class="w3-button w3-section w3-indigo w3-ripple w3-hide" onclick="collectDto()">Register</button>
         </p>
     </form>
 </div>

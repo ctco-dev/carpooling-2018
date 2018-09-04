@@ -1,10 +1,11 @@
 package lv.ctco.javaschool.app.boundary;
 
 import lv.ctco.javaschool.app.control.TripStore;
-import lv.ctco.javaschool.app.control.exceptions.UserNotFoundException;
+import lv.ctco.javaschool.app.control.exceptions.ValidationException;
 import lv.ctco.javaschool.app.entity.domain.Place;
 import lv.ctco.javaschool.app.entity.domain.Trip;
 import lv.ctco.javaschool.app.entity.domain.TripStatus;
+import lv.ctco.javaschool.app.entity.dto.JoinTripDto;
 import lv.ctco.javaschool.app.entity.dto.ListTripDto;
 import lv.ctco.javaschool.app.entity.dto.TripDto;
 import lv.ctco.javaschool.auth.control.UserStore;
@@ -17,9 +18,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import javax.json.Json;
-import javax.json.JsonObject;
-
+import javax.persistence.EntityManager;
+import javax.ws.rs.core.Response;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -40,10 +40,20 @@ class TripApiTest {
     @Mock
     private UserStore userStore;
 
+    @Mock
+    EntityManager em;
+
     @InjectMocks
     private TripApi tripApi;
 
-    private List<TripDto> tripDtos;
+    private List<User> users;
+    private User user1;
+    private User user2;
+    private User user3;
+    private List<Trip> trips;
+    private Trip trip1;
+    private Trip trip2;
+    private Trip trip3;
 
     @BeforeEach
     void init() {
@@ -52,23 +62,28 @@ class TripApiTest {
 
     @BeforeEach
     void setUp() {
-        ListTripDto listTripDto = new ListTripDto();
-        tripDtos = new ArrayList<>();
-        TripDto tripDto1 = new TripDto("Landa Hans", "1111111", Place.AGENSKALNS, Place.CTCO, 3, "09:00", false, TripStatus.ACTIVE);
-        TripDto tripDto2 = new TripDto("Skywalker Anakin", "2222222", Place.CTCO, Place.CENTRS, 2, "18:00", true, TripStatus.ACTIVE);
-        TripDto tripDto3 = new TripDto("Bagrov Danila", "3333333", Place.IMANTA, Place.CTCO, 3, "08:30", false, TripStatus.ACTIVE);
-        Collections.addAll(tripDtos, tripDto3, tripDto1, tripDto2);
-        listTripDto.setTrips(tripDtos);
+        users = new ArrayList<>();
+        user1 = new User("bastard", "pass1", "Hans", "Landa", "1111111");
+        user2 = new User("vader", "pass2", "Anakin", "Skywalker", "2222222");
+        user3 = new User("brother", "pass3", "Danila", "Bagrov", "3333333");
+        Collections.addAll(users, user1, user2, user3);
+        trips = new ArrayList<>();
+        trip1 = new Trip(user1, Place.AGENSKALNS, Place.CTCO, 3, "09:00", false, TripStatus.ACTIVE);
+        trip2 = new Trip(user2, Place.CTCO, Place.CENTRS, 2, "18:00", true, TripStatus.ACTIVE);
+        trip3 = new Trip(user3, Place.IMANTA, Place.CTCO, 3, "08:30", false, TripStatus.ACTIVE);
+        Collections.addAll(trips, trip1, trip2, trip3);
     }
 
     @Test
     @DisplayName("Check getting sorted list of TripDto and calling tripStore.findTripsByStatus()")
     void getActiveTrips() {
-        List<Trip> trips = new ArrayList<>();
-        Trip trip1 = new Trip(new User("Hans", "Landa", "1111111"), Place.AGENSKALNS, Place.CTCO, 3, "09:00", false, TripStatus.ACTIVE);
-        Trip trip2 = new Trip(new User("Anakin", "Skywalker", "2222222"), Place.CTCO, Place.CENTRS, 2, "18:00", true, TripStatus.ACTIVE);
-        Trip trip3 = new Trip(new User("Danila", "Bagrov", "3333333"), Place.IMANTA, Place.CTCO, 3, "08:30", false, TripStatus.ACTIVE);
-        Collections.addAll(trips, trip1, trip2, trip3);
+        List<TripDto> tripDtos = new ArrayList<>();
+        TripDto tripDto1 = new TripDto("Landa Hans", "1111111", Place.AGENSKALNS, Place.CTCO, 3, "09:00", false, TripStatus.ACTIVE);
+        TripDto tripDto2 = new TripDto("Skywalker Anakin", "2222222", Place.CTCO, Place.CENTRS, 2, "18:00", true, TripStatus.ACTIVE);
+        TripDto tripDto3 = new TripDto("Bagrov Danila", "3333333", Place.IMANTA, Place.CTCO, 3, "08:30", false, TripStatus.ACTIVE);
+        Collections.addAll(tripDtos, tripDto3, tripDto1, tripDto2);
+        ListTripDto listTripDto = new ListTripDto();
+        listTripDto.setTrips(tripDtos);
         when(tripStore.findTripsByStatus(any(TripStatus.class))).thenReturn(trips);
         int i = 0;
         for (TripDto tripDto :
@@ -80,34 +95,78 @@ class TripApiTest {
     }
 
     @Test
-    @DisplayName("Check calling tripStore.setTripPlaces() method with the correct arguments")
-    void setTripPlaces() {
-        JsonObject jsonObject = Json.createObjectBuilder()
-                .add("1", 2)
-                .build();
-        tripApi.setTripPlaces(jsonObject, "1");
-        verify(tripStore, times(1)).setTripPlaces(2, "1");
+    @DisplayName("Check getting sorted list of TripDto and calling tripStore.findTripsByUser() method with the correct argument")
+    void getTripsForDriver() {
+        List<Trip> driverTrips = new ArrayList<>();
+        Trip trip4 = new Trip(user1, Place.IMANTA, Place.CTCO, 2, "08:00", false, TripStatus.ACTIVE);
+        Trip trip5 = new Trip(user1, Place.CTCO, Place.IMANTA, 2, "19:00", false, TripStatus.ACTIVE);
+        Collections.addAll(driverTrips, trip1, trip4, trip5);
+        List<TripDto> tripDtos = new ArrayList<>();
+        TripDto tripDto1 = new TripDto("Landa Hans", "1111111", Place.AGENSKALNS, Place.CTCO, 3, "09:00", false, TripStatus.ACTIVE);
+        TripDto tripDto2 = new TripDto("Landa Hans", "1111111", Place.IMANTA, Place.CTCO, 2, "08:00", false, TripStatus.ACTIVE);
+        TripDto tripDto3 = new TripDto("Landa Hans", "1111111", Place.CTCO, Place.IMANTA, 2, "19:00", false, TripStatus.ACTIVE);
+        Collections.addAll(tripDtos, tripDto2, tripDto1, tripDto3);
+        ListTripDto listTripDto = new ListTripDto();
+        listTripDto.setTrips(tripDtos);
+        when(tripStore.findTripsByUser(user1)).thenReturn(driverTrips);
+        when(userStore.getCurrentUser()).thenReturn(user1);
+        int i = 0;
+        for (TripDto tripDto :
+                tripApi.getTripsForDriver().getTrips()) {
+            assertEquals(tripDtos.get(i), tripDto);
+            i++;
+        }
+        verify(tripStore, times(1)).findTripsByUser(user1);
+    }
+
+    @Test
+    @DisplayName("Check calling userStore.getCurrentUser(), tripStore.findTripById() methods with the correct arguments")
+    void setTripPlacesAndUserTest() {
+        User user = new User();
+        JoinTripDto joinTripDto = new JoinTripDto();
+        joinTripDto.setPlaces(2);
+        trip1.setId(2L);
+        trip1.setPassengers(users);
+        when(userStore.getCurrentUser()).thenReturn(user);
+        when(tripStore.findTripById(2L)).thenReturn(Optional.of(trip1));
+        tripApi.setTripPlacesAndUser(joinTripDto, 2L);
+        verify(userStore, times(1)).getCurrentUser();
+        verify(tripStore, times(1)).findTripById(2L);
+    }
+
+    @Test
+    @DisplayName("Check for throwing the ValidationException and calling userStore.getCurrentUser(), tripStore.findTripById() methods with the correct arguments")
+    void setTripPlacesAndUserTestForFor405ResponseStatusCode() {
+        JoinTripDto joinTripDto = new JoinTripDto();
+        joinTripDto.setPlaces(2);
+        trip2.setId(2L);
+        trip2.setPassengers(users);
+        when(userStore.getCurrentUser()).thenReturn(user1);
+        when(tripStore.findTripById(2L)).thenReturn(Optional.of(trip2));
+        assertThrows(ValidationException.class, () -> tripApi.setTripPlacesAndUser(joinTripDto, 2L));
+        verify(userStore, times(1)).getCurrentUser();
+        verify(tripStore, times(1)).findTripById(2L);
+    }
+
+    @Test
+    @DisplayName("Check for throwing the ValidationException when setTripPlacesAndUser() method is called with a nonexistent trip id")
+    void setTripPlacesAndUserTestForValidationException() {
+        assertThrows(ValidationException.class, () -> tripApi.setTripPlacesAndUser(new JoinTripDto(), 42L));
     }
 
     @Test
     @DisplayName("Check getting sorted list of UserLoginDto and calling tripStore.findTripsById() and userStore.findUsersByTrip()")
-    void getTripPassengersByTripIdTest() throws UserNotFoundException {
+    void getTripPassengersByTripIdTest() {
         List<UserLoginDto> userLoginDtos = new ArrayList<>();
         UserLoginDto userLoginDto1 = new UserLoginDto("bastard", "pass1", "Hans", "Landa", "1111111");
         UserLoginDto userLoginDto2 = new UserLoginDto("vader", "pass2", "Anakin", "Skywalker", "2222222");
         UserLoginDto userLoginDto3 = new UserLoginDto("brother", "pass3", "Danila", "Bagrov", "3333333");
         Collections.addAll(userLoginDtos, userLoginDto2, userLoginDto3, userLoginDto1);
-        List<User> users = new ArrayList<>();
-        User user1 = new User("bastard", "pass1", "Hans", "Landa", "1111111");
-        User user2 = new User("vader", "pass2", "Anakin", "Skywalker", "2222222");
-        User user3 = new User("brother", "pass3", "Danila", "Bagrov", "3333333");
-        Collections.addAll(users, user1, user2, user3);
-        Trip trip = new Trip();
-        when(tripStore.findTripById(1L)).thenReturn(Optional.of(trip));
-        when(userStore.findUsersByTrip(trip)).thenReturn(users);
+        when(tripStore.findTripById(1L)).thenReturn(Optional.of(trip3));
+        when(userStore.findUsersByTrip(trip3)).thenReturn(users);
         tripApi.getTripPassengersByTripId(1L);
         verify(tripStore, times(1)).findTripById(1L);
-        verify(userStore, times(1)).findUsersByTrip(trip);
+        verify(userStore, times(1)).findUsersByTrip(trip3);
         int i = 0;
         for (UserLoginDto userLoginDto :
                 tripApi.getTripPassengersByTripId(1L)) {
@@ -117,9 +176,18 @@ class TripApiTest {
     }
 
     @Test
-    @DisplayName("Check for throwing the UserNotFoundException when getTripPassengersByTripId() method is called with a nonexistent trip id")
+    @DisplayName("Check for throwing the ValidationException when getTripPassengersByTripId() method is called with a nonexistent trip id")
     void getTripPassengersByTripIdTestForUserNotFoundException() {
-        assertThrows(UserNotFoundException.class, () -> tripApi.getTripPassengersByTripId(42L));
+        assertThrows(ValidationException.class, () -> tripApi.getTripPassengersByTripId(42L));
     }
 
+    @Test
+    @DisplayName("Check getting Response.Status.CREATED and calling userStore.getCurrentUser(), em.persist() methods")
+    void createNewTrip() {
+        when(userStore.getCurrentUser()).thenReturn(user1);
+        TripDto tripDto = new TripDto("Landa Hans", "1111111", Place.AGENSKALNS, Place.CTCO, 3, "09:00", false, TripStatus.ACTIVE);
+        assertEquals(Response.Status.CREATED.getStatusCode(), tripApi.createNewTrip(tripDto).getStatus());
+        verify(userStore, times(1)).getCurrentUser();
+        verify(em, times(1)).persist(any(Trip.class));
+    }
 }

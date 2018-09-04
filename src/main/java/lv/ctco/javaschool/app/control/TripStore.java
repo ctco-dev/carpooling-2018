@@ -47,10 +47,6 @@ public class TripStore {
         em.persist(trip);
     }
 
-//    private String getCurrentTime(){
-//        LocalDateTime dt = LocalDateTime.now();
-//        return dt.format(DateTimeFormatter.ofPattern("dd.MM.yyyy kk:mm"));
-//    }
 
     private String getCurrentDate(){
         LocalDate dt = LocalDate.now();

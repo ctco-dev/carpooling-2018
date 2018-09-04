@@ -178,7 +178,6 @@ public class TripApi {
         return tripStore.findAllEvents()
                 .stream()
                 .sorted(Comparator.comparing(Event::getEventDate))
-//                .filter(e -> e.getParticipants().contains(user))
                 .map(this::convertEventToEventDto)
                 .collect(Collectors.toList());
     }

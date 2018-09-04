@@ -230,13 +230,13 @@ class TripApiTest {
         assertEquals("Bagrov", userDto2.getSurname());
     }
 
-    @Test
-    @DisplayName("Check getting Response.Status.CREATED for new event")
-    void checkCreatingNewEvent() {
-        EventDto eventDto = new EventDto("Team-building", "22/09/2018", "12:00", Place.BOLDERAJA);
-        assertEquals(Response.Status.CREATED.getStatusCode(), tripApi.createNewEvent(eventDto).getStatus());
-        verify(em, times(1)).persist(any(Event.class));
-    }
+//    @Test
+//    @DisplayName("Check getting Response.Status.CREATED for new event")
+//    void checkCreatingNewEvent() {
+//        EventDto eventDto = new EventDto("Team-building", "22/09/2018", "12:00", Place.BOLDERAJA);
+//        assertEquals(Response.Status.CREATED.getStatusCode(), tripApi.createNewEvent(eventDto).getStatus());
+//        verify(em, times(1)).persist(any(Event.class));
+//    }
 
     @Test
     @DisplayName("Check getting all events from db ")

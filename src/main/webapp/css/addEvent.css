@@ -1,6 +1,5 @@
 #myEventTable {
-    justify-content: center;
-    margin-left: 30%;
+    display: inline-block;
 }
 
 #events {
@@ -13,8 +12,7 @@
 
 #newEvent {
     align: center;
-    position: absolute;
-    margin-left: 40%;
+    display: inline-block;
 }
 
 tr {
@@ -38,15 +36,23 @@ th, td {
 #tableHeader {
     text-align: center;
     font-weight: bold;
-    padding: 20px;
+
 }
 
 #formHeader {
     text-align: center;
     font-weight: bold;
-    padding: 20px;
 }
 
 textarea {
     resize: none;
+}
+
+#mainTable{
+   width: 100%;
+    border: none;
+}
+
+.mainTableHeader{
+    background: none;
 }

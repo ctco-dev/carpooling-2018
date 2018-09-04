@@ -11,48 +11,57 @@
     <script src="javascript/addEvent.js"></script>
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.10.0/jquery.timepicker.css" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.10.0/jquery.timepicker.css"
+          crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="css/addEvent.css">
 </head>
 <body onload="addOptionValues();showUsers();showMyEvents();">
 
-<p id="tableHeader">My Events</p>
-<div id="myEventTable" class="container">
-    <table id="events">
-        <thead>
-        <tr>
-            <th>Event Name</th>
-            <th>Event Date</th>
-            <th>Event Time</th>
-            <th>Event Place</th>
-        </tr>
-        </thead>
-    </table>
+<table id="mainTable">
+    <tr>
+        <th class="mainTableHeader"><p id="tableHeader">My Events</p></th>
+        <th class="mainTableHeader"><p id="formHeader">Add New Event</p></th>
+    </tr>
+    <tr>
+        <td >
+            <div id="myEventTable" >
+                <table id="events">
+                    <thead>
+                    <tr>
+                        <th>Event Name</th>
+                        <th>Event Date</th>
+                        <th>Event Time</th>
+                        <th>Event Place</th>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+        </td>
 
-</div>
-
-<p id="formHeader">Add New Event</p>
-<div id="newEvent">
-    <form  method="post">
-        <p><b>Name of Event</b></p>
-        <p><textarea name="name" id="name" rows="3" cols="20"></textarea></p>
-        <p><b>Date</b></p>
-        <p><input type="text" id="datepicker"></p>
-        <p><b>Time</b></p>
-        <p><input type="text" id="timepicker"></p>
-        <p><b>Place</b></p>
-        <p><select id="place" class="place"></select></p>
-        <p><b>Participants</b></p>
-        <p><select id="participants" class="users"></select></p>
-    </form>
-    <button id="addEvent" class="btn btn-primary" onclick="buildEventDto()">Add</button>
-</div>
-
+        <td width="500px">
+            <div id="newEvent">
+                <form method="post">
+                    <p><b>Name of Event</b></p>
+                    <p><textarea name="name" id="name" rows="3" cols="20"></textarea></p>
+                    <p><b>Date</b></p>
+                    <p><input type="text" id="datepicker"></p>
+                    <p><b>Time</b></p>
+                    <p><input type="text" id="timepicker"></p>
+                    <p><b>Place</b></p>
+                    <p><select id="place" class="place"></select></p>
+                    <p><b>Participants</b></p>
+                    <p><select id="participants" class="users"></select></p>
+                </form>
+                <button id="addEvent" class="btn btn-primary" onclick="buildEventDto()">Add</button>
+            </div>
+        </td>
+    </tr>
+</table>
 <script>
-    $( function() {
-        $dateJQ( "#datepicker" ).datepicker({ dateFormat: 'dd.mm.yy' });
-        $("#timepicker").timepicker({ timeFormat: 'H:i', show2400: true, step: 15 });
-    } );
+    $(function () {
+        $dateJQ("#datepicker").datepicker({dateFormat: 'dd.mm.yy'});
+        $("#timepicker").timepicker({timeFormat: 'H:i', show2400: true, step: 15});
+    });
 </script>
 </body>
 </html>

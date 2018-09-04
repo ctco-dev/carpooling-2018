@@ -177,8 +177,7 @@ public class TripApi {
     @Path("/events")
     @Produces("application/json")
     @RolesAllowed({"ADMIN", "USER"})
-    public List<EventDto> getAllEventsForUser() {
-        User user = userStore.getCurrentUser();
+    public List<EventDto> getAllEvents() {
         return tripStore.findAllEvents()
                 .stream()
                 .sorted(Comparator.comparing(Event::getEventDate))

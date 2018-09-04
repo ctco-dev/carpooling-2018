@@ -57,8 +57,6 @@ function addNewEvent(data) {
     }).then(function (response) {
         console.log(data);
         document.getElementById("name").value='';
-        document.getElementById("datepicker").value='';
-        document.getElementById("timepicker").value='';
         showMyEvents();
     })
 }

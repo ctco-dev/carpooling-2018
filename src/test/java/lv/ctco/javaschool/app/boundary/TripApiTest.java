@@ -82,8 +82,12 @@ class TripApiTest {
         trip3 = new Trip(user3, Place.IMANTA, Place.CTCO, 3, "08:30", false, TripStatus.ACTIVE);
         Collections.addAll(trips, trip1, trip2, trip3);
 
-        events=new ArrayList<>();
-        event1=new Event();
+        events = new ArrayList<>();
+        event1 = new Event("Team-building", "22/09/2018", "12:00", Place.BOLDERAJA);
+        event2 = new Event("Christmas-party", "23/12/2018", "19:00", Place.CTCO);
+        event3 = new Event("Garden-Party", "25/08/2018", "16:00", Place.CTCO);
+        Collections.addAll(events, event1, event2, event3);
+
     }
 
     @Test
@@ -205,7 +209,7 @@ class TripApiTest {
 
     @Test
     @DisplayName("Check getting Users for event by calling userStore.getAllUsers() and convert data into dto")
-    void getAllUsersForEvent(){
+    void getAllUsersForEvent() {
         when(userStore.getAllUsers())
                 .thenReturn(users);
         List<UserDto> result = tripApi.getUsersForEvent();
@@ -213,22 +217,48 @@ class TripApiTest {
 
         UserDto userDto = result.get(0);
         assertEquals("Hans", userDto.getName());
-        assertEquals("Landa",userDto.getSurname());
+        assertEquals("Landa", userDto.getSurname());
 
         UserDto userDto1 = result.get(1);
         assertEquals("Anakin", userDto1.getName());
-        assertEquals("Skywalker",userDto1.getSurname());
+        assertEquals("Skywalker", userDto1.getSurname());
 
         UserDto userDto2 = result.get(2);
         assertEquals("Danila", userDto2.getName());
-        assertEquals("Bagrov",userDto2.getSurname());
-
-
+        assertEquals("Bagrov", userDto2.getSurname());
     }
 
-//    @Test
-//    @DisplayName("Check getting Response.Status.CREATED for new event")
-//    void checkCreatingNewEvent(){
-//        EventDto eventDto=new EventDto();
-//    }
+    @Test
+    @DisplayName("Check getting Response.Status.CREATED for new event")
+    void checkCreatingNewEvent() {
+        EventDto eventDto = new EventDto("Team-building", "22/09/2018", "12:00", Place.BOLDERAJA);
+        assertEquals(Response.Status.CREATED.getStatusCode(), tripApi.createNewEvent(eventDto).getStatus());
+        verify(em, times(1)).persist(any(Event.class));
+    }
+
+    @Test
+    @DisplayName("Check getting all events from db ")
+    void checkGettigEvents() {
+        when(tripStore.findAllEvents()).thenReturn(events);
+        List<EventDto> result=tripApi.getAllEvents();
+        assertEquals(3,result.size());
+
+        EventDto eventDto=result.get(0);
+        assertEquals("Team-building",eventDto.getEventName());
+        assertEquals("22/09/2018",eventDto.getEventDate());
+        assertEquals("12:00",eventDto.getEventTime());
+        assertEquals(Place.BOLDERAJA,eventDto.getEventPlace());
+
+        EventDto eventDto1=result.get(1);
+        assertEquals("Christmas-party",eventDto1.getEventName());
+        assertEquals("23/12/2018",eventDto1.getEventDate());
+        assertEquals("19:00",eventDto1.getEventTime());
+        assertEquals(Place.CTCO,eventDto1.getEventPlace());
+
+        EventDto eventDto2=result.get(2);
+        assertEquals("Garden-Party",eventDto2.getEventName());
+        assertEquals("25/08/2018",eventDto2.getEventDate());
+        assertEquals("16:00",eventDto2.getEventTime());
+        assertEquals(Place.CTCO,eventDto2.getEventPlace());
+    }
 }

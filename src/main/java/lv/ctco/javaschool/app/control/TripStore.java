@@ -59,10 +59,8 @@ public class TripStore {
 
     public List<Event> findAllEvents(){
         return em.createQuery(
-                        "select e from Event e ",
-//                           "where e.eventDate >= :newDT",
-                Event.class)
-//                .setParameter("newDT",   getCurrentDate() )
+                        "select e from Event e where e.eventDate >= :newDT", Event.class)
+                .setParameter("newDT",   getCurrentDate() )
                 .getResultList();
     }
 

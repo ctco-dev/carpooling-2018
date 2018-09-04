@@ -3,14 +3,17 @@ package lv.ctco.javaschool.app.boundary;
 import lv.ctco.javaschool.app.control.TripStore;
 import lv.ctco.javaschool.app.control.exceptions.TripNotFoundException;
 import lv.ctco.javaschool.app.control.exceptions.UserNotFoundException;
+import lv.ctco.javaschool.app.entity.domain.Event;
 import lv.ctco.javaschool.app.entity.domain.Place;
 import lv.ctco.javaschool.app.entity.domain.Trip;
 import lv.ctco.javaschool.app.entity.domain.TripStatus;
+import lv.ctco.javaschool.app.entity.dto.EventDto;
 import lv.ctco.javaschool.app.entity.dto.JoinTripDto;
 import lv.ctco.javaschool.app.entity.dto.ListTripDto;
 import lv.ctco.javaschool.app.entity.dto.TripDto;
 import lv.ctco.javaschool.auth.control.UserStore;
 import lv.ctco.javaschool.auth.entity.domain.User;
+import lv.ctco.javaschool.auth.entity.dto.UserDto;
 import lv.ctco.javaschool.auth.entity.dto.UserLoginDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -55,6 +58,10 @@ class TripApiTest {
     private Trip trip1;
     private Trip trip2;
     private Trip trip3;
+    private List<Event> events;
+    private Event event1;
+    private Event event2;
+    private Event event3;
 
     @BeforeEach
     void init() {
@@ -68,11 +75,15 @@ class TripApiTest {
         user2 = new User("vader", "pass2", "Anakin", "Skywalker", "2222222");
         user3 = new User("brother", "pass3", "Danila", "Bagrov", "3333333");
         Collections.addAll(users, user1, user2, user3);
+
         trips = new ArrayList<>();
         trip1 = new Trip(user1, Place.AGENSKALNS, Place.CTCO, 3, "09:00", false, TripStatus.ACTIVE);
         trip2 = new Trip(user2, Place.CTCO, Place.CENTRS, 2, "18:00", true, TripStatus.ACTIVE);
         trip3 = new Trip(user3, Place.IMANTA, Place.CTCO, 3, "08:30", false, TripStatus.ACTIVE);
         Collections.addAll(trips, trip1, trip2, trip3);
+
+        events=new ArrayList<>();
+        event1=new Event();
     }
 
     @Test
@@ -191,4 +202,33 @@ class TripApiTest {
         verify(userStore, times(1)).getCurrentUser();
         verify(em, times(1)).persist(any(Trip.class));
     }
+
+    @Test
+    @DisplayName("Check getting Users for event by calling userStore.getAllUsers() and convert data into dto")
+    void getAllUsersForEvent(){
+        when(userStore.getAllUsers())
+                .thenReturn(users);
+        List<UserDto> result = tripApi.getUsersForEvent();
+        assertEquals(3, result.size());
+
+        UserDto userDto = result.get(0);
+        assertEquals("Hans", userDto.getName());
+        assertEquals("Landa",userDto.getSurname());
+
+        UserDto userDto1 = result.get(1);
+        assertEquals("Anakin", userDto1.getName());
+        assertEquals("Skywalker",userDto1.getSurname());
+
+        UserDto userDto2 = result.get(2);
+        assertEquals("Danila", userDto2.getName());
+        assertEquals("Bagrov",userDto2.getSurname());
+
+
+    }
+
+//    @Test
+//    @DisplayName("Check getting Response.Status.CREATED for new event")
+//    void checkCreatingNewEvent(){
+//        EventDto eventDto=new EventDto();
+//    }
 }

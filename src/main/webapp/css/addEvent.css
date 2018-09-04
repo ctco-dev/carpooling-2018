@@ -1,12 +1,12 @@
 #myEventTable {
     justify-content: center;
     margin-left: 30%;
+    float: inherit;
 }
 
 #events {
     border-collapse: collapse;
     border-color: lightgrey;
-    outline: solid;
     align: center;
     width: 500px;
 }
@@ -15,6 +15,7 @@
     align: center;
     position: absolute;
     margin-left: 40%;
+    float: inherit;
 }
 
 tr {
@@ -22,7 +23,6 @@ tr {
 }
 
 th {
-    background: #a8dbff;
     text-align: center;
 }
 

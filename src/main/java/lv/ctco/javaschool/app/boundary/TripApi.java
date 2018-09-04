@@ -2,14 +2,17 @@ package lv.ctco.javaschool.app.boundary;
 
 import lv.ctco.javaschool.app.control.TripStore;
 import lv.ctco.javaschool.app.control.exceptions.ValidationException;
+import lv.ctco.javaschool.app.entity.domain.Event;
 import lv.ctco.javaschool.app.entity.domain.Place;
 import lv.ctco.javaschool.app.entity.domain.Trip;
 import lv.ctco.javaschool.app.entity.domain.TripStatus;
+import lv.ctco.javaschool.app.entity.dto.EventDto;
 import lv.ctco.javaschool.app.entity.dto.JoinTripDto;
 import lv.ctco.javaschool.app.entity.dto.ListTripDto;
 import lv.ctco.javaschool.app.entity.dto.TripDto;
 import lv.ctco.javaschool.auth.control.UserStore;
 import lv.ctco.javaschool.auth.entity.domain.User;
+import lv.ctco.javaschool.auth.entity.dto.UserDto;
 import lv.ctco.javaschool.auth.entity.dto.UserLoginDto;
 
 import javax.annotation.security.RolesAllowed;
@@ -17,16 +20,9 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Stateless
@@ -157,5 +153,62 @@ public class TripApi {
         dto.setSurname(user.getSurname());
         dto.setPhoneNumber(user.getPhoneNumber());
         return dto;
+    }
+
+    private UserDto convertToUserDto(User user) {
+        UserDto dto = new UserDto();
+        dto.setName(user.getName());
+        dto.setSurname(user.getSurname());
+        return dto;
+    }
+
+    @GET
+    @Path("/events")
+    @Produces("application/json")
+    @RolesAllowed({"ADMIN", "USER"})
+    public List<EventDto> getAllEvents() {
+        return tripStore.findAllEvents()
+                .stream()
+                .sorted(Comparator.comparing(Event::getEventDate))
+                .map(this::convertEventToEventDto)
+                .collect(Collectors.toList());
+    }
+
+    private EventDto convertEventToEventDto(Event event) {
+        EventDto dto = new EventDto();
+        dto.setEventName(event.getEventName());
+        dto.setEventDate(event.getEventDate());
+        dto.setEventTime(event.getEventTime());
+        dto.setEventPlace(event.getEventDestination());
+        dto.setUsernames(new ArrayList<>());
+        return dto;
+    }
+
+    @POST
+    @RolesAllowed({"ADMIN", "USER"})
+    @Path("/createEvent")
+    public Response createNewEvent(EventDto dto) {
+        Event event = new Event();
+        event.setEventName( dto.getEventName() );
+        event.setEventDate( dto.getEventDate() );
+        event.setEventTime(dto.getEventTime());
+        event.setEventDestination( dto.getEventPlace() );
+        for(String u: dto.getUsernames()){
+            Optional<User> participant = userStore.findUserByUsername( u );
+            participant.ifPresent(user -> event.getParticipants().add(user));
+        }
+        em.persist(event);
+        return Response.status(Response.Status.CREATED).build();
+    }
+
+    @GET
+    @Path("/getUsers")
+    @Produces("application/json")
+    @RolesAllowed({"ADMIN", "USER"})
+    public List<UserDto> getUsersForEvent() {
+        List<User> users = userStore.getAllUsers();
+        return users.stream()
+                .map(this::convertToUserDto)
+                .collect(Collectors.toList());
     }
 }

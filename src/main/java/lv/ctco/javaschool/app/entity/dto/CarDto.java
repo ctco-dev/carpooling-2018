@@ -5,6 +5,9 @@ public class CarDto {
     private String carColor;
     private String carNumber;
 
+    public CarDto(){
+    }
+
     public String getCarModel() { return carModel; }
 
     public void setCarModel(String carModel) {

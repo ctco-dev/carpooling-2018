@@ -1,0 +1,57 @@
+#myEventTable {
+    display: inline-block;
+}
+
+#events {
+    border-collapse: collapse;
+    border-color: lightgrey;
+    align: center;
+    width: 500px;
+}
+
+#newEvent {
+    align: center;
+    display: inline-block;
+}
+
+tr {
+    text-align: center;
+}
+
+th {
+    background: #a8dbff;
+    text-align: center;
+}
+
+th, td {
+    border-collapse: collapse;
+    border: 1px solid lightgrey;
+}
+
+#name {
+    width: 173px;
+}
+
+#tableHeader {
+    text-align: center;
+    font-weight: bold;
+
+}
+
+#formHeader {
+    text-align: center;
+    font-weight: bold;
+}
+
+textarea {
+    resize: none;
+}
+
+#mainTable{
+   width: 100%;
+    border: none;
+}
+
+.mainTableHeader{
+    background: none;
+}

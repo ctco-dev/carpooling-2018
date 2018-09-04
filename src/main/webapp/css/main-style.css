@@ -39,3 +39,6 @@ button {
     width: 90%;
     right: 280px;
 }
+.table_id {
+    display:none;
+}

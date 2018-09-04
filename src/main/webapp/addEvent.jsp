@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="css/addEvent.css">
     <script src="javascript/addEvent.js"></script>
 </head>
-<body onload="addOptionValues(),showUsers()">
+<body onload="addOptionValues(),showUsers(),showMyEvents()">
 
 <p id="tableHeader">My Events</p>
 <div id="myEventTable" class="container">

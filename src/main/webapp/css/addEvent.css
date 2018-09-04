@@ -1,12 +1,14 @@
-
 #myEventTable {
     justify-content: center;
     margin-left: 30%;
-
+    width: 500px;
+    height: 40px;
 }
 
 #events{
-    border: solid;
+    border-style: solid;
+    width: 500px;
+    height: 40px;
 }
 
 #newEvent{
@@ -14,9 +16,8 @@
     margin-left: 40%;
 }
 
-
-th {
-    border: 1px solid;
+tr,td{
+    border: thick black;
 }
 
 #name {

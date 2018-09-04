@@ -3,20 +3,23 @@ function buildEventDto() {
     var eventDate = document.getElementById("datepicker");
     var eventTime = document.getElementById("timepicker");
     var eventPlace = document.getElementById("place");
-    var user = document.getElementById("participants")
+    var user = document.getElementById("participants");
 
+    var users = [];
+    users.push(user.options[user.selectedIndex].value);
     var dto = {
         "eventDate": eventDate.value,
         "eventName": eventName.value,
         "eventPlace": eventPlace.options[eventPlace.selectedIndex].value,
         "eventTime": eventTime.value,
-        "usernames": user.options[user.selectedIndex].value
+        "usernames": users
     };
     addNewEvent(dto);
 
 }
 
 function showMyEvents() {
+
     fetch('/api/trip/events', {
         "method": "GET",
         headers: {
@@ -40,13 +43,12 @@ function showMyEvents() {
             cell3.innerHTML = e.eventTime;
             cell4.innerHTML = e.eventPlace;
         });
-
-
-
     });
 }
 
 function addNewEvent(data) {
+    console.log("sending data");
+    console.log(data);
     fetch('/api/trip/createEvent', {
         "method": "POST",
         headers: {
@@ -55,7 +57,6 @@ function addNewEvent(data) {
         },
         body: JSON.stringify(data)
     }).then(function (response) {
-        console.log(data);
         document.getElementById("name").value='';
         document.getElementById("datepicker").value='';
         document.getElementById("timepicker").value='';
@@ -104,6 +105,3 @@ function deleteRows() {
         events.deleteRow(i);
     }
 }
-
-
-

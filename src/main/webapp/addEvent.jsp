@@ -2,25 +2,25 @@
 <html>
 <head>
     <title>Add Event</title>
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.10.0/jquery.timepicker.js"></script>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script> $dateJQ = jQuery.noConflict(true); </script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.10.0/jquery.timepicker.js"></script>
+    <script src="javascript/addEvent.js"></script>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.10.0/jquery.timepicker.css" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="css/addEvent.css">
-    <script src="javascript/addEvent.js"></script>
 </head>
-<body onload="addOptionValues(),showUsers(),showMyEvents()">
+<body onload="addOptionValues();showUsers();showMyEvents();">
 
 <p id="tableHeader">My Events</p>
 <div id="myEventTable" class="container">
     <table id="events">
         <thead>
-        <tr id="row">
+        <tr>
             <th>Event Name</th>
             <th>Event Date</th>
             <th>Event Time</th>
@@ -45,12 +45,12 @@
         <p><b>Participants</b></p>
         <p><select id="participants" class="users"></select></p>
     </form>
-    <button id="addEvent" onclick="buildEventDto()" class="btn btn-primary">Add</button>
+    <button id="addEvent" class="btn btn-primary" onclick="buildEventDto()">Add</button>
 </div>
 
 <script>
     $( function() {
-        $( "#datepicker" ).datepicker({ dateFormat: 'dd.mm.yy' });
+        $dateJQ( "#datepicker" ).datepicker({ dateFormat: 'dd.mm.yy' });
         $("#timepicker").timepicker({ timeFormat: 'H:i', show2400: true, step: 15 });
     } );
 </script>

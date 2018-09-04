@@ -34,3 +34,7 @@ th {
     font-weight: bold;
     padding: 20px;
 }
+
+textarea {
+    resize: none;
+}

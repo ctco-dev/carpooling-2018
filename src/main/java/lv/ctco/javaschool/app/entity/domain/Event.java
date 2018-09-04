@@ -33,9 +33,13 @@ public class Event {
             inverseJoinColumns = @JoinColumn(name = "user_id"))
     private List<User> participants;
 
+    public Event() {
+    }
+
     public Long getId() {
         return id;
     }
+
     public void setId(Long id) {
         this.id = id;
     }
@@ -43,14 +47,15 @@ public class Event {
     public String getEventName() {
         return eventName;
     }
+
     public void setEventName(String eventName) {
         this.eventName = eventName;
     }
 
-
     public Place getEventDestination() {
         return eventDestination;
     }
+
     public void setEventDestination(Place eventDestination) {
         this.eventDestination = eventDestination;
     }
@@ -58,14 +63,25 @@ public class Event {
     public List<User> getParticipants() {
         return participants;
     }
+
     public void setParticipants(List<User> participants) {
         this.participants = participants;
     }
 
-    public String getEventDate() { return eventDate; }
-    public void setEventDate(String eventDate) { this.eventDate = eventDate; }
+    public String getEventDate() {
+        return eventDate;
+    }
 
-    public String getEventTime() { return eventTime; }
-    public void setEventTime(String eventTime) { this.eventTime = eventTime; }
+    public void setEventDate(String eventDate) {
+        this.eventDate = eventDate;
+    }
+
+    public String getEventTime() {
+        return eventTime;
+    }
+
+    public void setEventTime(String eventTime) {
+        this.eventTime = eventTime;
+    }
 
 }

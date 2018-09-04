@@ -32,7 +32,7 @@
 <div id="newEvent">
     <form  method="post">
         <p><b>Name of Event</b></p>
-        <p><textarea name="name" id="name"></textarea></p>
+        <p><textarea name="name" id="name" rows="3" cols="20"></textarea></p>
         <p><b>Date</b></p>
         <p><input type="text" id="datepicker"></p>
         <p><b>Time</b></p>

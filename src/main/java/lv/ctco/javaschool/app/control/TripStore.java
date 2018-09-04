@@ -9,7 +9,6 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
@@ -60,9 +59,10 @@ public class TripStore {
 
     public List<Event> findAllEvents(){
         return em.createQuery(
-                        "select e from Event e " +
-                           "where e.eventDate >= :newDT", Event.class)
-                .setParameter("newDT",   getCurrentDate() )
+                        "select e from Event e ",
+//                           "where e.eventDate >= :newDT",
+                Event.class)
+//                .setParameter("newDT",   getCurrentDate() )
                 .getResultList();
     }
 

@@ -266,7 +266,7 @@ class TripApiTest {
     }
 
     @Test
-    @DisplayName("Check if eventListDto is empty")
+    @DisplayName("Check if getting of event return empty dto")
     void checkIfGettingEventsReturnsEmptyDto(){
         when(tripStore.findAllEvents()).thenReturn(emptyEvents);
         List<EventDto> result=tripApi.getAllEvents();

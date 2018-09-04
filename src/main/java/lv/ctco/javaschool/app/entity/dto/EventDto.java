@@ -10,27 +10,17 @@ public class EventDto {
     private String eventDate;
     private String eventTime;
     private Place eventPlace;
-    //private List<String> usernames;
-
+    private List<String> usernames;
 
     public EventDto() {
     }
 
-    public EventDto(String name, String date, String time, Place place ){
-        this.eventName=name;
-        this.eventDate=date;
-        this.eventTime=time;
-        this.eventPlace=place;
-        //this.usernames=null;
+    public List<String> getUsernames() {
+        return usernames;
     }
-
-//    public List<String> getUsernames() {
-//        return usernames;
-//    }
-//
-//    public void setUsernames(List<String> usernames) {
-//        this.usernames = usernames;
-//    }
+    public void setUsernames(List<String> usernames) {
+        this.usernames = usernames;
+    }
 
     public String getEventName() {
         return eventName;
@@ -38,7 +28,6 @@ public class EventDto {
     public void setEventName(String eventName) {
         this.eventName = eventName;
     }
-
 
     public Place getEventPlace() {
         return eventPlace;

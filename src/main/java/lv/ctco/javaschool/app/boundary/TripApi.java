@@ -32,8 +32,8 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
+
 
 @Stateless
 @Path("/trip")
@@ -187,27 +187,31 @@ public class TripApi {
                 .collect(Collectors.toList());
     }
 
-    private EventDto convertEventToEventDto(Event event){
-        return new EventDto( event.getEventName(), event.getEventDate(),event.getEventTime(), event.getEventDestination());
+    private EventDto convertEventToEventDto(Event event) {
+        EventDto dto = new EventDto();
+        dto.setEventName(event.getEventName());
+        dto.setEventDate(event.getEventDate());
+        dto.setEventTime(event.getEventTime());
+        dto.setEventPlace(event.getEventDestination());
+        dto.setUsernames(new ArrayList<>());
+        return dto;
     }
 
     @POST
     @RolesAllowed({"ADMIN", "USER"})
     @Path("/createEvent")
     public Response createNewEvent(EventDto dto) {
-        System.out.println(dto);
         Event event = new Event();
         event.setEventName( dto.getEventName() );
         event.setEventDate( dto.getEventDate() );
         event.setEventTime(dto.getEventTime());
         event.setEventDestination( dto.getEventPlace() );
-//        for(String u: dto.getUsernames()){
-//            Optional<User> participant = userStore.findUserByUsername( u );
-//            participant.ifPresent(user -> event.getParticipants().add(user));
-//        }
+        for(String u: dto.getUsernames()){
+            Optional<User> participant = userStore.findUserByUsername( u );
+            participant.ifPresent(user -> event.getParticipants().add(user));
+        }
         em.persist(event);
         return Response.status(Response.Status.CREATED).build();
-
     }
 
     @GET
@@ -215,9 +219,9 @@ public class TripApi {
     @Produces("application/json")
     @RolesAllowed({"ADMIN", "USER"})
     public List<UserDto> getUsersForEvent() {
-      List<User> users= userStore.getAllUsers();
-     return users.stream()
-              .map(this::convertToUserDto)
-              .collect(Collectors.toList());
+        List<User> users = userStore.getAllUsers();
+        return users.stream()
+                .map(this::convertToUserDto)
+                .collect(Collectors.toList());
     }
 }

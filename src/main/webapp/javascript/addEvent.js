@@ -58,8 +58,6 @@ function addNewEvent(data) {
         body: JSON.stringify(data)
     }).then(function (response) {
         document.getElementById("name").value='';
-        document.getElementById("datepicker").value='';
-        document.getElementById("timepicker").value='';
         showMyEvents();
     })
 }

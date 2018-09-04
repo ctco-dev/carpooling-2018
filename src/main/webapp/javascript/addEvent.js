@@ -19,6 +19,7 @@ function buildEventDto() {
 }
 
 function showMyEvents() {
+
     fetch('/api/trip/events', {
         "method": "GET",
         headers: {
@@ -30,6 +31,7 @@ function showMyEvents() {
     }).then(function (events) {
         console.log(events);
         var table = document.getElementById("events");
+        deleteRows();
         events.forEach(function (e) {
             var row = table.insertRow();
             var cell1 = row.insertCell(0);
@@ -55,7 +57,9 @@ function addNewEvent(data) {
         },
         body: JSON.stringify(data)
     }).then(function (response) {
-        // console.log(data);
+        document.getElementById("name").value='';
+        document.getElementById("datepicker").value='';
+        document.getElementById("timepicker").value='';
         showMyEvents();
     })
 }
@@ -95,4 +99,9 @@ function showUsers() {
     });
 }
 
-
+function deleteRows() {
+    var rowCount = events.rows.length;
+    for (var i = rowCount - 1; i > 0; i--) {
+        events.deleteRow(i);
+    }
+}

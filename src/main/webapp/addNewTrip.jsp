@@ -12,10 +12,10 @@
     <script src="javascript/common.js"></script>
     <title>Add new Trip</title>
 </head>
+<body onload="addOptionValues()">
 <div id="button-go-to-main-page">
     <button type="button" class="btn btn-link" onclick="goToMainPage()">Go back</button>
 </div>
-<body onload="addOptionValues()">
 <div>
     <h2>Add new trip:</h2>
     <table id="new-trip">

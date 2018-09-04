@@ -1,0 +1,13 @@
+#go-my-profile {
+    position: absolute;
+    text-align: right;
+    width: 90%;
+    right: 180px;
+}
+#button-go-to-main-page {
+    position: absolute;
+    text-align: right;
+    width: 90%;
+    right: 80px;
+    margin-top: 1%;
+}

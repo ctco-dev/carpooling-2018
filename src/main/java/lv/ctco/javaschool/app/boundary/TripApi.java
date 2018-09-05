@@ -93,9 +93,9 @@ public class TripApi {
             }
         }
         User driver = trip.getDriver();
-        dto.setIsADriver( driver.equals(currentUser) );
+        dto.setIsADriver(driver.equals(currentUser));
         dto.setId(trip.getId());
-        dto.setDriverInfo(driver.getSurname() + " " + driver.getName());
+        dto.setDriverInfo(driver.getName() + " " + driver.getSurname());
         dto.setDriverPhone(driver.getPhoneNumber());
         dto.setEvent(trip.isEvent());
         dto.setFrom(trip.getDeparture());
@@ -121,6 +121,24 @@ public class TripApi {
                 List<User> passengers = trip.getPassengers();
                 passengers.add(user);
                 trip.setPassengers(passengers);
+            }
+        } else {
+            throw new ValidationException("There is no such trip");
+        }
+    }
+
+    @GET
+    @Path("/leave/{id}")
+    @RolesAllowed({"ADMIN", "USER"})
+    public void removeUserfromTrip(@PathParam("id") Long tripId) {
+        User user = userStore.getCurrentUser();
+        Optional<Trip> tripOptional = tripStore.findTripById(tripId);
+        if (tripOptional.isPresent()) {
+            Trip trip = tripOptional.get();
+            if (trip.getPassengers().contains(user)) {
+                trip.getPassengers().remove(user);
+            } else {
+                throw new ValidationException("The user has not joined this trip");
             }
         } else {
             throw new ValidationException("There is no such trip");

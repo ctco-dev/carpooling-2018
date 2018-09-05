@@ -179,32 +179,32 @@ class TripApiTest {
         assertThrows(ValidationException.class, () -> tripApi.setTripPlacesAndUser(new JoinTripDto(), 42L));
     }
 
-    @Test
-    @DisplayName("Check getting sorted list of UserLoginDto and calling tripStore.findTripsById() and userStore.findUsersByTrip()")
-    void getTripPassengersByTripIdTest() {
-        List<UserLoginDto> userLoginDtos = new ArrayList<>();
-        UserLoginDto userLoginDto1 = new UserLoginDto("bastard", "pass1", "Hans", "Landa", "1111111");
-        UserLoginDto userLoginDto2 = new UserLoginDto("vader", "pass2", "Anakin", "Skywalker", "2222222");
-        UserLoginDto userLoginDto3 = new UserLoginDto("brother", "pass3", "Danila", "Bagrov", "3333333");
-        Collections.addAll(userLoginDtos, userLoginDto2, userLoginDto3, userLoginDto1);
-        when(tripStore.findTripById(1L)).thenReturn(Optional.of(trip3));
-        when(userStore.findUsersByTrip(trip3)).thenReturn(users);
-        tripApi.getTripPassengersByTripId(1L);
-        verify(tripStore, times(1)).findTripById(1L);
-        verify(userStore, times(1)).findUsersByTrip(trip3);
-        int i = 0;
-        for (UserLoginDto userLoginDto :
-                tripApi.getTripPassengersByTripId(1L)) {
-            assertEquals(userLoginDtos.get(i), userLoginDto);
-            i++;
-        }
-    }
+//    @Test
+//    @DisplayName("Check getting sorted list of UserLoginDto and calling tripStore.findTripsById() and userStore.findUsersByTrip()")
+//    void getTripPassengersByTripIdTest() {
+//        List<UserLoginDto> userLoginDtos = new ArrayList<>();
+//        UserLoginDto userLoginDto1 = new UserLoginDto("bastard", "pass1", "Hans", "Landa", "1111111");
+//        UserLoginDto userLoginDto2 = new UserLoginDto("vader", "pass2", "Anakin", "Skywalker", "2222222");
+//        UserLoginDto userLoginDto3 = new UserLoginDto("brother", "pass3", "Danila", "Bagrov", "3333333");
+//        Collections.addAll(userLoginDtos, userLoginDto2, userLoginDto3, userLoginDto1);
+//        when(tripStore.findTripById(1L)).thenReturn(Optional.of(trip3));
+//        when(userStore.findUsersByTrip(trip3)).thenReturn(users);
+//        tripApi.getTripPassengersByTripId(1L);
+//        verify(tripStore, times(1)).findTripById(1L);
+//        verify(userStore, times(1)).findUsersByTrip(trip3);
+//        int i = 0;
+//        for (UserLoginDto userLoginDto :
+//                tripApi.getTripPassengersByTripId(1L)) {
+//            assertEquals(userLoginDtos.get(i), userLoginDto);
+//            i++;
+//        }
+//    }
 
-    @Test
-    @DisplayName("Check for throwing the ValidationException when getTripPassengersByTripId() method is called with a nonexistent trip id")
-    void getTripPassengersByTripIdTestForUserNotFoundException() {
-        assertThrows(ValidationException.class, () -> tripApi.getTripPassengersByTripId(42L));
-    }
+//    @Test
+//    @DisplayName("Check for throwing the ValidationException when getTripPassengersByTripId() method is called with a nonexistent trip id")
+//    void getTripPassengersByTripIdTestForUserNotFoundException() {
+//        assertThrows(ValidationException.class, () -> tripApi.getTripPassengersByTripId(42L));
+//    }
 
     @Test
     @DisplayName("Check getting Response.Status.CREATED and calling userStore.getCurrentUser(), em.persist() methods")

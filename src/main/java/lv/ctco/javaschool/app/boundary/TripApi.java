@@ -147,32 +147,32 @@ public class TripApi {
         return Response.status(Response.Status.CREATED).build();
     }
 
-    @GET
-    @Path("/{id}/passengers")
-    @Produces("application/json")
-    @RolesAllowed({"ADMIN", "USER"})
-    public List<UserLoginDto> getTripPassengersByTripId(@PathParam("id") Long tripId) {
-        Optional<Trip> tripOptional = tripStore.findTripById(tripId);
-        if (tripOptional.isPresent()) {
-            return userStore.findUsersByTrip(tripOptional.get())
-                    .stream()
-                    .sorted(Comparator.comparing(User::getName))
-                    .map(this::convertToUserLoginDto)
-                    .collect(Collectors.toList());
-        } else {
-            throw new ValidationException("There is no such trip");
-        }
-    }
-
-    private UserLoginDto convertToUserLoginDto(User user) {
-        UserLoginDto dto = new UserLoginDto();
-        dto.setUsername(user.getUsername());
-        dto.setPassword(user.getPassword());
-        dto.setName(user.getName());
-        dto.setSurname(user.getSurname());
-        dto.setPhoneNumber(user.getPhoneNumber());
-        return dto;
-    }
+//    @GET
+//    @Path("/{id}/passengers")
+//    @Produces("application/json")
+//    @RolesAllowed({"ADMIN", "USER"})
+//    public List<UserLoginDto> getTripPassengersByTripId(@PathParam("id") Long tripId) {
+//        Optional<Trip> tripOptional = tripStore.findTripById(tripId);
+//        if (tripOptional.isPresent()) {
+//            return userStore.findUsersByTrip(tripOptional.get())
+//                    .stream()
+//                    .sorted(Comparator.comparing(User::getName))
+//                    .map(this::convertToUserLoginDto)
+//                    .collect(Collectors.toList());
+//        } else {
+//            throw new ValidationException("There is no such trip");
+//        }
+//    }
+//
+//    private UserLoginDto convertToUserLoginDto(User user) {
+//        UserLoginDto dto = new UserLoginDto();
+//        dto.setUsername(user.getUsername());
+//        dto.setPassword(user.getPassword());
+//        dto.setName(user.getName());
+//        dto.setSurname(user.getSurname());
+//        dto.setPhoneNumber(user.getPhoneNumber());
+//        return dto;
+//    }
 
     private UserDto convertToUserDto(User user) {
         UserDto dto = new UserDto();

@@ -47,6 +47,15 @@ textarea {
     resize: none;
 }
 
+#button-go-to-main-page {
+    text-align: right;
+    width: 90%;
+    right: 80px;
+    margin-top: 1%;
+    margin-bottom: 1%;
+
+}
+
 #mainTable{
    width: 100%;
     border: none;

@@ -1,10 +1,8 @@
 #myEventTable {
     display: inline-block;
-
 }
 
 #events {
-
     border-collapse: collapse;
     border-color: lightgrey;
     width: 500px;
@@ -51,6 +49,19 @@ select {
 #mainTable {
     vertical-align: top;
     width: 100%;
+}
+
+#button-go-to-main-page {
+    text-align: right;
+    width: 90%;
+    right: 80px;
+    margin-top: 1%;
+    margin-bottom: 1%;
+
+}
+
+#mainTable{
+   width: 100%;
     border: none;
 }
 
@@ -62,4 +73,16 @@ select {
 
 .mainTableCol {
     border: none;
+}
+
+#userList{
+    text-align: left;
+}
+
+li[name=user] {
+    text-align: left;
+}
+
+td[name=myEventTable]{
+    vertical-align: super;
 }

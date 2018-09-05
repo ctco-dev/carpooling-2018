@@ -3,6 +3,7 @@ package lv.ctco.javaschool.app.entity.dto;
 
 import lv.ctco.javaschool.app.entity.domain.Place;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class EventDto {
@@ -20,6 +21,7 @@ public class EventDto {
         this.eventDate = eventDate;
         this.eventTime = eventTime;
         this.eventPlace = eventPlace;
+        this.usernames = new ArrayList<>();
     }
 
     public List<String> getUsernames() {

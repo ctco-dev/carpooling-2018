@@ -1,5 +1,6 @@
 package lv.ctco.javaschool.app.boundary;
 
+import lv.ctco.javaschool.app.control.DateTimeCoverter;
 import lv.ctco.javaschool.app.control.TripStore;
 import lv.ctco.javaschool.app.control.exceptions.ValidationException;
 import lv.ctco.javaschool.app.entity.domain.Event;
@@ -20,9 +21,19 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.ws.rs.*;
+
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
-import java.util.*;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Stateless
@@ -168,10 +179,10 @@ public class TripApi {
     @Path("/events")
     @Produces("application/json")
     @RolesAllowed({"ADMIN", "USER"})
-    public List<EventDto> getAllEvents() {
-        return tripStore.findAllEvents()
+    public List<EventDto> getAllEventsForUser() {
+        User user = userStore.getCurrentUser();
+        return tripStore.findAllEventsForEventPage(user)
                 .stream()
-                .sorted(Comparator.comparing(Event::getEventDate))
                 .map(this::convertEventToEventDto)
                 .collect(Collectors.toList());
     }
@@ -179,8 +190,8 @@ public class TripApi {
     private EventDto convertEventToEventDto(Event event) {
         EventDto dto = new EventDto();
         dto.setEventName(event.getEventName());
-        dto.setEventDate(event.getEventDate());
-        dto.setEventTime(event.getEventTime());
+        dto.setEventDate(DateTimeCoverter.covertToDate(event.getEventDateTime()));
+        dto.setEventTime(DateTimeCoverter.covertToTime(event.getEventDateTime()));
         dto.setEventPlace(event.getEventDestination());
         dto.setUsernames(new ArrayList<>());
         return dto;
@@ -190,16 +201,27 @@ public class TripApi {
     @RolesAllowed({"ADMIN", "USER"})
     @Path("/createEvent")
     public Response createNewEvent(EventDto dto) {
-        Event event = new Event();
-        event.setEventName( dto.getEventName() );
-        event.setEventDate( dto.getEventDate() );
-        event.setEventTime(dto.getEventTime());
-        event.setEventDestination( dto.getEventPlace() );
-        for(String u: dto.getUsernames()){
-            Optional<User> participant = userStore.findUserByUsername( u );
-            participant.ifPresent(user -> event.getParticipants().add(user));
+        if ((dto.getEventName().isEmpty()) || (dto.getEventDate().isEmpty())
+                || (dto.getEventTime().isEmpty()) || (dto.getUsernames().isEmpty())) {
+            return Response.status(Response.Status.NO_CONTENT).build();
         }
-        em.persist(event);
+        try {
+            LocalDateTime eventDT = DateTimeCoverter.covertToDateTime(dto.getEventDate(), dto.getEventTime());
+            if (LocalDateTime.now().isAfter(eventDT)) {
+                return Response.status(Response.Status.PARTIAL_CONTENT).build();
+            }
+        } catch (Exception e) {
+            return Response.status(Response.Status.NO_CONTENT).build();
+        }
+
+        User creator = userStore.getCurrentUser();
+        List<User> userList = new ArrayList<>();
+        for (String u : dto.getUsernames()) {
+            Optional<User> participant = userStore.findUserByNameAndSurname(u);
+            participant.ifPresent(userList::add);
+        }
+        tripStore.addNewEvent(dto, creator, userList);
+
         return Response.status(Response.Status.CREATED).build();
     }
 

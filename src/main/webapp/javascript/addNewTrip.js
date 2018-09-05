@@ -73,7 +73,7 @@ function saveTrip(values) {
 }
 
 function showEventInfo() {
-    var event = document.getElementsByClassName("event-name")[0];
+    var select = document.getElementsByClassName("event-name")[0];
     fetch('/api/trip/events', {
         "method": "GET",
         headers: {

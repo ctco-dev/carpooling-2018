@@ -92,10 +92,12 @@ public class TripApi {
         dto.setTripStatus(trip.getTripStatus());
 
         String passList = "";
+        if (trip.getPassengers()!=null){
         for(User u: trip.getPassengers()){
-            passList+=u.getName()+" "+u.getSurname()+",";
+//            passList+=u.getName()+" "+u.getSurname()+",";
         }
-        passList=passList.substring(0, passList.length() - 1);
+//        if (!passList.equals("")) { passList=passList.substring(0, passList.length() - 1); }
+        }
         dto.setPassengersList(passList);
         return dto;
     }

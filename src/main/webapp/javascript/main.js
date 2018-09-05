@@ -49,13 +49,17 @@ function drawTable(tripsList, tabId){
         cell7.innerHTML = e.event;
 
         var cell8 = row.insertCell(7);
-        cell8.id="deleteButton";
-        cell8.innerHTML ="<button id=\"join-button\" type=\"button\" class=\"btn btn-primary\"\n" +
-            " onclick=\"join(this, $(this).closest('tr').find('.table_id').text(), $(this).closest('td').parent().index(), $(this).closest('tr').find('.table_places').text())\">\n" +
-            "Join</button>"
+        cell8.innerHTML =drawTableButton();
     });
     table.appendChild(tbody);
 }
+
+function drawTableButton(){
+   return "<button id=\"join-button\" type=\"button\" class=\"btn btn-primary\"\n" +
+       " onclick=\"join(this, $(this).closest('tr').find('.table_id').text(), $(this).closest('td').parent().index(), $(this).closest('tr').find('.table_places').text())\">\n" +
+       "Join</button>"
+}
+
 
 function drawPassangersList( passList ){
     var res =""

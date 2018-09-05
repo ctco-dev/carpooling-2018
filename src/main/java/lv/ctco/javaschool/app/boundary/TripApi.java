@@ -91,14 +91,13 @@ public class TripApi {
         dto.setTime(trip.getDepartureTime());
         dto.setTripStatus(trip.getTripStatus());
 
-        String passList = "";
-        if (trip.getPassengers()!=null){
-        for(User u: trip.getPassengers()){
-//            passList+=u.getName()+" "+u.getSurname()+",";
+        List<String> passList = new ArrayList<>();
+        if (trip.getPassengers() != null) {
+            for (User u : trip.getPassengers()) {
+                passList.add(u.getName() + " " + u.getSurname());
+            }
         }
-//        if (!passList.equals("")) { passList=passList.substring(0, passList.length() - 1); }
-        }
-        dto.setPassengersList(passList);
+        dto.setPassengers(passList);
         return dto;
     }
 

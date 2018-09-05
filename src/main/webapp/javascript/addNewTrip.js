@@ -47,6 +47,7 @@ function addRemoveEvent() {
         document.getElementById('event-name').classList.remove("w3-hide");
         document.getElementById('event-time').classList.remove("w3-hide");
         document.getElementById('participants').classList.remove("w3-hide");
+        showEventInfo();
 
     }
     if (noChkBox.checked) {
@@ -69,4 +70,22 @@ function saveTrip(values) {
     }).then(function (response) {
         location.href = "/main.jsp";
     })
+}
+
+function showEventInfo() {
+    var event = document.getElementsByClassName("event-name")[0];
+    fetch('/api/trip/events', {
+        "method": "GET",
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        }
+    }).then(function (response) {
+        return response.json();
+    }).then(function (events) {
+        console.log(events);
+        events.forEach(function (e) {
+            select.add(new Option(e.eventName));
+        });
+    });
 }

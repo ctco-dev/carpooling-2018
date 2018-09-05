@@ -41,9 +41,9 @@
             <td><input type="checkbox" id="yes" value="yes" onclick="addRemoveEvent()">Yes<br>
                 <input type="checkbox" id="no" value="no" onclick="addRemoveEvent()">No<br></td>
         </tr>
-        <tr id="event-name" class="w3-hide">
+        <tr id="event-name" class="w3-hide" >
             <td ><b>Event name:</b></td>
-            <td><input name="input" id="name" type="text"></td>
+            <td><select name="input" id="name" class="event-name" type="text"></select></td>
         </tr>
         <tr id="event-date" class="w3-hide">
             <td ><b>Event start date:</b></td>

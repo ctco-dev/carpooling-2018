@@ -211,4 +211,6 @@ public class TripApi {
                 .map(this::convertToUserDto)
                 .collect(Collectors.toList());
     }
+
+
 }

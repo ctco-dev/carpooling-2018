@@ -79,6 +79,12 @@ public class TripApi {
     }
 
     private TripDto convertToTripDto(Trip trip) {
+        List<String> passList = new ArrayList<>();
+        if (trip.getPassengers() != null) {
+            for (User u : trip.getPassengers()) {
+                passList.add(u.getName() + " " + u.getSurname());
+            }
+        }
         User driver = trip.getDriver();
         TripDto dto = new TripDto();
         dto.setId(trip.getId());
@@ -87,16 +93,9 @@ public class TripApi {
         dto.setEvent(trip.isEvent());
         dto.setFrom(trip.getDeparture());
         dto.setTo(trip.getDestination());
-        dto.setPlaces(trip.getPlaces());
+        dto.setPlaces(trip.getPlaces() - passList.size());
         dto.setTime(trip.getDepartureTime());
         dto.setTripStatus(trip.getTripStatus());
-
-        List<String> passList = new ArrayList<>();
-        if (trip.getPassengers() != null) {
-            for (User u : trip.getPassengers()) {
-                passList.add(u.getName() + " " + u.getSurname());
-            }
-        }
         dto.setPassengers(passList);
         return dto;
     }
@@ -115,7 +114,6 @@ public class TripApi {
                 List<User> passengers = trip.getPassengers();
                 passengers.add(user);
                 trip.setPassengers(passengers);
-                trip.setPlaces( trip.getPlaces() - 1);
             }
         } else {
             throw new ValidationException("There is no such trip");
@@ -146,33 +144,6 @@ public class TripApi {
         em.persist(trip);
         return Response.status(Response.Status.CREATED).build();
     }
-
-//    @GET
-//    @Path("/{id}/passengers")
-//    @Produces("application/json")
-//    @RolesAllowed({"ADMIN", "USER"})
-//    public List<UserLoginDto> getTripPassengersByTripId(@PathParam("id") Long tripId) {
-//        Optional<Trip> tripOptional = tripStore.findTripById(tripId);
-//        if (tripOptional.isPresent()) {
-//            return userStore.findUsersByTrip(tripOptional.get())
-//                    .stream()
-//                    .sorted(Comparator.comparing(User::getName))
-//                    .map(this::convertToUserLoginDto)
-//                    .collect(Collectors.toList());
-//        } else {
-//            throw new ValidationException("There is no such trip");
-//        }
-//    }
-//
-//    private UserLoginDto convertToUserLoginDto(User user) {
-//        UserLoginDto dto = new UserLoginDto();
-//        dto.setUsername(user.getUsername());
-//        dto.setPassword(user.getPassword());
-//        dto.setName(user.getName());
-//        dto.setSurname(user.getSurname());
-//        dto.setPhoneNumber(user.getPhoneNumber());
-//        return dto;
-//    }
 
     private UserDto convertToUserDto(User user) {
         UserDto dto = new UserDto();

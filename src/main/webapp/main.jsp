@@ -53,7 +53,7 @@
                     </button>
                 </div>
             </td>
-            <td>{{event}}</td>
+            <td>{{eventName}}</td>
             <td>
                 <button id="join-button" type="button" class="btn btn-primary"
                         onclick="join(this, $(this).closest('tr').find('.table_id').text(), $(this).closest('td').parent().index(), $(this).closest('tr').find('.table_places').text())">

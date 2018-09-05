@@ -36,6 +36,8 @@ public class Trip {
 
     private String departureTime;
 
+    private String eventName;
+
     private boolean isEvent;
 
     @Enumerated(EnumType.STRING)
@@ -50,13 +52,14 @@ public class Trip {
     public Trip() {
     }
 
-    public Trip(User driver, Place departure, Place destination, int places, String departureTime, boolean isEvent, TripStatus tripStatus) {
+    public Trip(User driver, Place departure, Place destination, int places, String departureTime, boolean isEvent,String eventName, TripStatus tripStatus) {
         this.driver = driver;
         this.departure = departure;
         this.destination = destination;
         this.places = places;
         this.departureTime = departureTime;
         this.isEvent = isEvent;
+        this.eventName=eventName;
         this.tripStatus = tripStatus;
     }
 
@@ -129,5 +132,13 @@ public class Trip {
     }
     public void setPassengers(List<User> passengers) {
         this.passengers = passengers;
+    }
+
+    public String getEventName() {
+        return eventName;
+    }
+
+    public void setEventName(String eventName) {
+        this.eventName = eventName;
     }
 }

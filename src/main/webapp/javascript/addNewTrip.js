@@ -4,10 +4,9 @@ function tripdto() {
     var departureTime = document.getElementById("departure-time");
     var destination = document.getElementById("destination");
     var places = document.getElementById("places");
-    var isEvent;
     if (yesChkBox.checked) {
         var isEvent = "true";
-        // var eventName=document.getElementById("event");
+        var eventName=document.getElementById("name");
         // var eventDateTime=document.getElementById("time");
     }
     else {
@@ -19,7 +18,8 @@ function tripdto() {
         "places": places.value,
         "time": departureTime.value,
         "isEvent": isEvent,
-        "tripStatus": "ACTIVE",
+        "eventName": eventName.options[eventName.selectedIndex].value,
+        "tripStatus": "ACTIVE"
     };
     saveTrip(dto);
 }
@@ -61,7 +61,7 @@ function addRemoveEvent() {
 }
 function saveTrip(values) {
     console.log("sending data");
-    console.log(JSON.stringify(values))
+    console.log(JSON.stringify(values));
     fetch('/api/trip/createTrip', {
         "method": "POST",
         headers: {

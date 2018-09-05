@@ -74,6 +74,7 @@ public class TripApi {
         dto.setDriverInfo(driver.getSurname() + " " + driver.getName());
         dto.setDriverPhone(driver.getPhoneNumber());
         dto.setEvent(trip.isEvent());
+        dto.setEventName(trip.getEventName());
         dto.setFrom(trip.getDeparture());
         dto.setTo(trip.getDestination());
         dto.setPlaces(trip.getPlaces());
@@ -119,6 +120,7 @@ public class TripApi {
         Trip trip = new Trip();
         trip.setDriver(user);
         trip.setEvent(dto.isEvent());
+        trip.setEventName(dto.getEventName());
         trip.setDeparture(dto.getFrom());
         trip.setDestination(dto.getTo());
         trip.setPlaces(dto.getPlaces());

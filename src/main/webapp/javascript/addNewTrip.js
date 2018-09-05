@@ -1,26 +1,28 @@
 function tripdto() {
+    var dto={}
     var yesChkBox = document.getElementById("yes");
     var departure = document.getElementById("departure");
     var departureTime = document.getElementById("departure-time");
     var destination = document.getElementById("destination");
     var places = document.getElementById("places");
+    var eventName = document.getElementById("name");
     if (yesChkBox.checked) {
         var isEvent = "true";
-        var eventName=document.getElementById("name");
-        // var eventDateTime=document.getElementById("time");
+        dto["isEvent"]=isEvent;
+        dto["eventName"]=eventName.options[eventName.selectedIndex].value;
     }
     else {
         var isEvent = "false";
+        dto["isEvent"]=isEvent;
+        var notEvent=" ";
+        dto["eventName"]=notEvent;
+
     }
-    var dto = {
-        "to": departure.options[departure.selectedIndex].value,
-        "from": destination.options[destination.selectedIndex].value,
-        "places": places.value,
-        "time": departureTime.value,
-        "isEvent": isEvent,
-        "eventName": eventName.options[eventName.selectedIndex].value,
-        "tripStatus": "ACTIVE"
-    };
+    dto["to"]=destination.options[destination.selectedIndex].value;
+    dto["from"]=departure.options[departure.selectedIndex].value;
+    dto["places"]=places.value;
+    dto["time"]=departureTime.value;
+    dto["tripStatus"]= "ACTIVE"
     saveTrip(dto);
 }
 function addOptionValues() {
@@ -93,9 +95,9 @@ function showEvents() {
 }
 
 function showEventInfo() {
-    var selectedValue=document.getElementById("name");
-    var event=selectedValue.options[selectedValue.selectedIndex].value;
-    fetch('/api/trip/getEvent/'+event, {
+    var selectedValue = document.getElementById("name");
+    var event = selectedValue.options[selectedValue.selectedIndex].value;
+    fetch('/api/trip/getEvent/' + event, {
         "method": "GET",
         headers: {
             'Accept': 'application/json',
@@ -104,7 +106,7 @@ function showEventInfo() {
     }).then(function (response) {
         return response.json();
     }).then(function (event) {
-        document.getElementById("time").value=event.eventDate+" "+event.eventTime;
+        document.getElementById("time").value = event.eventDate + " " + event.eventTime;
     });
 
 }

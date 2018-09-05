@@ -53,7 +53,7 @@ class TripApiTest {
     @InjectMocks
     private TripApi tripApi;
 
-    private List<User> users;
+    private List<User> users, emptyUsers;
     private User user1;
     private User user2;
     private User user3;
@@ -76,6 +76,7 @@ class TripApiTest {
     @BeforeEach
     void setUp() {
         users = new ArrayList<>();
+        emptyUsers = new ArrayList<>();
         user1 = new User("bastard", "pass1", "Hans", "Landa", "1111111");
         user2 = new User("vader", "pass2", "Anakin", "Skywalker", "2222222");
         user3 = new User("brother", "pass3", "Danila", "Bagrov", "3333333");
@@ -103,9 +104,9 @@ class TripApiTest {
     @DisplayName("Check getting sorted list of TripDto and calling tripStore.findTripsByStatus()")
     void getActiveTrips() {
         List<TripDto> tripDtos = new ArrayList<>();
-        TripDto tripDto1 = new TripDto("Landa Hans", "1111111", Place.AGENSKALNS, Place.CTCO, 3, "09:00", false, TripStatus.ACTIVE);
-        TripDto tripDto2 = new TripDto("Skywalker Anakin", "2222222", Place.CTCO, Place.CENTRS, 2, "18:00", true, TripStatus.ACTIVE);
-        TripDto tripDto3 = new TripDto("Bagrov Danila", "3333333", Place.IMANTA, Place.CTCO, 3, "08:30", false, TripStatus.ACTIVE);
+        TripDto tripDto1 = new TripDto("Hans Landa", "1111111", Place.AGENSKALNS, Place.CTCO, 3, "09:00", false, TripStatus.ACTIVE);
+        TripDto tripDto2 = new TripDto("Anakin Skywalker", "2222222", Place.CTCO, Place.CENTRS, 2, "18:00", true, TripStatus.ACTIVE);
+        TripDto tripDto3 = new TripDto("Danila Bagrov", "3333333", Place.IMANTA, Place.CTCO, 3, "08:30", false, TripStatus.ACTIVE);
         Collections.addAll(tripDtos, tripDto3, tripDto1, tripDto2);
         ListTripDto listTripDto = new ListTripDto();
         listTripDto.setTrips(tripDtos);
@@ -127,9 +128,9 @@ class TripApiTest {
         Trip trip5 = new Trip(user1, Place.CTCO, Place.IMANTA, 2, "19:00", false, TripStatus.ACTIVE);
         Collections.addAll(driverTrips, trip1, trip4, trip5);
         List<TripDto> tripDtos = new ArrayList<>();
-        TripDto tripDto1 = new TripDto("Landa Hans", "1111111", Place.AGENSKALNS, Place.CTCO, 3, "09:00", false, TripStatus.ACTIVE);
-        TripDto tripDto2 = new TripDto("Landa Hans", "1111111", Place.IMANTA, Place.CTCO, 2, "08:00", false, TripStatus.ACTIVE);
-        TripDto tripDto3 = new TripDto("Landa Hans", "1111111", Place.CTCO, Place.IMANTA, 2, "19:00", false, TripStatus.ACTIVE);
+        TripDto tripDto1 = new TripDto("Hans Landa", "1111111", Place.AGENSKALNS, Place.CTCO, 3, "09:00", false, TripStatus.ACTIVE);
+        TripDto tripDto2 = new TripDto("Hans Landa", "1111111", Place.IMANTA, Place.CTCO, 2, "08:00", false, TripStatus.ACTIVE);
+        TripDto tripDto3 = new TripDto("Hans Landa", "1111111", Place.CTCO, Place.IMANTA, 2, "19:00", false, TripStatus.ACTIVE);
         Collections.addAll(tripDtos, tripDto2, tripDto1, tripDto3);
         ListTripDto listTripDto = new ListTripDto();
         listTripDto.setTrips(tripDtos);
@@ -146,61 +147,64 @@ class TripApiTest {
 
     @Test
     @DisplayName("Check calling userStore.getCurrentUser(), tripStore.findTripById() methods with the correct arguments")
-    void setTripPlacesAndUserTest() {
+    void setUserForATripTest() {
         User user = new User();
         trip1.setId(2L);
         trip1.setPassengers(users);
         when(userStore.getCurrentUser()).thenReturn(user);
         when(tripStore.findTripById(2L)).thenReturn(Optional.of(trip1));
-        tripApi.setTripPlacesAndUser(2L);
+        tripApi.setUserForATrip(2L);
         verify(userStore, times(1)).getCurrentUser();
         verify(tripStore, times(1)).findTripById(2L);
     }
 
     @Test
     @DisplayName("Check for throwing the ValidationException and calling userStore.getCurrentUser(), tripStore.findTripById() methods with the correct arguments")
-    void setTripPlacesAndUserTestForFor405ResponseStatusCode() {
+    void setUserForATripTestFor400ResponseStatusCode() {
         trip2.setId(2L);
         trip2.setPassengers(users);
         when(userStore.getCurrentUser()).thenReturn(user1);
         when(tripStore.findTripById(2L)).thenReturn(Optional.of(trip2));
-        assertThrows(ValidationException.class, () -> tripApi.setTripPlacesAndUser(2L));
+        assertThrows(ValidationException.class, () -> tripApi.setUserForATrip(2L));
         verify(userStore, times(1)).getCurrentUser();
         verify(tripStore, times(1)).findTripById(2L);
     }
 
     @Test
     @DisplayName("Check for throwing the ValidationException when setTripPlacesAndUser() method is called with a nonexistent trip id")
-    void setTripPlacesAndUserTestForValidationException() {
-        assertThrows(ValidationException.class, () -> tripApi.setTripPlacesAndUser(42L));
+    void setUserForATripTestForValidationException() {
+        assertThrows(ValidationException.class, () -> tripApi.setUserForATrip(42L));
     }
 
-//    @Test
-//    @DisplayName("Check getting sorted list of UserLoginDto and calling tripStore.findTripsById() and userStore.findUsersByTrip()")
-//    void getTripPassengersByTripIdTest() {
-//        List<UserLoginDto> userLoginDtos = new ArrayList<>();
-//        UserLoginDto userLoginDto1 = new UserLoginDto("bastard", "pass1", "Hans", "Landa", "1111111");
-//        UserLoginDto userLoginDto2 = new UserLoginDto("vader", "pass2", "Anakin", "Skywalker", "2222222");
-//        UserLoginDto userLoginDto3 = new UserLoginDto("brother", "pass3", "Danila", "Bagrov", "3333333");
-//        Collections.addAll(userLoginDtos, userLoginDto2, userLoginDto3, userLoginDto1);
-//        when(tripStore.findTripById(1L)).thenReturn(Optional.of(trip3));
-//        when(userStore.findUsersByTrip(trip3)).thenReturn(users);
-//        tripApi.getTripPassengersByTripId(1L);
-//        verify(tripStore, times(1)).findTripById(1L);
-//        verify(userStore, times(1)).findUsersByTrip(trip3);
-//        int i = 0;
-//        for (UserLoginDto userLoginDto :
-//                tripApi.getTripPassengersByTripId(1L)) {
-//            assertEquals(userLoginDtos.get(i), userLoginDto);
-//            i++;
-//        }
-//    }
+    @Test
+    @DisplayName("Check calling userStore.getCurrentUser(), tripStore.findTripById() methods with the correct arguments")
+    void removeUserFromTripTest() {
+        trip1.setId(2L);
+        trip1.setPassengers(users);
+        when(userStore.getCurrentUser()).thenReturn(user1);
+        when(tripStore.findTripById(2L)).thenReturn(Optional.of(trip1));
+        tripApi.removeUserFromTrip(2L);
+        verify(userStore, times(1)).getCurrentUser();
+        verify(tripStore, times(1)).findTripById(2L);
+    }
 
-//    @Test
-//    @DisplayName("Check for throwing the ValidationException when getTripPassengersByTripId() method is called with a nonexistent trip id")
-//    void getTripPassengersByTripIdTestForUserNotFoundException() {
-//        assertThrows(ValidationException.class, () -> tripApi.getTripPassengersByTripId(42L));
-//    }
+    @Test
+    @DisplayName("Check for throwing the ValidationException and calling userStore.getCurrentUser(), tripStore.findTripById() methods with the correct arguments")
+    void removeUserFromTripTestFor400ResponseStatusCode() {
+        trip2.setId(2L);
+        trip2.setPassengers(emptyUsers);
+        when(userStore.getCurrentUser()).thenReturn(user1);
+        when(tripStore.findTripById(2L)).thenReturn(Optional.of(trip2));
+        assertThrows(ValidationException.class, () -> tripApi.removeUserFromTrip(2L));
+        verify(userStore, times(1)).getCurrentUser();
+        verify(tripStore, times(1)).findTripById(2L);
+    }
+
+    @Test
+    @DisplayName("Check for throwing the ValidationException when setTripPlacesAndUser() method is called with a nonexistent trip id")
+    void removeUserFromTripTestForValidationException() {
+        assertThrows(ValidationException.class, () -> tripApi.removeUserFromTrip(42L));
+    }
 
     @Test
     @DisplayName("Check getting Response.Status.CREATED and calling userStore.getCurrentUser(), em.persist() methods")
@@ -232,7 +236,6 @@ class TripApiTest {
         assertEquals("Danila", userDto2.getName());
         assertEquals("Bagrov", userDto2.getSurname());
     }
-
 
     @Test
     @DisplayName("Check that received Dto's list corresponds with list of events")

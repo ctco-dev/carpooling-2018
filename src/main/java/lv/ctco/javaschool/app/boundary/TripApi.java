@@ -110,7 +110,7 @@ public class TripApi {
     @GET
     @Path("/join/{id}")
     @RolesAllowed({"ADMIN", "USER"})
-    public void setTripPlacesAndUser(@PathParam("id") Long tripId) {
+    public void setUserForATrip(@PathParam("id") Long tripId) {
         User user = userStore.getCurrentUser();
         Optional<Trip> tripOptional = tripStore.findTripById(tripId);
         if (tripOptional.isPresent()) {
@@ -130,7 +130,7 @@ public class TripApi {
     @GET
     @Path("/leave/{id}")
     @RolesAllowed({"ADMIN", "USER"})
-    public void removeUserfromTrip(@PathParam("id") Long tripId) {
+    public void removeUserFromTrip(@PathParam("id") Long tripId) {
         User user = userStore.getCurrentUser();
         Optional<Trip> tripOptional = tripStore.findTripById(tripId);
         if (tripOptional.isPresent()) {

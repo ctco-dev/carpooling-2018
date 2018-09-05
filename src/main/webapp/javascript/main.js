@@ -10,6 +10,7 @@ function displayActiveTrips() {
     }).then(function (tripsList) {
         console.log(JSON.stringify(tripsList));
         drawTable(tripsList, "trips");
+        window.setTimeout(function () {displayActiveTrips(); }, 1000);
     });
 }
 

@@ -148,13 +148,11 @@ class TripApiTest {
     @DisplayName("Check calling userStore.getCurrentUser(), tripStore.findTripById() methods with the correct arguments")
     void setTripPlacesAndUserTest() {
         User user = new User();
-        JoinTripDto joinTripDto = new JoinTripDto();
-        joinTripDto.setPlaces(2);
         trip1.setId(2L);
         trip1.setPassengers(users);
         when(userStore.getCurrentUser()).thenReturn(user);
         when(tripStore.findTripById(2L)).thenReturn(Optional.of(trip1));
-        tripApi.setTripPlacesAndUser(joinTripDto, 2L);
+        tripApi.setTripPlacesAndUser(2L);
         verify(userStore, times(1)).getCurrentUser();
         verify(tripStore, times(1)).findTripById(2L);
     }
@@ -162,13 +160,11 @@ class TripApiTest {
     @Test
     @DisplayName("Check for throwing the ValidationException and calling userStore.getCurrentUser(), tripStore.findTripById() methods with the correct arguments")
     void setTripPlacesAndUserTestForFor405ResponseStatusCode() {
-        JoinTripDto joinTripDto = new JoinTripDto();
-        joinTripDto.setPlaces(2);
         trip2.setId(2L);
         trip2.setPassengers(users);
         when(userStore.getCurrentUser()).thenReturn(user1);
         when(tripStore.findTripById(2L)).thenReturn(Optional.of(trip2));
-        assertThrows(ValidationException.class, () -> tripApi.setTripPlacesAndUser(joinTripDto, 2L));
+        assertThrows(ValidationException.class, () -> tripApi.setTripPlacesAndUser(2L));
         verify(userStore, times(1)).getCurrentUser();
         verify(tripStore, times(1)).findTripById(2L);
     }
@@ -176,7 +172,7 @@ class TripApiTest {
     @Test
     @DisplayName("Check for throwing the ValidationException when setTripPlacesAndUser() method is called with a nonexistent trip id")
     void setTripPlacesAndUserTestForValidationException() {
-        assertThrows(ValidationException.class, () -> tripApi.setTripPlacesAndUser(new JoinTripDto(), 42L));
+        assertThrows(ValidationException.class, () -> tripApi.setTripPlacesAndUser(42L));
     }
 
 //    @Test

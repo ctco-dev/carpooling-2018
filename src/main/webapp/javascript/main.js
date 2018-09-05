@@ -95,14 +95,12 @@ function join(button, tripId, rowId, places) {
         return;
     }
 
-    data = {"places": places};
-    fetch('/api/trip/' + tripId, {
-        "method": "POST",
+    fetch('/api/trip/join/' + tripId, {
+        "method": "GET",
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
+        }
     }).then(function (response) {
         if (places > 0) {
             if (response.status === 400) {
@@ -113,7 +111,6 @@ function join(button, tripId, rowId, places) {
             }
         }
     });
-
 }
 
 

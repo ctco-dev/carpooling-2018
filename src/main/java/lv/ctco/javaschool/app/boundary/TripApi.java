@@ -101,10 +101,10 @@ public class TripApi {
         return dto;
     }
 
-    @POST
-    @Path("/{id}")
+    @GET
+    @Path("/join/{id}")
     @RolesAllowed({"ADMIN", "USER"})
-    public void setTripPlacesAndUser(JoinTripDto joinTripDto, @PathParam("id") Long tripId) {
+    public void setTripPlacesAndUser(@PathParam("id") Long tripId) {
         User user = userStore.getCurrentUser();
         Optional<Trip> tripOptional = tripStore.findTripById(tripId);
         if (tripOptional.isPresent()) {
@@ -115,7 +115,7 @@ public class TripApi {
                 List<User> passengers = trip.getPassengers();
                 passengers.add(user);
                 trip.setPassengers(passengers);
-                trip.setPlaces(joinTripDto.getPlaces() - 1);
+                trip.setPlaces( trip.getPlaces() - 1);
             }
         } else {
             throw new ValidationException("There is no such trip");

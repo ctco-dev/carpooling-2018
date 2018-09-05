@@ -54,11 +54,12 @@ public class TripApi {
     @Produces("application/json")
     @RolesAllowed({"ADMIN", "USER"})
     public ListTripDto getActiveTrips() {
+        User currentUser = userStore.getCurrentUser();
         ListTripDto listTripDto = new ListTripDto();
         listTripDto.setTrips(tripStore.findTripsByStatus(TripStatus.ACTIVE)
                 .stream()
                 .sorted(Comparator.comparing(Trip::getDepartureTime))
-                .map(this::convertToTripDto)
+                .map(t -> this.convertToTripDto(t, currentUser))
                 .collect(Collectors.toList()));
         return listTripDto;
     }
@@ -73,20 +74,26 @@ public class TripApi {
         listTripDto.setTrips(tripStore.findTripsByUser(currentUser)
                 .stream()
                 .sorted(Comparator.comparing(Trip::getDepartureTime))
-                .map(this::convertToTripDto)
+                .map(t -> this.convertToTripDto(t, currentUser))
                 .collect(Collectors.toList()));
         return listTripDto;
     }
 
-    private TripDto convertToTripDto(Trip trip) {
+    private TripDto convertToTripDto(Trip trip, User currentUser) {
+        TripDto dto = new TripDto();
+        dto.setHasJoined(false);
         List<String> passList = new ArrayList<>();
         if (trip.getPassengers() != null) {
             for (User u : trip.getPassengers()) {
                 passList.add(u.getName() + " " + u.getSurname());
+                if (u.equals(currentUser)) {
+                    dto.setHasJoined(true);
+                }
+
             }
         }
         User driver = trip.getDriver();
-        TripDto dto = new TripDto();
+        dto.setIsADriver( driver.equals(currentUser) );
         dto.setId(trip.getId());
         dto.setDriverInfo(driver.getSurname() + " " + driver.getName());
         dto.setDriverPhone(driver.getPhoneNumber());

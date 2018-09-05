@@ -9,7 +9,7 @@ public class DateTimeCoverter {
     private static final DateTimeFormatter DATE_FOR_DTO = DateTimeFormatter.ofPattern("dd.MM.yyyy");
     private static final DateTimeFormatter TIME_FOR_DTO = DateTimeFormatter.ofPattern("kk:mm");
 
-    static LocalDateTime covertToDateTime(String date, String time) {
+    public static LocalDateTime covertToDateTime(String date, String time) {
         LocalDate parsedDate = LocalDate.parse(date, DATE_FOR_DTO);
         LocalTime parseTime = LocalTime.parse(time, TIME_FOR_DTO);
         return LocalDateTime.of(parsedDate, parseTime);

@@ -1,4 +1,4 @@
-var  selectedUsers = [];
+var selectedUsers = [];
 
 function buildEventDto() {
     var eventName = document.getElementById("name");
@@ -56,11 +56,17 @@ function addNewEvent(data) {
         },
         body: JSON.stringify(data)
     }).then(function (response) {
-        document.getElementById("name").value='';
-        document.getElementById("datepicker").value='';
-        document.getElementById("timepicker").value='';
-        DeleteAllUsers();
-        showMyEvents();
+        if (response.status === 204) {
+            alert("Please, fill all fields correctly!");
+        } else if (response.status === 206) {
+            alert("Please, verify event date and time. Date set by you is expired!");
+        } else if (response.status === 201) {
+            document.getElementById("name").value = '';
+            document.getElementById("datepicker").value = '';
+            document.getElementById("timepicker").value = '';
+            DeleteAllUsers();
+            showMyEvents();
+        } else alert("Something is wrong!");
     })
 }
 
@@ -112,10 +118,9 @@ var remove = function(){
         selectedUsers.splice(index, 1);
     }
     this.parentNode.remove();
-    alert(index);
 }
 
-function removeUser(){
+function removeUser() {
     var lis = document.querySelectorAll('li');
     var button = document.querySelectorAll('span[name=deleteBtn]');
     for (var i = 0, len = lis.length; i < len; i++) {
@@ -125,15 +130,15 @@ function removeUser(){
 
 function AddUser() {
     var obj = document.getElementById("participants");
-    if (selectedUsers.indexOf( obj.options[obj.selectedIndex].text )>=0) return;
+    if (selectedUsers.indexOf(obj.options[obj.selectedIndex].text) >= 0) return;
     selectedUsers.push(obj.options[obj.selectedIndex].text);
     document.getElementById("userList").innerHTML +=
-        '<li name="user" ><span class="btn btn-primary" name="deleteBtn">x</span>  &nbsp;' +
-        '<span>'+obj.options[obj.selectedIndex].text+'</span></li>';
+        '<li name="user" ><span class="btn btn-primary" name="deleteBtn" >x</span>  &nbsp;' +
+        '<span>' + obj.options[obj.selectedIndex].text + '</span></li>';
     removeUser();
 }
 
-function DeleteAllUsers(){
+function DeleteAllUsers() {
     selectedUsers = [];
-    document.getElementById("userList").innerHTML="";
+    document.getElementById("userList").innerHTML = "";
 }

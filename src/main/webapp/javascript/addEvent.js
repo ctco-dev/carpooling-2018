@@ -28,7 +28,6 @@ function showMyEvents() {
     }).then(function (response) {
         return response.json();
     }).then(function (events) {
-        console.log(events);
         var table = document.getElementById("events");
         deleteRows();
         events.forEach(function (e) {
@@ -42,12 +41,11 @@ function showMyEvents() {
             cell3.innerHTML = e.eventTime;
             cell4.innerHTML = e.eventPlace;
         });
+        window.setTimeout(function () {showMyEvents(); }, 1000);
     });
 }
 
 function addNewEvent(data) {
-    console.log("sending data");
-    console.log(data);
     fetch('/api/trip/createEvent', {
         "method": "POST",
         headers: {
@@ -98,7 +96,6 @@ function showUsers() {
     }).then(function (response) {
         return response.json();
     }).then(function (users) {
-        console.log(users);
         users.forEach(function (u) {
             select.add(new Option(u.name + " " + u.surname));
         });

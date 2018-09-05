@@ -50,15 +50,11 @@ function addRemoveEvent() {
         noChkBox.checked = false;
         document.getElementById('event-name').classList.remove("w3-hide");
         document.getElementById('event-time').classList.remove("w3-hide");
-        document.getElementById('participants').classList.remove("w3-hide");
         showEvents();
-
-    }
-    if (noChkBox.checked) {
+    }if (noChkBox.checked) {
         yesChkBox.checked = false;
         document.getElementById('event-name').classList.add("w3-hide");
         document.getElementById('event-time').classList.add("w3-hide");
-        document.getElementById('participants').classList.add("w3-hide");
     }
 }
 function saveTrip(values) {

@@ -1,5 +1,6 @@
 package lv.ctco.javaschool.app.entity.domain;
 
+import lv.ctco.javaschool.app.control.DateTimeCoverter;
 import lv.ctco.javaschool.auth.entity.domain.User;
 
 import javax.persistence.Entity;
@@ -42,8 +43,7 @@ public class Event {
 
     public Event(String eventName, String eventDate, String eventTime, Place eventDestination) {
         this.eventName = eventName;
-        this.eventDate = eventDate;
-        this.eventTime = eventTime;
+        this.eventDateTime = DateTimeCoverter.covertToDateTime(eventDate, eventTime);
         this.eventDestination = eventDestination;
     }
 

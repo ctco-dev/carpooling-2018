@@ -55,3 +55,15 @@ textarea {
 .mainTableHeader{
     background: none;
 }
+
+#userList{
+    text-align: left;
+}
+
+li[name=user] {
+    text-align: left;
+}
+
+td[name=myEventTable]{
+    vertical-align: super;
+}

@@ -24,7 +24,7 @@
         <th class="mainTableHeader"><p id="formHeader">Add New Event</p></th>
     </tr>
     <tr>
-        <td >
+        <td class="mainTableCol">
             <div id="myEventTable" >
                 <table id="events">
                     <thead>
@@ -39,7 +39,7 @@
             </div>
         </td>
 
-        <td width="500px">
+        <td class="mainTableCol">
             <div id="newEvent">
                 <form method="post">
                     <p><b>Name of Event</b></p>

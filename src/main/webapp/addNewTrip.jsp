@@ -45,8 +45,12 @@
             <td ><b>Event name:</b></td>
             <td><input name="input" id="name" type="text"></td>
         </tr>
+        <tr id="event-date" class="w3-hide">
+            <td ><b>Event start date:</b></td>
+            <td><input name="input" id="date" type="text"></td>
+        </tr>
         <tr id="event-time" class="w3-hide">
-            <td ><b>Event start (time and date):</b></td>
+            <td ><b>Event start time:</b></td>
             <td><input name="input" id="time" type="text"></td>
         </tr>
         <tr id="participants" class="w3-hide">

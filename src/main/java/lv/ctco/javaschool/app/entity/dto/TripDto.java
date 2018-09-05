@@ -18,7 +18,7 @@ public class TripDto {
     private String time;
     private boolean isEvent;
     private TripStatus tripStatus;
-    private List<UserLoginDto> passengers;
+    private String passengersList;
 
     public TripDto() {
     }
@@ -106,12 +106,12 @@ public class TripDto {
         this.tripStatus = tripStatus;
     }
 
-    public List<UserLoginDto> getPassengers() {
-        return passengers;
+    public String getPassengersList() {
+        return passengersList;
     }
 
-    public void setPassengers(List<UserLoginDto> passengers) {
-        this.passengers = passengers;
+    public void setPassengersList(String passengersList) {
+        this.passengersList = passengersList;
     }
 
     @Override

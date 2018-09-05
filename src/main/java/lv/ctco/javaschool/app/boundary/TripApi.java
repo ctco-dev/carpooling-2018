@@ -90,6 +90,13 @@ public class TripApi {
         dto.setPlaces(trip.getPlaces());
         dto.setTime(trip.getDepartureTime());
         dto.setTripStatus(trip.getTripStatus());
+
+        String passList = "";
+        for(User u: trip.getPassengers()){
+            passList+=u.getName()+" "+u.getSurname()+",";
+        }
+        passList=passList.substring(0, passList.length() - 1);
+        dto.setPassengersList(passList);
         return dto;
     }
 

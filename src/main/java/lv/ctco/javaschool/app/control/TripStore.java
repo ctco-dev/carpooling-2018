@@ -22,6 +22,7 @@ import java.util.stream.Collectors;
 
 @Stateless
 public class TripStore {
+
     @PersistenceContext
     private EntityManager em;
 
@@ -55,7 +56,7 @@ public class TripStore {
 
     public List<Event> findAllEventsForTripPage(User user){
         return em.createQuery(
-                        "select e from Event e "+
+                "select e from Event e "+
                         "where e.eventDateTime >= :newDT" , Event.class)
                 .setParameter("newDT",   LocalDateTime.now() )
                 .getResultStream()
@@ -84,6 +85,5 @@ public class TripStore {
         event.setParticipants(userList);
         em.persist(event);
     }
-
 
 }

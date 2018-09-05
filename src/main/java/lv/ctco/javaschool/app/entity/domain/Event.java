@@ -40,6 +40,13 @@ public class Event {
     public Event() {
     }
 
+    public Event(String eventName, String eventDate, String eventTime, Place eventDestination) {
+        this.eventName = eventName;
+        this.eventDate = eventDate;
+        this.eventTime = eventTime;
+        this.eventDestination = eventDestination;
+    }
+
     public Long getId() {
         return id;
     }

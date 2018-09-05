@@ -48,6 +48,7 @@ public class TripApi {
     @Inject
     private TripStore tripStore;
 
+
     @GET
     @Path("/active")
     @Produces("application/json")

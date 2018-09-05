@@ -1,5 +1,6 @@
 package lv.ctco.javaschool.app.boundary;
 
+import lv.ctco.javaschool.app.control.DateTimeCoverter;
 import lv.ctco.javaschool.app.control.TripStore;
 import lv.ctco.javaschool.app.control.exceptions.ValidationException;
 import lv.ctco.javaschool.app.entity.domain.Event;
@@ -36,7 +37,6 @@ public class TripApi {
 
     @Inject
     private TripStore tripStore;
-
 
     @GET
     @Path("/active")
@@ -168,10 +168,8 @@ public class TripApi {
     @RolesAllowed({"ADMIN", "USER"})
     public List<EventDto> getAllEventsForUser() {
         User user = userStore.getCurrentUser();
-        return tripStore.findAllEvents()
+        return tripStore.findAllEventsForEventPage(user)
                 .stream()
-                .sorted(Comparator.comparing(Event::getEventDate))
-//                .filter(e -> e.getParticipants().contains(user))
                 .map(this::convertEventToEventDto)
                 .collect(Collectors.toList());
     }
@@ -179,8 +177,8 @@ public class TripApi {
     private EventDto convertEventToEventDto(Event event) {
         EventDto dto = new EventDto();
         dto.setEventName(event.getEventName());
-        dto.setEventDate(event.getEventDate());
-        dto.setEventTime(event.getEventTime());
+        dto.setEventDate(DateTimeCoverter.covertToDate( event.getEventDateTime()));
+        dto.setEventTime(DateTimeCoverter.covertToTime( event.getEventDateTime()));
         dto.setEventPlace(event.getEventDestination());
         dto.setUsernames(new ArrayList<>());
         return dto;
@@ -190,16 +188,13 @@ public class TripApi {
     @RolesAllowed({"ADMIN", "USER"})
     @Path("/createEvent")
     public Response createNewEvent(EventDto dto) {
-        Event event = new Event();
-        event.setEventName( dto.getEventName() );
-        event.setEventDate( dto.getEventDate() );
-        event.setEventTime(dto.getEventTime());
-        event.setEventDestination( dto.getEventPlace() );
+        User creator = userStore.getCurrentUser();
+        List<User> userList = new ArrayList<>();
         for(String u: dto.getUsernames()){
-            Optional<User> participant = userStore.findUserByUsername( u );
-            participant.ifPresent(user -> event.getParticipants().add(user));
+            Optional<User> participant = userStore.findUserByNameAndSurname( u );
+            participant.ifPresent(userList::add);
         }
-        em.persist(event);
+        tripStore.addNewEvent(dto, creator, userList);
         return Response.status(Response.Status.CREATED).build();
     }
 

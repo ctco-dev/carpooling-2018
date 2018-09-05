@@ -39,6 +39,18 @@ public class UserStore {
         return user.isEmpty() ? Optional.empty() : Optional.of(user.get(0));
     }
 
+    public Optional<User> findUserByNameAndSurname(String fullname) {
+        fullname = fullname.trim();
+        String[] names = fullname.split(" ");
+        List<User> user = em.createQuery("select u from User u " +
+                "where upper(u.name) = :name " +
+                "and upper(u.surname) = :surname ", User.class)
+                .setParameter("name", names[0].toUpperCase())
+                .setParameter("surname", names[1].toUpperCase())
+                .getResultList();
+        return user.isEmpty() ? Optional.empty() : Optional.of(user.get(0));
+    }
+
     public User createUser(String username, String password, String name, String surname, String phoneNumber, Role role) throws InvalidUsernameException, InvalidPasswordException, UsernameAlreadyExistsException {
         username = username == null ? null : username.trim();
         validateUsername(username);

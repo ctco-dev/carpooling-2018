@@ -10,7 +10,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -21,8 +23,7 @@ public class Event {
     private Long id;
 
     private String eventName;
-    private String eventDate;
-    private String eventTime;
+    private LocalDateTime eventDateTime;
 
     @Enumerated(EnumType.STRING)
     private Place eventDestination;
@@ -32,6 +33,9 @@ public class Event {
             joinColumns = @JoinColumn(name = "event_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id"))
     private List<User> participants;
+
+    @ManyToOne
+    private User eventCreator;
 
     public Event() {
     }
@@ -68,20 +72,19 @@ public class Event {
         this.participants = participants;
     }
 
-    public String getEventDate() {
-        return eventDate;
+    public LocalDateTime getEventDateTime() {
+        return eventDateTime;
     }
 
-    public void setEventDate(String eventDate) {
-        this.eventDate = eventDate;
+    public void setEventDateTime(LocalDateTime eventDateTime) {
+        this.eventDateTime = eventDateTime;
     }
 
-    public String getEventTime() {
-        return eventTime;
+    public User getEventCreator() {
+        return eventCreator;
     }
 
-    public void setEventTime(String eventTime) {
-        this.eventTime = eventTime;
+    public void setEventCreator(User eventCreator) {
+        this.eventCreator = eventCreator;
     }
-
 }

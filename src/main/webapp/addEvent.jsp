@@ -43,7 +43,9 @@
         <p><b>Place</b></p>
         <p><select id="place" class="place"></select></p>
         <p><b>Participants</b></p>
-        <p><select id="participants" class="users"></select></p>
+        <p><select id="participants" class="users"></select>
+            <input type="button" onclick="AddUser();" value="+"></p>
+        <p><ol id="userList" ></ol></p>
     </form>
     <button id="addEvent" class="btn btn-primary" onclick="buildEventDto()">Add</button>
 </div>

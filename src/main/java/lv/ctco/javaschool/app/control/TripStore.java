@@ -3,19 +3,25 @@ package lv.ctco.javaschool.app.control;
 import lv.ctco.javaschool.app.entity.domain.Event;
 import lv.ctco.javaschool.app.entity.domain.Trip;
 import lv.ctco.javaschool.app.entity.domain.TripStatus;
+import lv.ctco.javaschool.app.entity.dto.EventDto;
+import lv.ctco.javaschool.auth.control.UserStore;
 import lv.ctco.javaschool.auth.entity.domain.User;
 
 import javax.ejb.Stateless;
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.ws.rs.core.Response;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Stateless
 public class TripStore {
-
     @PersistenceContext
     private EntityManager em;
 
@@ -47,23 +53,37 @@ public class TripStore {
         em.persist(trip);
     }
 
-//    private String getCurrentTime(){
-//        LocalDateTime dt = LocalDateTime.now();
-//        return dt.format(DateTimeFormatter.ofPattern("dd.MM.yyyy kk:mm"));
-//    }
-
-    private String getCurrentDate(){
-        LocalDate dt = LocalDate.now();
-        return dt.format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
-    }
-
-    public List<Event> findAllEvents(){
+    public List<Event> findAllEventsForTripPage(User user){
         return em.createQuery(
-                        "select e from Event e ",
-//                           "where e.eventDate >= :newDT",
-                Event.class)
-//                .setParameter("newDT",   getCurrentDate() )
-                .getResultList();
+                        "select e from Event e "+
+                        "where e.eventDateTime >= :newDT" , Event.class)
+                .setParameter("newDT",   LocalDateTime.now() )
+                .getResultStream()
+                .filter(e -> e.getParticipants().contains(user))
+                .sorted(Comparator.comparing(Event::getEventDateTime))
+                .collect(Collectors.toList());
     }
+
+    public List<Event> findAllEventsForEventPage(User user){
+        return em.createQuery(
+                "select e from Event e "+
+                        "where e.eventDateTime >= :newDT" , Event.class)
+                .setParameter("newDT",   LocalDateTime.now() )
+                .getResultStream()
+                .filter(e -> ((e.getParticipants().contains(user)) || (e.getEventCreator().equals(user))) )
+                .sorted(Comparator.comparing(Event::getEventDateTime))
+                .collect(Collectors.toList());
+    }
+
+    public void addNewEvent(EventDto dto, User creator, List<User> userList) {
+        Event event = new Event();
+        event.setEventName( dto.getEventName() );
+        event.setEventDateTime( DateTimeCoverter.covertToDateTime(dto.getEventDate(), dto.getEventTime()) );
+        event.setEventDestination( dto.getEventPlace() );
+        event.setEventCreator( creator );
+        event.setParticipants(userList);
+        em.persist(event);
+    }
+
 
 }

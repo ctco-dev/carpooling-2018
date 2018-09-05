@@ -7,6 +7,8 @@ function tripdto() {
     var isEvent;
     if (yesChkBox.checked) {
         var isEvent = "true";
+        // var eventName=document.getElementById("event");
+        // var eventDateTime=document.getElementById("time");
     }
     else {
         var isEvent = "false";
@@ -47,7 +49,7 @@ function addRemoveEvent() {
         document.getElementById('event-name').classList.remove("w3-hide");
         document.getElementById('event-time').classList.remove("w3-hide");
         document.getElementById('participants').classList.remove("w3-hide");
-        showEventInfo();
+        showEvents();
 
     }
     if (noChkBox.checked) {
@@ -72,7 +74,7 @@ function saveTrip(values) {
     })
 }
 
-function showEventInfo() {
+function showEvents() {
     var select = document.getElementsByClassName("event-name")[0];
     fetch('/api/trip/events', {
         "method": "GET",
@@ -88,4 +90,21 @@ function showEventInfo() {
             select.add(new Option(e.eventName));
         });
     });
+}
+
+function showEventInfo() {
+    var selectedValue=document.getElementById("name");
+    var event=selectedValue.options[selectedValue.selectedIndex].value;
+    fetch('/api/trip/getEvent/'+event, {
+        "method": "GET",
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        }
+    }).then(function (response) {
+        return response.json();
+    }).then(function (event) {
+        document.getElementById("time").value=event.eventDate+" "+event.eventTime;
+    });
+
 }

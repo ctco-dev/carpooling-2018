@@ -43,14 +43,10 @@
         </tr>
         <tr id="event-name" class="w3-hide" >
             <td ><b>Event name:</b></td>
-            <td><select name="input" id="name" class="event-name" type="text"></select></td>
-        </tr>
-        <tr id="event-date" class="w3-hide">
-            <td ><b>Event start date:</b></td>
-            <td><input name="input" id="date" type="text"></td>
+            <td><select onchange="showEventInfo()" name="input" id="name" class="event-name" type="text"></select></td>
         </tr>
         <tr id="event-time" class="w3-hide">
-            <td ><b>Event start time:</b></td>
+            <td ><b>Event start date and time:</b></td>
             <td><input name="input" id="time" type="text"></td>
         </tr>
         <tr id="participants" class="w3-hide">

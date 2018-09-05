@@ -17,13 +17,14 @@ public class TripDto {
     private int places;
     private String time;
     private boolean isEvent;
+    private String event;
     private TripStatus tripStatus;
     private List<UserLoginDto> passengers;
 
     public TripDto() {
     }
 
-    public TripDto(String driverInfo, String driverPhone, Place from, Place to, int places, String time, boolean isEvent, TripStatus tripStatus) {
+    public TripDto(String driverInfo, String driverPhone, Place from, Place to, int places, String time, boolean isEvent,String event, TripStatus tripStatus) {
         this.driverInfo = driverInfo;
         this.driverPhone = driverPhone;
         this.from = from;
@@ -31,7 +32,16 @@ public class TripDto {
         this.places = places;
         this.time = time;
         this.isEvent = isEvent;
+        this.event=event;
         this.tripStatus = tripStatus;
+    }
+
+    public String getEvent() {
+        return event;
+    }
+
+    public void setEvent(String event) {
+        this.event = event;
     }
 
     public Long getId() {

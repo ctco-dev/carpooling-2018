@@ -212,5 +212,12 @@ public class TripApi {
                 .collect(Collectors.toList());
     }
 
-
+    @GET
+    @Path("/getEvent/{event}")
+    @Produces("application/json")
+    @RolesAllowed({"ADMIN", "USER"})
+    public Optional<Event> getEventInfoById(@PathParam("event") String eventName) {
+       Optional<Event> event=tripStore.getEventByName(eventName);
+        return event;
+    }
 }

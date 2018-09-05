@@ -60,4 +60,10 @@ public class TripStore {
                 .getResultList();
     }
 
+    public Optional<Event> getEventByName(String eventName){
+        return em.createQuery("select e from Event e where e.eventName=:eventName",Event.class)
+                .setParameter("eventName",eventName)
+                .getResultStream()
+                .findFirst();
+    }
 }

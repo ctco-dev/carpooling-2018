@@ -19,7 +19,8 @@
 </head>
 <body onload="addOptionValues();showUsers();showMyEvents();">
 <div id="button-go-to-main-page">
-    <button type="button" class="btn btn-primary" onclick="goToMainPage()">Go back</button>
+    <h1>Add new event</h1>
+    <button type="button" class="btn btn-primary" id="goToMainPage" onclick="goToMainPage()">Go back</button>
 </div>
 <table id="mainTable">
     <tr>

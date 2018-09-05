@@ -15,6 +15,7 @@ function buildEventDto() {
         "usernames": selectedUsers
     };
     addNewEvent(dto);
+    console.log(dto);
 }
 
 function showMyEvents() {
@@ -46,6 +47,7 @@ function showMyEvents() {
 }
 
 function addNewEvent(data) {
+    console.log(data);
     fetch('/api/trip/createEvent', {
         "method": "POST",
         headers: {
@@ -62,6 +64,7 @@ function addNewEvent(data) {
             document.getElementById("name").value = '';
             document.getElementById("datepicker").value = '';
             document.getElementById("timepicker").value = '';
+
             DeleteAllUsers();
             showMyEvents();
         } else alert("Something is wrong!");

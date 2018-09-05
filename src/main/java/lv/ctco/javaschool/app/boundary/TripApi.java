@@ -240,7 +240,7 @@ public class TripApi {
     @Path("/getEvent/{event}")
     @Produces("application/json")
     @RolesAllowed({"ADMIN", "USER"})
-    public Optional<Event> getEventInfoById(@PathParam("event") String eventName) {
+    public Optional<Event> getEventInfo(@PathParam("event") String eventName) {
        Optional<Event> event=tripStore.getEventByName(eventName);
         return event;
     }

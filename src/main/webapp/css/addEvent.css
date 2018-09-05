@@ -54,6 +54,7 @@ select {
 #button-go-to-main-page {
     text-align: right;
     width: 90%;
+    height: 60px;
     right: 80px;
     margin-top: 1%;
     margin-bottom: 1%;
@@ -85,4 +86,11 @@ li[name=user] {
 
 td[name=myEventTable]{
     vertical-align: super;
+}
+
+h1{
+    float: left;
+}
+#goToMainPage{
+    float: bottom;
 }

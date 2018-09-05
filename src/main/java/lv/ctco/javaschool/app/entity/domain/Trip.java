@@ -36,6 +36,8 @@ public class Trip {
 
     private String departureTime;
 
+    @ManyToOne
+    @JoinColumn(name="event_name")
     private String eventName;
 
     private boolean isEvent;

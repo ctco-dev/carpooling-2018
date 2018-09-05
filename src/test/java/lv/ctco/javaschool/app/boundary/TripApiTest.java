@@ -35,9 +35,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyList;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 class TripApiTest {
 
@@ -82,9 +80,9 @@ class TripApiTest {
         Collections.addAll(users, user1, user2, user3);
 
         trips = new ArrayList<>();
-        trip1 = new Trip(user1, Place.AGENSKALNS, Place.CTCO, 3, "09:00", false, TripStatus.ACTIVE);
-        trip2 = new Trip(user2, Place.CTCO, Place.CENTRS, 2, "18:00", true, TripStatus.ACTIVE);
-        trip3 = new Trip(user3, Place.IMANTA, Place.CTCO, 3, "08:30", false, TripStatus.ACTIVE);
+        trip1 = new Trip(user1, Place.AGENSKALNS, Place.CTCO, 3, "09:00", false," ", TripStatus.ACTIVE);
+        trip2 = new Trip(user2, Place.CTCO, Place.CENTRS, 2, "18:00", true,"Birthday Party", TripStatus.ACTIVE);
+        trip3 = new Trip(user3, Place.IMANTA, Place.CTCO, 3, "08:30", false," ", TripStatus.ACTIVE);
         Collections.addAll(trips, trip1, trip2, trip3);
 
         emptyEvents=new ArrayList<>();
@@ -103,9 +101,9 @@ class TripApiTest {
     @DisplayName("Check getting sorted list of TripDto and calling tripStore.findTripsByStatus()")
     void getActiveTrips() {
         List<TripDto> tripDtos = new ArrayList<>();
-        TripDto tripDto1 = new TripDto("Landa Hans", "1111111", Place.AGENSKALNS, Place.CTCO, 3, "09:00", false, TripStatus.ACTIVE);
-        TripDto tripDto2 = new TripDto("Skywalker Anakin", "2222222", Place.CTCO, Place.CENTRS, 2, "18:00", true, TripStatus.ACTIVE);
-        TripDto tripDto3 = new TripDto("Bagrov Danila", "3333333", Place.IMANTA, Place.CTCO, 3, "08:30", false, TripStatus.ACTIVE);
+        TripDto tripDto1 = new TripDto("Landa Hans", "1111111", Place.AGENSKALNS, Place.CTCO, 3, "09:00", false, " ",TripStatus.ACTIVE);
+        TripDto tripDto2 = new TripDto("Skywalker Anakin", "2222222", Place.CTCO, Place.CENTRS, 2, "18:00", true,"Birthday Party", TripStatus.ACTIVE);
+        TripDto tripDto3 = new TripDto("Bagrov Danila", "3333333", Place.IMANTA, Place.CTCO, 3, "08:30", false," ", TripStatus.ACTIVE);
         Collections.addAll(tripDtos, tripDto3, tripDto1, tripDto2);
         ListTripDto listTripDto = new ListTripDto();
         listTripDto.setTrips(tripDtos);
@@ -123,13 +121,13 @@ class TripApiTest {
     @DisplayName("Check getting sorted list of TripDto and calling tripStore.findTripsByUser() method with the correct argument")
     void getTripsForDriver() {
         List<Trip> driverTrips = new ArrayList<>();
-        Trip trip4 = new Trip(user1, Place.IMANTA, Place.CTCO, 2, "08:00", false, TripStatus.ACTIVE);
-        Trip trip5 = new Trip(user1, Place.CTCO, Place.IMANTA, 2, "19:00", false, TripStatus.ACTIVE);
+        Trip trip4 = new Trip(user1, Place.IMANTA, Place.CTCO, 2, "08:00", false," ", TripStatus.ACTIVE);
+        Trip trip5 = new Trip(user1, Place.CTCO, Place.IMANTA, 2, "19:00", false," ", TripStatus.ACTIVE);
         Collections.addAll(driverTrips, trip1, trip4, trip5);
         List<TripDto> tripDtos = new ArrayList<>();
-        TripDto tripDto1 = new TripDto("Landa Hans", "1111111", Place.AGENSKALNS, Place.CTCO, 3, "09:00", false, TripStatus.ACTIVE);
-        TripDto tripDto2 = new TripDto("Landa Hans", "1111111", Place.IMANTA, Place.CTCO, 2, "08:00", false, TripStatus.ACTIVE);
-        TripDto tripDto3 = new TripDto("Landa Hans", "1111111", Place.CTCO, Place.IMANTA, 2, "19:00", false, TripStatus.ACTIVE);
+        TripDto tripDto1 = new TripDto("Landa Hans", "1111111", Place.AGENSKALNS, Place.CTCO, 3, "09:00", false," ", TripStatus.ACTIVE);
+        TripDto tripDto2 = new TripDto("Landa Hans", "1111111", Place.IMANTA, Place.CTCO, 2, "08:00", false," ", TripStatus.ACTIVE);
+        TripDto tripDto3 = new TripDto("Landa Hans", "1111111", Place.CTCO, Place.IMANTA, 2, "19:00", false," ", TripStatus.ACTIVE);
         Collections.addAll(tripDtos, tripDto2, tripDto1, tripDto3);
         ListTripDto listTripDto = new ListTripDto();
         listTripDto.setTrips(tripDtos);
@@ -210,7 +208,7 @@ class TripApiTest {
     @DisplayName("Check getting Response.Status.CREATED and calling userStore.getCurrentUser(), em.persist() methods")
     void createNewTrip() {
         when(userStore.getCurrentUser()).thenReturn(user1);
-        TripDto tripDto = new TripDto("Landa Hans", "1111111", Place.AGENSKALNS, Place.CTCO, 3, "09:00", false, TripStatus.ACTIVE);
+        TripDto tripDto = new TripDto("Landa Hans", "1111111", Place.AGENSKALNS, Place.CTCO, 3, "09:00", false," ", TripStatus.ACTIVE);
         assertEquals(Response.Status.CREATED.getStatusCode(), tripApi.createNewTrip(tripDto).getStatus());
         verify(userStore, times(1)).getCurrentUser();
         verify(em, times(1)).persist(any(Trip.class));
@@ -357,4 +355,26 @@ class TripApiTest {
         verify(tripStore, times(1)).addNewEvent(any(EventDto.class), any(User.class), anyList());
         assertEquals(Response.Status.CREATED.getStatusCode(), tripApi.createNewEvent(eventDto).getStatus());
     }
+
+    @Test
+    @DisplayName("Check getting event info from DB by event name")
+    void getEventFromDB(){
+        when(tripStore.getEventByName("Team-building")).thenReturn(Optional.ofNullable(event1));
+        Optional<Event> result=tripApi.getEventInfo("Team-building");
+        verify(tripStore, times(1)).getEventByName("Team-building");
+    }
+
+    @Test
+    @DisplayName("Check getting full list of users")
+    void getListOfUsers(){
+        when(userStore.getAllUsers()).thenReturn(users);
+        List<UserDto> result=tripApi.getUsersForEvent();
+        assertEquals(3,result.size());
+        verify(userStore, times(1)).getAllUsers();
+
+        assertEquals(user1.getName(),result.get(0).getName());
+        assertEquals(user2.getSurname(),result.get(1).getSurname());
+        assertNotEquals(user3.getName(),result.get(1).getName());
+    }
+
 }

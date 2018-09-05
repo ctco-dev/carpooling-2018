@@ -23,6 +23,7 @@ public class Event {
     @GeneratedValue
     private Long id;
 
+
     private String eventName;
     private LocalDateTime eventDateTime;
 

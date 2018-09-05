@@ -74,7 +74,6 @@ function showPassengers(tripId) {
     }).then(function (response) {
         return response.json();
     }).then(function (passengers) {
-        console.log(JSON.stringify(passengers));
         passengers.forEach(function (p) {
             passenger_list[i] = p.name + " " + p.surname;
             i++;

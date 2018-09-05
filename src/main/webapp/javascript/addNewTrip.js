@@ -1,5 +1,5 @@
 function tripdto() {
-    var dto={}
+    var dto = {}
     var yesChkBox = document.getElementById("yes");
     var departure = document.getElementById("departure");
     var departureTime = document.getElementById("departure-time");
@@ -8,23 +8,24 @@ function tripdto() {
     var eventName = document.getElementById("name");
     if (yesChkBox.checked) {
         var isEvent = "true";
-        dto["isEvent"]=isEvent;
-        dto["eventName"]=eventName.options[eventName.selectedIndex].value;
+        dto["isEvent"] = isEvent;
+        dto["eventName"] = eventName.options[eventName.selectedIndex].value;
     }
     else {
         var isEvent = "false";
-        dto["isEvent"]=isEvent;
-        var notEvent=" ";
-        dto["eventName"]=notEvent;
+        dto["isEvent"] = isEvent;
+        var notEvent = " ";
+        dto["eventName"] = notEvent;
 
     }
-    dto["to"]=destination.options[destination.selectedIndex].value;
-    dto["from"]=departure.options[departure.selectedIndex].value;
-    dto["places"]=places.value;
-    dto["time"]=departureTime.value;
-    dto["tripStatus"]= "ACTIVE"
+    dto["to"] = destination.options[destination.selectedIndex].value;
+    dto["from"] = departure.options[departure.selectedIndex].value;
+    dto["places"] = places.value;
+    dto["time"] = departureTime.value;
+    dto["tripStatus"] = "ACTIVE"
     saveTrip(dto);
 }
+
 function addOptionValues() {
     var select = document.getElementsByClassName("places")[0];
     var select1 = document.getElementsByClassName("places")[1];
@@ -43,6 +44,7 @@ function addOptionValues() {
         });
     });
 }
+
 function addRemoveEvent() {
     var yesChkBox = document.getElementById("yes");
     var noChkBox = document.getElementById("no");
@@ -51,15 +53,15 @@ function addRemoveEvent() {
         document.getElementById('event-name').classList.remove("w3-hide");
         document.getElementById('event-time').classList.remove("w3-hide");
         showEvents();
-    }if (noChkBox.checked) {
+    }
+    if (noChkBox.checked) {
         yesChkBox.checked = false;
         document.getElementById('event-name').classList.add("w3-hide");
         document.getElementById('event-time').classList.add("w3-hide");
     }
 }
+
 function saveTrip(values) {
-    console.log("sending data");
-    console.log(JSON.stringify(values));
     fetch('/api/trip/createTrip', {
         "method": "POST",
         headers: {
@@ -83,7 +85,6 @@ function showEvents() {
     }).then(function (response) {
         return response.json();
     }).then(function (events) {
-        console.log(events);
         events.forEach(function (e) {
             select.add(new Option(e.eventName));
         });

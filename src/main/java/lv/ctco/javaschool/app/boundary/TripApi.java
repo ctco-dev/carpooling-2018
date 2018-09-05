@@ -221,7 +221,6 @@ public class TripApi {
             participant.ifPresent(userList::add);
         }
         tripStore.addNewEvent(dto, creator, userList);
-
         return Response.status(Response.Status.CREATED).build();
     }
 

@@ -19,7 +19,6 @@ function buildEventDto() {
 }
 
 function showMyEvents() {
-
     fetch('/api/trip/events', {
         "method": "GET",
         headers: {
@@ -42,7 +41,9 @@ function showMyEvents() {
             cell3.innerHTML = e.eventTime;
             cell4.innerHTML = e.eventPlace;
         });
-        window.setTimeout(function () {showMyEvents(); }, 1000);
+        window.setTimeout(function () {
+            showMyEvents();
+        }, 1000);
     });
 }
 
@@ -64,7 +65,6 @@ function addNewEvent(data) {
             document.getElementById("name").value = '';
             document.getElementById("datepicker").value = '';
             document.getElementById("timepicker").value = '';
-
             DeleteAllUsers();
             showMyEvents();
         } else alert("Something is wrong!");
@@ -112,7 +112,7 @@ function deleteRows() {
     }
 }
 
-var remove = function(){
+var remove = function () {
     var index = selectedUsers.indexOf(this.parentNode.lastChild.innerHTML);
     if (index > -1) {
         selectedUsers.splice(index, 1);

@@ -55,7 +55,6 @@ function displayMyActiveTrips() {
         return response.json();
 
     }).then(function (trips) {
-        console.log(JSON.stringify(trips));
         w3DisplayData("trips", trips);
     });
 }

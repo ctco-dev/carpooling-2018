@@ -55,41 +55,41 @@ public class TripStore {
         em.persist(trip);
     }
 
-    public List<Event> findAllEventsForTripPage(User user){
+    public List<Event> findAllEventsForTripPage(User user) {
         return em.createQuery(
-                "select e from Event e "+
-                        "where e.eventDateTime >= :newDT" , Event.class)
-                .setParameter("newDT",   LocalDateTime.now() )
+                "select e from Event e " +
+                        "where e.eventDateTime >= :newDT", Event.class)
+                .setParameter("newDT", LocalDateTime.now())
                 .getResultStream()
                 .filter(e -> e.getParticipants().contains(user))
                 .sorted(Comparator.comparing(Event::getEventDateTime))
                 .collect(Collectors.toList());
     }
 
-    public List<Event> findAllEventsForEventPage(User user){
+    public List<Event> findAllEventsForEventPage(User user) {
         return em.createQuery(
-                "select e from Event e "+
-                        "where e.eventDateTime >= :newDT" , Event.class)
-                .setParameter("newDT",   LocalDateTime.now() )
+                "select e from Event e " +
+                        "where e.eventDateTime >= :newDT", Event.class)
+                .setParameter("newDT", LocalDateTime.now())
                 .getResultStream()
-                .filter(e -> ((e.getParticipants().contains(user)) || (e.getEventCreator().equals(user))) )
+                .filter(e -> ((e.getParticipants().contains(user)) || (e.getEventCreator().equals(user))))
                 .sorted(Comparator.comparing(Event::getEventDateTime))
                 .collect(Collectors.toList());
     }
 
     public void addNewEvent(EventDto dto, User creator, List<User> userList) {
         Event event = new Event();
-        event.setEventName( dto.getEventName() );
-        event.setEventDateTime( DateTimeCoverter.covertToDateTime(dto.getEventDate(), dto.getEventTime()) );
-        event.setEventDestination( dto.getEventPlace() );
-        event.setEventCreator( creator );
+        event.setEventName(dto.getEventName());
+        event.setEventDateTime(DateTimeCoverter.covertToDateTime(dto.getEventDate(), dto.getEventTime()));
+        event.setEventDestination(dto.getEventPlace());
+        event.setEventCreator(creator);
         event.setParticipants(userList);
         em.persist(event);
     }
 
-    public Optional<Event> getEventByName(String eventName){
-        return em.createQuery("select e from Event e where e.eventName=:eventName",Event.class)
-                .setParameter("eventName",eventName)
+    public Optional<Event> getEventByName(String eventName) {
+        return em.createQuery("select e from Event e where e.eventName=:eventName", Event.class)
+                .setParameter("eventName", eventName)
                 .getResultStream()
                 .findFirst();
     }

@@ -1,5 +1,6 @@
 package lv.ctco.javaschool.app.entity.domain;
 
+import lv.ctco.javaschool.app.control.DateTimeCoverter;
 import lv.ctco.javaschool.auth.entity.domain.User;
 
 import javax.persistence.Entity;
@@ -10,7 +11,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -21,8 +24,7 @@ public class Event {
     private Long id;
 
     private String eventName;
-    private String eventDate;
-    private String eventTime;
+    private LocalDateTime eventDateTime;
 
     @Enumerated(EnumType.STRING)
     private Place eventDestination;
@@ -33,13 +35,15 @@ public class Event {
             inverseJoinColumns = @JoinColumn(name = "user_id"))
     private List<User> participants;
 
+    @ManyToOne
+    private User eventCreator;
+
     public Event() {
     }
 
     public Event(String eventName, String eventDate, String eventTime, Place eventDestination) {
         this.eventName = eventName;
-        this.eventDate = eventDate;
-        this.eventTime = eventTime;
+        this.eventDateTime = DateTimeCoverter.covertToDateTime(eventDate, eventTime);
         this.eventDestination = eventDestination;
     }
 
@@ -75,20 +79,19 @@ public class Event {
         this.participants = participants;
     }
 
-    public String getEventDate() {
-        return eventDate;
+    public LocalDateTime getEventDateTime() {
+        return eventDateTime;
     }
 
-    public void setEventDate(String eventDate) {
-        this.eventDate = eventDate;
+    public void setEventDateTime(LocalDateTime eventDateTime) {
+        this.eventDateTime = eventDateTime;
     }
 
-    public String getEventTime() {
-        return eventTime;
+    public User getEventCreator() {
+        return eventCreator;
     }
 
-    public void setEventTime(String eventTime) {
-        this.eventTime = eventTime;
+    public void setEventCreator(User eventCreator) {
+        this.eventCreator = eventCreator;
     }
-
 }

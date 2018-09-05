@@ -3,7 +3,18 @@ package lv.ctco.javaschool.auth.entity.domain;
 import lv.ctco.javaschool.app.entity.domain.Car;
 import lv.ctco.javaschool.app.entity.domain.Trip;
 
-import javax.persistence.*;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,7 +34,7 @@ public class User {
     private String surname;
     private String phoneNumber;
 
-    @OneToOne(fetch=FetchType.LAZY)
+    @OneToOne(fetch= FetchType.LAZY)
     @JoinColumn(name="car_id")
     private Car car;
 

@@ -1,3 +1,5 @@
+var selectedUsers = [];
+
 function buildEventDto() {
     var eventName = document.getElementById("name");
     var eventDate = document.getElementById("datepicker");
@@ -5,17 +7,14 @@ function buildEventDto() {
     var eventPlace = document.getElementById("place");
     var user = document.getElementById("participants");
 
-    var users = [];
-    users.push(user.options[user.selectedIndex].value);
     var dto = {
         "eventDate": eventDate.value,
         "eventName": eventName.value,
         "eventPlace": eventPlace.options[eventPlace.selectedIndex].value,
         "eventTime": eventTime.value,
-        "usernames": users
+        "usernames": selectedUsers
     };
     addNewEvent(dto);
-
 }
 
 function showMyEvents() {
@@ -29,7 +28,6 @@ function showMyEvents() {
     }).then(function (response) {
         return response.json();
     }).then(function (events) {
-        console.log(events);
         var table = document.getElementById("events");
         deleteRows();
         events.forEach(function (e) {
@@ -43,12 +41,11 @@ function showMyEvents() {
             cell3.innerHTML = e.eventTime;
             cell4.innerHTML = e.eventPlace;
         });
+        window.setTimeout(function () {showMyEvents(); }, 1000);
     });
 }
 
 function addNewEvent(data) {
-    console.log("sending data");
-    console.log(data);
     fetch('/api/trip/createEvent', {
         "method": "POST",
         headers: {
@@ -57,8 +54,17 @@ function addNewEvent(data) {
         },
         body: JSON.stringify(data)
     }).then(function (response) {
-        document.getElementById("name").value='';
-        showMyEvents();
+        if (response.status === 204) {
+            alert("Please, fill all fields correctly!");
+        } else if (response.status === 206) {
+            alert("Please, verify event date and time. Date set by you is expired!");
+        } else if (response.status === 201) {
+            document.getElementById("name").value = '';
+            document.getElementById("datepicker").value = '';
+            document.getElementById("timepicker").value = '';
+            DeleteAllUsers();
+            showMyEvents();
+        } else alert("Something is wrong!");
     })
 }
 
@@ -90,7 +96,6 @@ function showUsers() {
     }).then(function (response) {
         return response.json();
     }).then(function (users) {
-        console.log(users);
         users.forEach(function (u) {
             select.add(new Option(u.name + " " + u.surname));
         });
@@ -102,4 +107,35 @@ function deleteRows() {
     for (var i = rowCount - 1; i > 0; i--) {
         events.deleteRow(i);
     }
+}
+
+var remove = function(){
+    var index = selectedUsers.indexOf(this.parentNode.lastChild.innerHTML);
+    if (index > -1) {
+        selectedUsers.splice(index, 1);
+    }
+    this.parentNode.remove();
+}
+
+function removeUser() {
+    var lis = document.querySelectorAll('li');
+    var button = document.querySelectorAll('span[name=deleteBtn]');
+    for (var i = 0, len = lis.length; i < len; i++) {
+        button[i].addEventListener('click', remove, false);
+    }
+}
+
+function AddUser() {
+    var obj = document.getElementById("participants");
+    if (selectedUsers.indexOf(obj.options[obj.selectedIndex].text) >= 0) return;
+    selectedUsers.push(obj.options[obj.selectedIndex].text);
+    document.getElementById("userList").innerHTML +=
+        '<li name="user" ><span class="btn btn-primary" name="deleteBtn" >x</span>  &nbsp;' +
+        '<span>' + obj.options[obj.selectedIndex].text + '</span></li>';
+    removeUser();
+}
+
+function DeleteAllUsers() {
+    selectedUsers = [];
+    document.getElementById("userList").innerHTML = "";
 }

@@ -72,7 +72,7 @@ public class TripApi {
         ListTripDto listTripDto = new ListTripDto();
         listTripDto.setTrips(tripStore.findTripsByUser(currentUser)
                 .stream()
-                //.filter(e -> (e.getParticipants().contains(user)))
+                .filter(e -> (e.getTripStatus().equals(TripStatus.ACTIVE)))
                 .sorted(Comparator.comparing(Trip::getDepartureTime))
                 .map(this::convertToTripDto)
                 .collect(Collectors.toList()));

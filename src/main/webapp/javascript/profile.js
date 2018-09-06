@@ -108,3 +108,6 @@ function displayUserData() {
         document.getElementById("p_carnumber").innerText = userDto.carNumber;
     })
 }
+function deleteTrip(){
+    
+}

@@ -37,8 +37,7 @@ public class Trip {
     private String departureTime;
 
     @ManyToOne
-    @JoinColumn(name="event_name")
-    private String eventName;
+    private Event event;
 
     private boolean isEvent;
 
@@ -54,14 +53,14 @@ public class Trip {
     public Trip() {
     }
 
-    public Trip(User driver, Place departure, Place destination, int places, String departureTime, boolean isEvent,String eventName, TripStatus tripStatus) {
+    public Trip(User driver, Place departure, Place destination, int places, String departureTime, boolean isEvent,Event event, TripStatus tripStatus) {
         this.driver = driver;
         this.departure = departure;
         this.destination = destination;
         this.places = places;
         this.departureTime = departureTime;
         this.isEvent = isEvent;
-        this.eventName=eventName;
+        this.event=event;
         this.tripStatus = tripStatus;
     }
 
@@ -136,11 +135,11 @@ public class Trip {
         this.passengers = passengers;
     }
 
-    public String getEventName() {
-        return eventName;
+    public Event getEvent() {
+        return event;
     }
 
-    public void setEventName(String eventName) {
-        this.eventName = eventName;
+    public void setEvent(Event event) {
+        this.event = event;
     }
 }

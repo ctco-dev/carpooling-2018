@@ -1,5 +1,6 @@
 package lv.ctco.javaschool.app.entity.dto;
 
+import lv.ctco.javaschool.app.entity.domain.Event;
 import lv.ctco.javaschool.app.entity.domain.Place;
 import lv.ctco.javaschool.app.entity.domain.TripStatus;
 import lv.ctco.javaschool.auth.entity.dto.UserLoginDto;
@@ -17,14 +18,14 @@ public class TripDto {
     private int places;
     private String time;
     private boolean isEvent;
-    private String eventName;
+    private Event event;
     private TripStatus tripStatus;
     private List<UserLoginDto> passengers;
 
     public TripDto() {
     }
 
-    public TripDto(String driverInfo, String driverPhone, Place from, Place to, int places, String time, boolean isEvent,String eventName, TripStatus tripStatus) {
+    public TripDto(String driverInfo, String driverPhone, Place from, Place to, int places, String time, boolean isEvent, Event event, TripStatus tripStatus) {
         this.driverInfo = driverInfo;
         this.driverPhone = driverPhone;
         this.from = from;
@@ -32,16 +33,16 @@ public class TripDto {
         this.places = places;
         this.time = time;
         this.isEvent = isEvent;
-        this.eventName=eventName;
+        this.event = event;
         this.tripStatus = tripStatus;
     }
 
-    public String getEventName() {
-        return eventName;
+    public Event getEvent() {
+        return event;
     }
 
-    public void setEventName(String eventName) {
-        this.eventName = eventName;
+    public void setEvent(Event event) {
+        this.event = event;
     }
 
     public Long getId() {
@@ -131,7 +132,7 @@ public class TripDto {
         TripDto tripDto = (TripDto) o;
         return places == tripDto.places &&
                 isEvent == tripDto.isEvent &&
-                eventName==tripDto.eventName&&
+                event ==tripDto.event &&
                 Objects.equals(driverInfo, tripDto.driverInfo) &&
                 Objects.equals(driverPhone, tripDto.driverPhone) &&
                 from == tripDto.from &&
@@ -142,6 +143,6 @@ public class TripDto {
 
     @Override
     public int hashCode() {
-        return Objects.hash(driverInfo, driverPhone, from, to, places, time, isEvent,eventName, tripStatus);
+        return Objects.hash(driverInfo, driverPhone, from, to, places, time, isEvent, event, tripStatus);
     }
 }

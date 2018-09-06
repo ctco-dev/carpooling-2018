@@ -55,9 +55,9 @@ public class TripApi {
     @RolesAllowed({"ADMIN", "USER"})
     public ListTripDto getActiveTrips() {
         ListTripDto listTripDto = new ListTripDto();
-        listTripDto.setTrips(tripStore.findTripsByStatus(TripStatus.ACTIVE)
+        User currentUser = userStore.getCurrentUser();
+        listTripDto.setTrips(tripStore.findTripsByStatus(TripStatus.ACTIVE,currentUser)
                 .stream()
-                .sorted(Comparator.comparing(Trip::getDepartureTime))
                 .map(this::convertToTripDto)
                 .collect(Collectors.toList()));
         return listTripDto;
@@ -85,7 +85,7 @@ public class TripApi {
         dto.setDriverInfo(driver.getSurname() + " " + driver.getName());
         dto.setDriverPhone(driver.getPhoneNumber());
         dto.setEvent(trip.isEvent());
-        dto.setEventName(trip.getEventName());
+        dto.setEvent(trip.getEvent().getEventName());
         dto.setFrom(trip.getDeparture());
         dto.setTo(trip.getDestination());
         dto.setPlaces(trip.getPlaces());
@@ -131,7 +131,7 @@ public class TripApi {
         Trip trip = new Trip();
         trip.setDriver(user);
         trip.setEvent(dto.isEvent());
-        trip.setEventName(dto.getEventName());
+        trip.setEvent(dto.getEvent());
         trip.setDeparture(dto.getFrom());
         trip.setDestination(dto.getTo());
         trip.setPlaces(dto.getPlaces());
@@ -141,22 +141,17 @@ public class TripApi {
         return Response.status(Response.Status.CREATED).build();
     }
 
-    @GET
-    @Path("/{id}/passengers")
-    @Produces("application/json")
-    @RolesAllowed({"ADMIN", "USER"})
-    public List<UserLoginDto> getTripPassengersByTripId(@PathParam("id") Long tripId) {
-        Optional<Trip> tripOptional = tripStore.findTripById(tripId);
-        if (tripOptional.isPresent()) {
-            return userStore.findUsersByTrip(tripOptional.get())
-                    .stream()
-                    .sorted(Comparator.comparing(User::getName))
-                    .map(this::convertToUserLoginDto)
-                    .collect(Collectors.toList());
-        } else {
-            throw new ValidationException("There is no such trip");
-        }
-    }
+//    @GET
+//    @Path("/{id}/passengers")
+//    @Produces("application/json")
+//    @RolesAllowed({"ADMIN", "USER"})
+//    public List<Trip> findTripsByStatus(TripStatus tripStatus, User currentUser) {
+//        List<Trip> trips=tripStore.findTripsByStatus(TripStatus.ACTIVE);
+//        return trips.stream()
+//                .filter(t-> ((t.getEvent().getEventName()==" ") || (t.getEvent().getParticipants().contains(currentUser))))
+//                .sorted(Comparator.comparing(Trip::getDepartureTime))
+//                .collect(Collectors.toList());
+//    }
 
     private UserLoginDto convertToUserLoginDto(User user) {
         UserLoginDto dto = new UserLoginDto();

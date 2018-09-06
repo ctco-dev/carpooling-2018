@@ -82,3 +82,7 @@ li[name=user] {
 td[name=myEventTable]{
     vertical-align: super;
 }
+
+.table_id {
+    display:none;
+}

@@ -46,6 +46,12 @@ function drawTable(eventsList, tabId){
         var row = tbody.insertRow();
 
         var cellInd=0;
+        var cell_Id = row.insertCell(cellInd);
+        cell_Id.id = "id";
+        cell_Id.classList.add("table_id");
+        cell_Id.innerHTML = e.eventId;
+
+        cellInd++;
         var cell_name = row.insertCell(cellInd);
         cell_name.innerHTML = e.eventName;
 

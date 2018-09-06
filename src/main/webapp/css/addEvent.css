@@ -32,6 +32,7 @@ th, td {
 td {
     padding-left: 3px;
     padding-right: 3px;
+    height: 58px;
 }
 
 #name {

@@ -183,8 +183,20 @@ public class TripApi {
         User user = userStore.getCurrentUser();
         return tripStore.findAllEventsForEventPage(user)
                 .stream()
-                .map(this::convertEventToEventDto)
+                .map(e-> convertEventToEventDtoFromCreatorPointOfView(e, user))
                 .collect(Collectors.toList());
+    }
+
+    private EventDto convertEventToEventDtoFromCreatorPointOfView(Event event, User currentuser) {
+        EventDto dto = new EventDto();
+        dto.setEventId(event.getId());
+        dto.setEventName(event.getEventName());
+        dto.setEventDate(DateTimeCoverter.covertToDate(event.getEventDateTime()));
+        dto.setEventTime(DateTimeCoverter.covertToTime(event.getEventDateTime()));
+        dto.setEventPlace(event.getEventDestination());
+        dto.setUsernames(new ArrayList<>());
+        dto.setIamCreator( event.getEventCreator().equals(currentuser) );
+        return dto;
     }
 
     private EventDto convertEventToEventDto(Event event) {

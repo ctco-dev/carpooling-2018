@@ -13,6 +13,8 @@ public class EventDto {
     private String eventTime;
     private Place eventPlace;
     private List<String> usernames;
+    private Boolean iamCreator;
+
 
     public EventDto() {
     }
@@ -58,4 +60,12 @@ public class EventDto {
 
     public String getEventTime() { return eventTime; }
     public void setEventTime(String eventTime) { this.eventTime = eventTime; }
+
+    public Boolean getIamCreator() {
+        return iamCreator;
+    }
+
+    public void setIamCreator(Boolean isACreator) {
+        this.iamCreator = isACreator;
+    }
 }

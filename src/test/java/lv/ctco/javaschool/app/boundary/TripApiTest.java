@@ -201,10 +201,33 @@ class TripApiTest {
     }
 
     @Test
-    @DisplayName("Check for throwing the ValidationException when setTripPlacesAndUser() method is called with a nonexistent trip id")
+    @DisplayName("Check for throwing the ValidationException when removeUserFromTrip() method is called with a nonexistent trip id")
     void removeUserFromTripTestForValidationException() {
         assertThrows(ValidationException.class, () -> tripApi.removeUserFromTrip(42L));
     }
+
+/*    @GET
+    @Path("/deleteEvent/{id}")
+    @RolesAllowed({"ADMIN", "USER"})
+    public void markEventAsDeleted(@PathParam("id") Long eventId) {
+        Optional<Event> foundEvent = tripStore.findEventById(eventId);
+        if (foundEvent.isPresent()) {
+            foundEvent.get().setDeletedStatus(true);
+        } else
+            throw new ValidationException("There is no such event");
+    }
+*/
+
+
+
+
+
+    @Test
+    @DisplayName("Check for throwing the ValidationException when markEventAsDeleted() method is called with a nonexistent trip id")
+    void markEventAsDeletedTestForValidationException() {
+        assertThrows(ValidationException.class, () -> tripApi.markEventAsDeleted(42L));
+    }
+
 
     @Test
     @DisplayName("Check getting Response.Status.CREATED and calling userStore.getCurrentUser(), em.persist() methods")

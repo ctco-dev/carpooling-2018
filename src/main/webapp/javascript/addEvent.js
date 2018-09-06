@@ -30,13 +30,14 @@ function showMyEvents() {
     }).then(function (eventsList) {
         console.log(eventsList);
         drawTable(eventsList, "events");
-        window.setTimeout(function () {showMyEvents(); }, 1000);
+        window.setTimeout(function () {
+            showMyEvents();
+        }, 1000);
     });
 }
 
 
-
-function drawTable(eventsList, tabId){
+function drawTable(eventsList, tabId) {
     var table = document.getElementById(tabId);
     var tbody = table.getElementsByTagName('tbody')[0];
     if (tbody) table.removeChild(tbody);
@@ -45,7 +46,7 @@ function drawTable(eventsList, tabId){
     eventsList.forEach(function (e) {
         var row = tbody.insertRow();
 
-        var cellInd=0;
+        var cellInd = 0;
         var cell_Id = row.insertCell(cellInd);
         cell_Id.id = "id";
         cell_Id.classList.add("table_id");
@@ -69,12 +70,14 @@ function drawTable(eventsList, tabId){
 
         cellInd++;
         var cell_deleteBtn = row.insertCell(cellInd);
-        cell_deleteBtn.innerHTML = addDeleteBtn();
+        cell_deleteBtn.innerHTML = addDeleteBtn(e.iamCreator);
     });
     table.appendChild(tbody);
 }
 
-function addDeleteBtn(){
+function addDeleteBtn(showButton) {
+    if (showButton === false) return "";
+
     return "<button id=\"delete-button\" type=\"button\" class=\"btn btn-primary\"\n" +
         " onclick=\"deleteEvent( $(this).closest('tr').find('.table_id').text() )\">\n" +
         "Delete</button>";
@@ -150,7 +153,7 @@ function showUsers() {
 }
 
 
-var remove = function(){
+var remove = function () {
     var index = selectedUsers.indexOf(this.parentNode.lastChild.innerHTML);
     if (index > -1) {
         selectedUsers.splice(index, 1);

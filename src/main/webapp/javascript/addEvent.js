@@ -75,7 +75,21 @@ function drawTable(eventsList, tabId){
 }
 
 function addDeleteBtn(){
-    return "<button type=\"button\" class=\"btn btn-primary\" onclick=\"\">delete</button>";
+    return "<button id=\"delete-button\" type=\"button\" class=\"btn btn-primary\"\n" +
+        " onclick=\"deleteEvent( $(this).closest('tr').find('.table_id').text() )\">\n" +
+        "Delete</button>";
+}
+
+function deleteEvent(eventId) {
+    fetch('/api/trip/deleteEvent/' + eventId, {
+        "method": "GET",
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        }
+    }).then(function (response) {
+        showMyEvents();
+    });
 }
 
 function addNewEvent(data) {

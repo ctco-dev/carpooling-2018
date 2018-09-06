@@ -236,4 +236,15 @@ public class TripApi {
                 .map(this::convertToUserDto)
                 .collect(Collectors.toList());
     }
+
+    @GET
+    @Path("/deleteEvent/{id}")
+    @RolesAllowed({"ADMIN", "USER"})
+    public void markEventAsDeleted(@PathParam("id") Long eventId) {
+        Optional<Event> foundEvent = tripStore.findEventById(eventId);
+        if (foundEvent.isPresent()) {
+            foundEvent.get().setDeletedStatus(true);
+        } else
+            throw new ValidationException("There is no such event");
+    }
 }

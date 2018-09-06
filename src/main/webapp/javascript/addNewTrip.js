@@ -74,6 +74,7 @@ function saveTrip(values) {
     })
 }
 
+var eventList = [];
 function showEvents() {
     var select = document.getElementsByClassName("event-name")[0];
     fetch('/api/trip/events', {
@@ -85,7 +86,7 @@ function showEvents() {
     }).then(function (response) {
         return response.json();
     }).then(function (events) {
-        events.forEach(function (e) {
+        eventList = events.forEach(function (e) {
             select.add(new Option(e.eventName));
         });
     });
@@ -93,7 +94,7 @@ function showEvents() {
 
 function showEventInfo() {
     var selectedValue = document.getElementById("name");
-    var event = selectedValue.options[selectedValue.selectedIndex].value;
+    var event = eventList[selectedValue.selectedIndex].eventId;
     fetch('/api/trip/getEvent/' + event, {
         "method": "GET",
         headers: {
@@ -102,8 +103,8 @@ function showEventInfo() {
         }
     }).then(function (response) {
         return response.json();
-    }).then(function (event) {
-        document.getElementById("time").value = event.eventDate + " " + event.eventTime;
+    }).then(function (newEvent) {
+        document.getElementById("time").value = newEvent.eventDate + " " + newEvent.eventTime;
     });
 
 }

@@ -47,7 +47,7 @@ function drawTable(tripsList, tabId) {
         cell6.innerHTML = drawPassangersList(e.passengers);
 
         var cell7 = row.insertCell(6);
-        cell7.innerHTML = e.event;
+        cell7.innerHTML = e.eventName;
 
         var cell8 = row.insertCell(7);
         cell8.classList.add("table_buttons");

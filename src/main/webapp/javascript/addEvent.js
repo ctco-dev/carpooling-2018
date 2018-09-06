@@ -71,6 +71,7 @@ function drawTable(eventsList, tabId) {
         cellInd++;
         var cell_deleteBtn = row.insertCell(cellInd);
         cell_deleteBtn.innerHTML = addDeleteBtn(e.iamCreator);
+        cell_deleteBtn.classList.add("delete_button");
     });
     table.appendChild(tbody);
 }

@@ -71,6 +71,7 @@ function saveTrip(values) {
         },
         body: JSON.stringify(values)
     }).then(function (response) {
+        console.log(values)
         location.href = "/main.jsp";
     })
 }

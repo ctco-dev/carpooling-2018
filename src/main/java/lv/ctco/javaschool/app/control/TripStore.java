@@ -23,16 +23,17 @@ public class TripStore {
 
     public List<Trip> getAllTrips() {
         return em.createQuery("select t from Trip t", Trip.class)
-                .getResultList();
+                .getResultStream()
+                .collect(Collectors.toList());
     }
 
-    public List<Trip> findTripsByStatus(TripStatus tripStatus, User currentUser) {
+    public List<Trip> findTripsByStatus(TripStatus tripStatus) {
         return em.createQuery("select t from Trip t " +
                 "where t.tripStatus = :status", Trip.class)
                 .setParameter("status", tripStatus)
                 .getResultStream()
-                .filter(t-> ((t.getEvent()==null) || (t.getEvent().getParticipants().contains(currentUser))))
-                .sorted(Comparator.comparing(Trip::getDepartureTime))
+//                .filter(t-> ((t.getEvent()==null) || (t.getEvent().getParticipants().contains(currentUser))))
+//                .sorted(Comparator.comparing(Trip::getDepartureTime))
                 .collect(Collectors.toList());
     }
 

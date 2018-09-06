@@ -10,12 +10,12 @@ function tripdto() {
         var isEvent = "true";
         dto["isEvent"] = isEvent;
         dto["eventName"] = eventName.options[eventName.selectedIndex].value;
+        dto["eventId"] = eventName.selectedIndex;
     }
     else {
         var isEvent = "false";
         dto["isEvent"] = isEvent;
-        var notEvent = " ";
-        dto["eventName"] = notEvent;
+        dto["eventName"] = " ";
 
     }
     dto["to"] = destination.options[destination.selectedIndex].value;

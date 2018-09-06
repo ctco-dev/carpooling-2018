@@ -86,9 +86,9 @@ public class TripStore {
         em.persist(event);
     }
 
-    public Optional<Event> getEventByName(String eventName) {
-        return em.createQuery("select e from Event e where e.eventName=:eventName", Event.class)
-                .setParameter("eventName", eventName)
+    public Optional<Event> getEventById(Long id) {
+        return em.createQuery("select e from Event e where e.eventId=:id", Event.class)
+                .setParameter("id", id)
                 .getResultStream()
                 .findFirst();
     }

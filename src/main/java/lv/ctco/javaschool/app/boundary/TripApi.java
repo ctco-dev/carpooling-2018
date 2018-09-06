@@ -19,19 +19,10 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Stateless
@@ -54,7 +45,7 @@ public class TripApi {
     public ListTripDto getActiveTrips() {
         User currentUser = userStore.getCurrentUser();
         ListTripDto listTripDto = new ListTripDto();
-        listTripDto.setTrips(tripStore.findTripsByStatus(TripStatus.ACTIVE)
+        listTripDto.setTrips(tripStore.findTripsByStatus(TripStatus.ACTIVE, currentUser)
                 .stream()
                 .sorted(Comparator.comparing(Trip::getDepartureTime))
                 .map(t -> this.convertToTripDto(t, currentUser))
@@ -96,7 +87,8 @@ public class TripApi {
         dto.setDriverInfo(driver.getName() + " " + driver.getSurname());
         dto.setDriverPhone(driver.getPhoneNumber());
         dto.setEvent(trip.isEvent());
-        dto.setEvent(trip.getEvent().getEventName());
+        dto.setEventName(trip.getEvent().getEventName());
+        dto.setEventId(trip.getEvent().getId());
         dto.setFrom(trip.getDeparture());
         dto.setTo(trip.getDestination());
         dto.setPlaces(trip.getPlaces() - passList.size());
@@ -160,7 +152,10 @@ public class TripApi {
         Trip trip = new Trip();
         trip.setDriver(user);
         trip.setEvent(dto.isEvent());
-        trip.setEvent(dto.getEvent());
+        Optional<Event> event = tripStore.getEventById(dto.getEventId());
+        if (event.isPresent()) {
+            trip.setEvent(event.get());
+        }
         trip.setDeparture(dto.getFrom());
         trip.setDestination(dto.getTo());
         trip.setPlaces(dto.getPlaces());
@@ -241,8 +236,13 @@ public class TripApi {
     @Path("/getEvent/{event}")
     @Produces("application/json")
     @RolesAllowed({"ADMIN", "USER"})
-    public Optional<Event> getEventInfo(@PathParam("event") String eventName) {
-       Optional<Event> event=tripStore.getEventByName(eventName);
-        return event;
+    public EventDto getEventInfo(@PathParam("event") Long id) {
+        EventDto eventDto = new EventDto();
+        Optional<Event> event = tripStore.getEventById(id);
+        if (event.isPresent()) {
+            Event event1 = event.get();
+            eventDto = convertEventToEventDto(event1);
+        }
+        return eventDto;
     }
 }

@@ -242,4 +242,16 @@ public class TripApi {
                 .map(this::convertToUserDto)
                 .collect(Collectors.toList());
     }
+
+    @GET
+    @Path("/deleteTrip/{id}")
+    @RolesAllowed({"ADMIN", "USER"})
+    public void deleteTrip(@PathParam("id") Long tripID) {
+        Optional<Trip> foundTrip = tripStore.findTripById(tripID);
+        System.out.println(tripID);
+        if (foundTrip.isPresent()) {
+            foundTrip.get().setTripStatus(TripStatus.FINISHED);
+        } else
+            throw new ValidationException("There is no such trip");
+    }
 }

@@ -152,5 +152,13 @@ function displayUserData() {
     })
 }
 function deleteTrip(tripID) {
-    alert(tripID);
+           fetch('api/trip/deleteTrip/' + tripID, {
+            "method": "GET",
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+         }).then(function (response) {
+        displayMyActiveTrips();
+        })
 }

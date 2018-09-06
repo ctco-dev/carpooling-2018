@@ -22,36 +22,49 @@ function drawTable(tripsList, tabId) {
     tbody = document.createElement('tbody');
     tripsList.trips.forEach(function (e) {
         var row = tbody.insertRow();
-        var cell1 = row.insertCell(0);
-        cell1.id = "id";
-        cell1.classList.add("table_id");
-        cell1.innerHTML = e.id;
 
-        var cell2 = row.insertCell(1);
-        cell2.innerHTML = e.from + " - " + e.to;
+        var cellInd=0;
+        var cell_Id = row.insertCell(cellInd);
+        cell_Id.id = "id";
+        cell_Id.classList.add("table_id");
+        cell_Id.innerHTML = e.id;
 
-        var cell3 = row.insertCell(2);
-        cell3.innerHTML = e.driverInfo;
+        cellInd++;
+        var cell_time = row.insertCell(cellInd);
+        cell_time.innerHTML = e.time;
 
-        var cell4 = row.insertCell(3);
-        cell4.innerHTML = e.driverPhone;
+        cellInd++;
+        var cell_route = row.insertCell(cellInd);
+        cell_route.innerHTML = e.from + " - " + e.to;
 
-        var cell5 = row.insertCell(4);
-        cell5.id = "places";
-        cell5.classList.add("table_places");
-        cell5.innerHTML = e.places.toString();
+        cellInd++;
+        var cell_driver = row.insertCell(cellInd);
+        cell_driver.innerHTML = e.driverInfo;
 
-        var cell6 = row.insertCell(5);
-        cell6.id = "passengers";
-        cell6.classList.add("table_passengers");
-        cell6.innerHTML = drawPassangersList(e.passengers);
+        cellInd++;
+        var cell_phone = row.insertCell(cellInd);
+        cell_phone.innerHTML = e.driverPhone;
 
-        var cell7 = row.insertCell(6);
-        cell7.innerHTML = e.event;
+        cellInd++;
+        var cell_freePlaces = row.insertCell(cellInd);
+        cell_freePlaces.id = "places";
+        cell_freePlaces.classList.add("table_places");
+        cell_freePlaces.innerHTML = e.places.toString();
 
-        var cell8 = row.insertCell(7);
-        cell8.classList.add("table_buttons");
-        cell8.innerHTML = drawTableButton(e.places, e.isADriver, e.hasJoined);
+        cellInd++;
+        var cell_passengers = row.insertCell(cellInd);
+        cell_passengers.id = "passengers";
+        cell_passengers.classList.add("table_passengers");
+        cell_passengers.innerHTML = drawPassangersList(e.passengers);
+
+        cellInd++;
+        var cell_event = row.insertCell(cellInd);
+        cell_event.innerHTML = e.event;
+
+        cellInd++;
+        var cell_btnForPassenger = row.insertCell(cellInd);
+        cell_btnForPassenger.classList.add("table_buttons");
+        cell_btnForPassenger.innerHTML = drawTableButton(e.places, e.isADriver, e.hasJoined);
     });
     table.appendChild(tbody);
 }

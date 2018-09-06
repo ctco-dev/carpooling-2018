@@ -30,6 +30,7 @@
         <thead>
         <tr>
             <!--th>Id</th-->
+            <th>Time</th>
             <th>Route</th>
             <th>Driver</th>
             <th>Driver phone</th>

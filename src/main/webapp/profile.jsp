@@ -39,13 +39,7 @@
                 <td>{{from}}-{{to}}</td>
                 <td>{{places}}</td>
                 <td>{{event}}</td>
-                <td class="dropdown">
-                    <button onclick="myFunction()" class="dropbtn">...</button>
-                    <div id="myDropdown" class="dropdown-content">
-                        <a href="#edit">edit</a>
-                        <a href="#delete">delete</a>
-                    </div>
-                </td>
+                <td><button id="button-delete-trip" class="btn btn-primary" onclick="deleteTrip()">Delete</button></td>
             </tr>
             </tbody>
         </table>

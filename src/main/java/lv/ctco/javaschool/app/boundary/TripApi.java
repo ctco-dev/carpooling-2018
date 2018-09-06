@@ -8,13 +8,11 @@ import lv.ctco.javaschool.app.entity.domain.Place;
 import lv.ctco.javaschool.app.entity.domain.Trip;
 import lv.ctco.javaschool.app.entity.domain.TripStatus;
 import lv.ctco.javaschool.app.entity.dto.EventDto;
-import lv.ctco.javaschool.app.entity.dto.JoinTripDto;
 import lv.ctco.javaschool.app.entity.dto.ListTripDto;
 import lv.ctco.javaschool.app.entity.dto.TripDto;
 import lv.ctco.javaschool.auth.control.UserStore;
 import lv.ctco.javaschool.auth.entity.domain.User;
 import lv.ctco.javaschool.auth.entity.dto.UserDto;
-import lv.ctco.javaschool.auth.entity.dto.UserLoginDto;
 
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
@@ -54,11 +52,12 @@ public class TripApi {
     @Produces("application/json")
     @RolesAllowed({"ADMIN", "USER"})
     public ListTripDto getActiveTrips() {
+        User currentUser = userStore.getCurrentUser();
         ListTripDto listTripDto = new ListTripDto();
         listTripDto.setTrips(tripStore.findTripsByStatus(TripStatus.ACTIVE)
                 .stream()
                 .sorted(Comparator.comparing(Trip::getDepartureTime))
-                .map(this::convertToTripDto)
+                .map(t -> this.convertToTripDto(t, currentUser))
                 .collect(Collectors.toList()));
         return listTripDto;
     }
@@ -74,38 +73,43 @@ public class TripApi {
                 .stream()
                 .filter(e -> (e.getTripStatus().equals(TripStatus.ACTIVE)))
                 .sorted(Comparator.comparing(Trip::getDepartureTime))
-                .map(this::convertToTripDto)
+                .map(t -> this.convertToTripDto(t, currentUser))
                 .collect(Collectors.toList()));
         return listTripDto;
     }
 
-    private TripDto convertToTripDto(Trip trip) {
-        User driver = trip.getDriver();
+    private TripDto convertToTripDto(Trip trip, User currentUser) {
         TripDto dto = new TripDto();
-        dto.setId(trip.getId());
-        dto.setDriverInfo(driver.getSurname() + " " + driver.getName());
-        dto.setDriverPhone(driver.getPhoneNumber());
-        dto.setEvent(trip.isEvent());
-        dto.setFrom(trip.getDeparture());
-        dto.setTo(trip.getDestination());
-        dto.setPlaces(trip.getPlaces());
-        dto.setTime(trip.getDepartureTime());
-        dto.setTripStatus(trip.getTripStatus());
-
+        dto.setHasJoined(false);
         List<String> passList = new ArrayList<>();
         if (trip.getPassengers() != null) {
             for (User u : trip.getPassengers()) {
                 passList.add(u.getName() + " " + u.getSurname());
+                if (u.equals(currentUser)) {
+                    dto.setHasJoined(true);
+                }
+
             }
         }
+        User driver = trip.getDriver();
+        dto.setIsADriver(driver.equals(currentUser));
+        dto.setId(trip.getId());
+        dto.setDriverInfo(driver.getName() + " " + driver.getSurname());
+        dto.setDriverPhone(driver.getPhoneNumber());
+        dto.setEvent(trip.isEvent());
+        dto.setFrom(trip.getDeparture());
+        dto.setTo(trip.getDestination());
+        dto.setPlaces(trip.getPlaces() - passList.size());
+        dto.setTime(trip.getDepartureTime());
+        dto.setTripStatus(trip.getTripStatus());
         dto.setPassengers(passList);
         return dto;
     }
 
-    @POST
-    @Path("/{id}")
+    @GET
+    @Path("/join/{id}")
     @RolesAllowed({"ADMIN", "USER"})
-    public void setTripPlacesAndUser(JoinTripDto joinTripDto, @PathParam("id") Long tripId) {
+    public void setUserForATrip(@PathParam("id") Long tripId) {
         User user = userStore.getCurrentUser();
         Optional<Trip> tripOptional = tripStore.findTripById(tripId);
         if (tripOptional.isPresent()) {
@@ -116,7 +120,24 @@ public class TripApi {
                 List<User> passengers = trip.getPassengers();
                 passengers.add(user);
                 trip.setPassengers(passengers);
-                trip.setPlaces(joinTripDto.getPlaces() - 1);
+            }
+        } else {
+            throw new ValidationException("There is no such trip");
+        }
+    }
+
+    @GET
+    @Path("/leave/{id}")
+    @RolesAllowed({"ADMIN", "USER"})
+    public void removeUserFromTrip(@PathParam("id") Long tripId) {
+        User user = userStore.getCurrentUser();
+        Optional<Trip> tripOptional = tripStore.findTripById(tripId);
+        if (tripOptional.isPresent()) {
+            Trip trip = tripOptional.get();
+            if (trip.getPassengers().contains(user)) {
+                trip.getPassengers().remove(user);
+            } else {
+                throw new ValidationException("The user has not joined this trip");
             }
         } else {
             throw new ValidationException("There is no such trip");
@@ -146,33 +167,6 @@ public class TripApi {
         trip.setTripStatus(dto.getTripStatus());
         em.persist(trip);
         return Response.status(Response.Status.CREATED).build();
-    }
-
-    @GET
-    @Path("/{id}/passengers")
-    @Produces("application/json")
-    @RolesAllowed({"ADMIN", "USER"})
-    public List<UserLoginDto> getTripPassengersByTripId(@PathParam("id") Long tripId) {
-        Optional<Trip> tripOptional = tripStore.findTripById(tripId);
-        if (tripOptional.isPresent()) {
-            return userStore.findUsersByTrip(tripOptional.get())
-                    .stream()
-                    .sorted(Comparator.comparing(User::getName))
-                    .map(this::convertToUserLoginDto)
-                    .collect(Collectors.toList());
-        } else {
-            throw new ValidationException("There is no such trip");
-        }
-    }
-
-    private UserLoginDto convertToUserLoginDto(User user) {
-        UserLoginDto dto = new UserLoginDto();
-        dto.setUsername(user.getUsername());
-        dto.setPassword(user.getPassword());
-        dto.setName(user.getName());
-        dto.setSurname(user.getSurname());
-        dto.setPhoneNumber(user.getPhoneNumber());
-        return dto;
     }
 
     private UserDto convertToUserDto(User user) {

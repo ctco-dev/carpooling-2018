@@ -30,6 +30,7 @@
         <thead>
         <tr>
             <!--th>Id</th-->
+            <th>Time</th>
             <th>Route</th>
             <th>Driver</th>
             <th>Driver phone</th>
@@ -41,8 +42,6 @@
         </thead>
         <tbody></tbody>
     </table>
-    <div id="passenger_list">
-    </div>
 </div>
 <a href="addNewTrip.jsp">
     <button type="button" class="btn btn-primary">Add trip</button>

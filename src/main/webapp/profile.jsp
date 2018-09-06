@@ -28,7 +28,6 @@
         <table class="table table-bordered" id="trips">
             <thead>
             <tr>
-                <th>id</th>
                 <th>Route</th>
                 <th>Places</th>
                 <th>Event</th>

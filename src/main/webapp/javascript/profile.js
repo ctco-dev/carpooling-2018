@@ -67,14 +67,14 @@ function drawTable(tripsList, tabId) {
     if (tbody) table.removeChild(tbody);
 
     tbody = document.createElement('tbody');
-    tripsList.forEach(function (t) {
+    tripsList.trips.forEach(function (t) {
         var row = tbody.insertRow();
 
         var cellInd = 0;
         var cell_Id = row.insertCell(cellInd);
         cell_Id.id = "id";
         cell_Id.classList.add("table_id");
-        cell_Id.innerHTML = t.eventId;
+        cell_Id.innerHTML = t.id;
 
         cellInd++;
         var cell_rote = row.insertCell(cellInd);
@@ -151,6 +151,6 @@ function displayUserData() {
         document.getElementById("p_carnumber").innerText = userDto.carNumber;
     })
 }
-function deleteTrip(){
-    
+function deleteTrip(tripID) {
+    alert(tripID);
 }

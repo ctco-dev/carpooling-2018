@@ -45,7 +45,7 @@
             </div>
         </td>
 
-        <td width="500px">
+        <td width="400px">
             <div id="newEvent">
                 <form method="post">
                     <p><b>Name of Event</b></p>

@@ -42,3 +42,7 @@ button {
 .table_id {
     display:none;
 }
+
+.table_buttons{
+    text-align: center;
+}

@@ -19,6 +19,8 @@ public class TripDto {
     private boolean isEvent;
     private TripStatus tripStatus;
     private List<String> passengers;
+    private Boolean hasJoined;
+    private Boolean isDriver;
 
     public TripDto() {
     }
@@ -113,6 +115,22 @@ public class TripDto {
 
     public void setPassengers(List<String> passengers) {
         this.passengers = passengers;
+    }
+
+    public Boolean getHasJoined() {
+        return hasJoined;
+    }
+
+    public void setHasJoined(Boolean hasJoined) {
+        this.hasJoined = hasJoined;
+    }
+
+    public Boolean getIsADriver() {
+        return isDriver;
+    }
+
+    public void setIsADriver(Boolean driver) {
+        isDriver = driver;
     }
 
     @Override

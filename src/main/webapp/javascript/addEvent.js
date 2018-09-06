@@ -52,10 +52,8 @@ function drawTable(eventsList, tabId){
         cell2.innerHTML = e.eventDate;
         cell3.innerHTML = e.eventTime;
         cell4.innerHTML = e.eventPlace;
-        cell5.id="deleteButton";
         cell5.innerHTML =
             "<button type=\"button\" class=\"btn btn-primary\" onclick=\"\">delete</button>";
-        //cell5.classList.add("w3-hide");
     });
     table.appendChild(tbody);
 }

@@ -41,8 +41,6 @@
         </thead>
         <tbody></tbody>
     </table>
-    <div id="passenger_list">
-    </div>
 </div>
 <a href="addNewTrip.jsp">
     <button type="button" class="btn btn-primary">Add trip</button>

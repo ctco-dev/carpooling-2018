@@ -195,7 +195,7 @@ public class TripApi {
         dto.setEventTime(DateTimeCoverter.covertToTime(event.getEventDateTime()));
         dto.setEventPlace(event.getEventDestination());
         dto.setUsernames(new ArrayList<>());
-        dto.setIamCreator( event.getEventCreator().equals(currentuser) );
+        dto.setIamCreator( event.getEventCreator()!=null && event.getEventCreator().equals(currentuser) );
         return dto;
     }
 

@@ -29,7 +29,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -219,7 +221,17 @@ class TripApiTest {
 */
 
 
+    @Test
+    @DisplayName("Check calling userStore.getCurrentUser(), tripStore.findEventById() methods with the correct arguments")
+    void markEventAsDeletedTest() {
+        event1.setId(2L);
+        event1.setDeletedStatus(true);
+        when(tripStore.findEventById(2L)).thenReturn(Optional.of(event1));
+        tripApi.markEventAsDeleted(2L);
 
+        verify(tripStore, times(1)).findEventById(2L);
+        assertFalse( event1.getDeletedStatus() );
+    }
 
 
     @Test

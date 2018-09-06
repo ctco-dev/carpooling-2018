@@ -63,8 +63,10 @@ public class TripStore {
     public List<Event> findAllEventsForEventPage(User user){
         return em.createQuery(
                 "select e from Event e "+
-                        "where e.eventDateTime >= :newDT" , Event.class)
+                        "where e.eventDateTime >= :newDT " +
+                        "and e.isDeleted=:delFlag " , Event.class)
                 .setParameter("newDT",   LocalDateTime.now() )
+                .setParameter("delFlag",   false )
                 .getResultStream()
                 .filter(e -> ((e.getParticipants().contains(user)) || (e.getEventCreator().equals(user))) )
                 .sorted(Comparator.comparing(Event::getEventDateTime))

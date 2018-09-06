@@ -15,14 +15,15 @@ function tripdto() {
     else {
         var isEvent = "false";
         dto["isEvent"] = isEvent;
-        dto["eventName"] = " ";
+        dto["eventName"] = "";
+        dto["eventId"] = null;
 
     }
     dto["to"] = destination.options[destination.selectedIndex].value;
     dto["from"] = departure.options[departure.selectedIndex].value;
     dto["places"] = places.value;
     dto["time"] = departureTime.value;
-    dto["tripStatus"] = "ACTIVE"
+    dto["tripStatus"] = "ACTIVE";
     saveTrip(dto);
 }
 
@@ -86,8 +87,9 @@ function showEvents() {
     }).then(function (response) {
         return response.json();
     }).then(function (events) {
-        eventList = events.forEach(function (e) {
-            select.add(new Option(e.eventName));
+        eventList = events;
+        eventList.forEach(function (e) {
+            select.add(new Option(e.eventName + e.eventId));
         });
     });
 }

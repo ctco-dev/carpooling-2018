@@ -87,7 +87,7 @@ public class TripStore {
     }
 
     public Optional<Event> getEventById(Long id) {
-        return em.createQuery("select e from Event e where e.eventId=:id", Event.class)
+        return em.createQuery("select e from Event e where e.id=:id", Event.class)
                 .setParameter("id", id)
                 .getResultStream()
                 .findFirst();

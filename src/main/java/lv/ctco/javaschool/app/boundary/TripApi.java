@@ -189,6 +189,7 @@ public class TripApi {
 
     private EventDto convertEventToEventDto(Event event) {
         EventDto dto = new EventDto();
+        dto.setEventId(event.getId());
         dto.setEventName(event.getEventName());
         dto.setEventDate(DateTimeCoverter.covertToDate(event.getEventDateTime()));
         dto.setEventTime(DateTimeCoverter.covertToTime(event.getEventDateTime()));

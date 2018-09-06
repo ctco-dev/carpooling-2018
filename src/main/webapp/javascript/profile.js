@@ -56,9 +56,52 @@ function displayMyActiveTrips() {
 
     }).then(function (trips) {
         console.log(JSON.stringify(trips));
-        w3DisplayData("trips", trips);
+        drawTable(trips, "trips");
     });
 }
+
+
+function drawTable(tripsList, tabId) {
+    var table = document.getElementById(tabId);
+    var tbody = table.getElementsByTagName('tbody')[0];
+    if (tbody) table.removeChild(tbody);
+
+    tbody = document.createElement('tbody');
+    tripsList.forEach(function (t) {
+        var row = tbody.insertRow();
+
+        var cellInd = 0;
+        var cell_Id = row.insertCell(cellInd);
+        cell_Id.id = "id";
+        cell_Id.classList.add("table_id");
+        cell_Id.innerHTML = t.eventId;
+
+        cellInd++;
+        var cell_rote = row.insertCell(cellInd);
+        cell_rote.innerHTML = t.from+" - "+t.to;
+
+        cellInd++;
+        var cell_freePlaces = row.insertCell(cellInd);
+        cell_freePlaces.innerHTML = t.places;
+
+        cellInd++;
+        var cell_event = row.insertCell(cellInd);
+        cell_event.innerHTML = t.event;
+
+        cellInd++;
+        var cell_deleteBtn = row.insertCell(cellInd);
+        cell_deleteBtn.innerHTML = addDeleteBtn();
+        cell_deleteBtn.classList.add("delete_button");
+    });
+    table.appendChild(tbody);
+}
+
+function addDeleteBtn() {
+    return "<button id=\"button-delete-trip\" type=\"button\" class=\"btn btn-primary\"\n" +
+        " onclick=\"deleteTrip( $(this).closest('tr').find('.table_id').text() )\">\n" +
+        "Delete</button>";
+}
+
 function submitUserDto() {
     var name = document.getElementById("name");
     var surname = document.getElementById("surname");

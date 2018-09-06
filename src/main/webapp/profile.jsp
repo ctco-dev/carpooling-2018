@@ -28,20 +28,14 @@
         <table class="table table-bordered" id="trips">
             <thead>
             <tr>
+                <th>id</th>
                 <th>Route</th>
                 <th>Places</th>
                 <th>Event</th>
                 <th></th>
             </tr>
             </thead>
-            <tbody>
-            <tr w3-repeat="trips">
-                <td>{{from}}-{{to}}</td>
-                <td>{{places}}</td>
-                <td>{{event}}</td>
-                <td><button id="button-delete-trip" class="btn btn-primary" onclick="deleteTrip()">Delete</button></td>
-            </tr>
-            </tbody>
+            <tbody></tbody>
         </table>
     </div>
 </div>

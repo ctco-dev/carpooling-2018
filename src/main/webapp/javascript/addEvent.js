@@ -43,21 +43,33 @@ function drawTable(eventsList, tabId){
     tbody = document.createElement('tbody');
     eventsList.forEach(function (e) {
         var row = tbody.insertRow();
-        var cell1 = row.insertCell(0);
-        var cell2 = row.insertCell(1);
-        var cell3 = row.insertCell(2);
-        var cell4 = row.insertCell(3);
-        var cell5 = row.insertCell(4);
-        cell1.innerHTML = e.eventName;
-        cell2.innerHTML = e.eventDate;
-        cell3.innerHTML = e.eventTime;
-        cell4.innerHTML = e.eventPlace;
-        cell5.innerHTML =
-            "<button type=\"button\" class=\"btn btn-primary\" onclick=\"\">delete</button>";
+
+        var cellInd=0;
+        var cell_name = row.insertCell(cellInd);
+        cell_name.innerHTML = e.eventName;
+
+        cellInd++;
+        var cell_date = row.insertCell(cellInd);
+        cell_date.innerHTML = e.eventDate;
+
+        cellInd++;
+        var cell_time = row.insertCell(cellInd);
+        cell_time.innerHTML = e.eventTime;
+
+        cellInd++;
+        var cell_place = row.insertCell(cellInd);
+        cell_place.innerHTML = e.eventPlace;
+
+        cellInd++;
+        var cell_deleteBtn = row.insertCell(cellInd);
+        cell_deleteBtn.innerHTML = addDeleteBtn();
     });
     table.appendChild(tbody);
 }
 
+function addDeleteBtn(){
+    return "<button type=\"button\" class=\"btn btn-primary\" onclick=\"\">delete</button>";
+}
 
 function addNewEvent(data) {
     fetch('/api/trip/createEvent', {

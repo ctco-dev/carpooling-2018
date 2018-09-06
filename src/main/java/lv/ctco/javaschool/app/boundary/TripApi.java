@@ -90,6 +90,14 @@ public class TripApi {
         dto.setPlaces(trip.getPlaces());
         dto.setTime(trip.getDepartureTime());
         dto.setTripStatus(trip.getTripStatus());
+
+        List<String> passList = new ArrayList<>();
+        if (trip.getPassengers() != null) {
+            for (User u : trip.getPassengers()) {
+                passList.add(u.getName() + " " + u.getSurname());
+            }
+        }
+        dto.setPassengers(passList);
         return dto;
     }
 

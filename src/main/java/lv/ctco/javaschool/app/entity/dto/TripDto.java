@@ -20,7 +20,9 @@ public class TripDto {
     private boolean isEvent;
     private Event event;
     private TripStatus tripStatus;
-    private List<UserLoginDto> passengers;
+    private List<String> passengers;
+    private Boolean hasJoined;
+    private Boolean isDriver;
 
     public TripDto() {
     }
@@ -117,12 +119,29 @@ public class TripDto {
         this.tripStatus = tripStatus;
     }
 
-    public List<UserLoginDto> getPassengers() {
+
+    public List<String> getPassengers() {
         return passengers;
     }
 
-    public void setPassengers(List<UserLoginDto> passengers) {
+    public void setPassengers(List<String> passengers) {
         this.passengers = passengers;
+    }
+
+    public Boolean getHasJoined() {
+        return hasJoined;
+    }
+
+    public void setHasJoined(Boolean hasJoined) {
+        this.hasJoined = hasJoined;
+    }
+
+    public Boolean getIsADriver() {
+        return isDriver;
+    }
+
+    public void setIsADriver(Boolean driver) {
+        isDriver = driver;
     }
 
     @Override

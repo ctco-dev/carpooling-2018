@@ -13,6 +13,7 @@
     <script src="javascript/common.js"></script>
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.10.0/jquery.timepicker.css"
           crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="css/addEvent.css">
@@ -37,13 +38,15 @@
                         <th>Event Date</th>
                         <th>Event Time</th>
                         <th>Event Place</th>
+                        <th></th>
                     </tr>
                     </thead>
+                    <tbody></tbody>
                 </table>
             </div>
         </td>
 
-        <td class="mainTableCol">
+        <td width="400px">
             <div id="newEvent">
                 <form method="post">
                     <p><b>Name of Event</b></p>

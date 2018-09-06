@@ -39,32 +39,8 @@
             <th></th>
         </tr>
         </thead>
-        <tbody>
-        <tr w3-repeat="trips">
-            <td class="table_id" id="id">{{id}}</td>
-            <td>{{from}}-{{to}}</td>
-            <td>{{driverInfo}}</td>
-            <td>{{driverPhone}}</td>
-            <td class="table_places" id="places">{{places}}</td>
-            <td>
-                <div id="passengers">
-                    <button type="button" class="btn btn-primary"
-                            onclick="showPassengers($(this).closest('tr').find('.table_id').text())">passengers
-                    </button>
-                </div>
-            </td>
-            <td>{{event}}</td>
-            <td>
-                <button id="join-button" type="button" class="btn btn-primary"
-                        onclick="join(this, $(this).closest('tr').find('.table_id').text(), $(this).closest('td').parent().index(), $(this).closest('tr').find('.table_places').text())">
-                    Join
-                </button>
-            </td>
-        </tr>
-        </tbody>
+        <tbody></tbody>
     </table>
-    <div id="passenger_list">
-    </div>
 </div>
 <a href="addNewTrip.jsp">
     <button type="button" class="btn btn-primary">Add trip</button>

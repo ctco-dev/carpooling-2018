@@ -15,7 +15,6 @@ function buildEventDto() {
         "usernames": selectedUsers
     };
     addNewEvent(dto);
-    console.log(dto);
 }
 
 function showMyEvents() {
@@ -27,28 +26,38 @@ function showMyEvents() {
         }
     }).then(function (response) {
         return response.json();
-    }).then(function (events) {
-        var table = document.getElementById("events");
-        deleteRows();
-        events.forEach(function (e) {
-            var row = table.insertRow();
-            var cell1 = row.insertCell(0);
-            var cell2 = row.insertCell(1);
-            var cell3 = row.insertCell(2);
-            var cell4 = row.insertCell(3);
-            cell1.innerHTML = e.eventName;
-            cell2.innerHTML = e.eventDate;
-            cell3.innerHTML = e.eventTime;
-            cell4.innerHTML = e.eventPlace;
-        });
-        window.setTimeout(function () {
-            showMyEvents();
-        }, 1000);
+    }).then(function (eventsList) {
+        drawTable(eventsList, "events");
+        window.setTimeout(function () {showMyEvents(); }, 1000);
     });
 }
 
+
+
+function drawTable(eventsList, tabId){
+    var table = document.getElementById(tabId);
+    var tbody = table.getElementsByTagName('tbody')[0];
+    if (tbody) table.removeChild(tbody);
+
+    tbody = document.createElement('tbody');
+    eventsList.forEach(function (e) {
+        var row = tbody.insertRow();
+        var cell1 = row.insertCell(0);
+        var cell2 = row.insertCell(1);
+        var cell3 = row.insertCell(2);
+        var cell4 = row.insertCell(3);
+        var cell5 = row.insertCell(4);
+        cell1.innerHTML = e.eventName;
+        cell2.innerHTML = e.eventDate;
+        cell3.innerHTML = e.eventTime;
+        cell4.innerHTML = e.eventPlace;
+        cell5.innerHTML =
+            "<button type=\"button\" class=\"btn btn-primary\" onclick=\"\">delete</button>";
+    });
+    table.appendChild(tbody);
+}
+
 function addNewEvent(data) {
-    console.log(data);
     fetch('/api/trip/createEvent', {
         "method": "POST",
         headers: {
@@ -105,12 +114,6 @@ function showUsers() {
     });
 }
 
-function deleteRows() {
-    var rowCount = events.rows.length;
-    for (var i = rowCount - 1; i > 0; i--) {
-        events.deleteRow(i);
-    }
-}
 
 var remove = function () {
     var index = selectedUsers.indexOf(this.parentNode.lastChild.innerHTML);

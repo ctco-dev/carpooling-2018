@@ -29,14 +29,15 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyList;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 class TripApiTest {
 
@@ -52,7 +53,7 @@ class TripApiTest {
     @InjectMocks
     private TripApi tripApi;
 
-    private List<User> users;
+    private List<User> users, emptyUsers;
     private User user1;
     private User user2;
     private User user3;
@@ -76,6 +77,7 @@ class TripApiTest {
     @BeforeEach
     void setUp() {
         users = new ArrayList<>();
+        emptyUsers = new ArrayList<>();
         user1 = new User("bastard", "pass1", "Hans", "Landa", "1111111");
         user2 = new User("vader", "pass2", "Anakin", "Skywalker", "2222222");
         user3 = new User("brother", "pass3", "Danila", "Bagrov", "3333333");
@@ -87,7 +89,7 @@ class TripApiTest {
         trip3 = new Trip(user3, Place.IMANTA, Place.CTCO, 3, "08:30", false, event4, TripStatus.ACTIVE);
         Collections.addAll(trips, trip1, trip2, trip3);
 
-        emptyEvents = new ArrayList<>();
+        emptyEvents=new ArrayList<>();
         events = new ArrayList<>();
         event1 = new Event("Team-building", "22.09.2018", "12:00", Place.BOLDERAJA);
         event2 = new Event("Christmas-party", "23.12.2018", "19:00", Place.CTCO);
@@ -95,18 +97,18 @@ class TripApiTest {
         event4=new Event();
         Collections.addAll(events, event1, event2, event3);
 
-        usernames.add(user1.getName() + " " + user1.getSurname());
-        usernames.add(user2.getName() + " " + user2.getSurname());
-        usernames.add(user3.getName() + " " + user3.getSurname());
+        usernames.add(user1.getName()+" "+user1.getSurname());
+        usernames.add(user2.getName()+" "+user2.getSurname());
+        usernames.add(user3.getName()+" "+user3.getSurname());
     }
 
 //    @Test
 //    @DisplayName("Check getting sorted list of TripDto and calling tripStore.findTripsByStatus()")
 //    void getActiveTrips() {
 //        List<TripDto> tripDtos = new ArrayList<>();
-//        TripDto tripDto1 = new TripDto("Landa Hans", "1111111", Place.AGENSKALNS, Place.CTCO, 3, "09:00", false, event4, TripStatus.ACTIVE);
-//        TripDto tripDto2 = new TripDto("Skywalker Anakin", "2222222", Place.CTCO, Place.CENTRS, 2, "18:00", true, event4, TripStatus.ACTIVE);
-//        TripDto tripDto3 = new TripDto("Bagrov Danila", "3333333", Place.IMANTA, Place.CTCO, 3, "08:30", false, event4, TripStatus.ACTIVE);
+//        TripDto tripDto1 = new TripDto("Hans Landa", "1111111", Place.AGENSKALNS, Place.CTCO, 3, "09:00", false, TripStatus.ACTIVE);
+//        TripDto tripDto2 = new TripDto("Anakin Skywalker", "2222222", Place.CTCO, Place.CENTRS, 2, "18:00", true, TripStatus.ACTIVE);
+//        TripDto tripDto3 = new TripDto("Danila Bagrov", "3333333", Place.IMANTA, Place.CTCO, 3, "08:30", false, TripStatus.ACTIVE);
 //        Collections.addAll(tripDtos, tripDto3, tripDto1, tripDto2);
 //        ListTripDto listTripDto = new ListTripDto();
 //        listTripDto.setTrips(tripDtos);
@@ -120,72 +122,97 @@ class TripApiTest {
 //        verify(tripStore, times(1)).findTripsByStatus(TripStatus.ACTIVE);
 //    }
 
-    @Test
-    @DisplayName("Check getting sorted list of TripDto and calling tripStore.findTripsByUser() method with the correct argument")
-    void getTripsForDriver() {
-        List<Trip> driverTrips = new ArrayList<>();
-        Trip trip4 = new Trip(user1, Place.IMANTA, Place.CTCO, 2, "08:00", false, event4, TripStatus.ACTIVE);
-        Trip trip5 = new Trip(user1, Place.CTCO, Place.IMANTA, 2, "19:00", false,event4 , TripStatus.ACTIVE);
-        Collections.addAll(driverTrips, trip1, trip4, trip5);
-        List<TripDto> tripDtos = new ArrayList<>();
-        TripDto tripDto1 = new TripDto("Landa Hans", "1111111", Place.AGENSKALNS, Place.CTCO, 3, "09:00", false, event4, TripStatus.ACTIVE);
-        TripDto tripDto2 = new TripDto("Landa Hans", "1111111", Place.IMANTA, Place.CTCO, 2, "08:00", false, event4, TripStatus.ACTIVE);
-        TripDto tripDto3 = new TripDto("Landa Hans", "1111111", Place.CTCO, Place.IMANTA, 2, "19:00", false, event4, TripStatus.ACTIVE);
-        Collections.addAll(tripDtos, tripDto2, tripDto1, tripDto3);
-        ListTripDto listTripDto = new ListTripDto();
-        listTripDto.setTrips(tripDtos);
-        when(tripStore.findTripsByUser(user1)).thenReturn(driverTrips);
-        when(userStore.getCurrentUser()).thenReturn(user1);
-        int i = 0;
-        for (TripDto tripDto :
-                tripApi.getTripsForDriver().getTrips()) {
-            assertEquals(tripDtos.get(i), tripDto);
-            i++;
-        }
-        verify(tripStore, times(1)).findTripsByUser(user1);
-    }
+//    @Test
+//    @DisplayName("Check getting sorted list of TripDto and calling tripStore.findTripsByUser() method with the correct argument")
+//    void getTripsForDriver() {
+//        List<Trip> driverTrips = new ArrayList<>();
+//        Trip trip4 = new Trip(user1, Place.IMANTA, Place.CTCO, 2, "08:00", false, event4, TripStatus.ACTIVE);
+//        Trip trip5 = new Trip(user1, Place.CTCO, Place.IMANTA, 2, "19:00", false,event4 , TripStatus.ACTIVE);
+//        Collections.addAll(driverTrips, trip1, trip4, trip5);
+//        List<TripDto> tripDtos = new ArrayList<>();
+//        TripDto tripDto1 = new TripDto("Hans Landa", "1111111", Place.AGENSKALNS, Place.CTCO, 3, "09:00", false, TripStatus.ACTIVE);
+//        TripDto tripDto2 = new TripDto("Hans Landa", "1111111", Place.IMANTA, Place.CTCO, 2, "08:00", false, TripStatus.ACTIVE);
+//        TripDto tripDto3 = new TripDto("Hans Landa", "1111111", Place.CTCO, Place.IMANTA, 2, "19:00", false, TripStatus.ACTIVE);
+//        Collections.addAll(tripDtos, tripDto2, tripDto1, tripDto3);
+//        ListTripDto listTripDto = new ListTripDto();
+//        listTripDto.setTrips(tripDtos);
+//        when(tripStore.findTripsByUser(user1)).thenReturn(driverTrips);
+//        when(userStore.getCurrentUser()).thenReturn(user1);
+//        int i = 0;
+//        for (TripDto tripDto :
+//                tripApi.getTripsForDriver().getTrips()) {
+//            assertEquals(tripDtos.get(i), tripDto);
+//            i++;
+//        }
+//        verify(tripStore, times(1)).findTripsByUser(user1);
+//    }
 
     @Test
     @DisplayName("Check calling userStore.getCurrentUser(), tripStore.findTripById() methods with the correct arguments")
-    void setTripPlacesAndUserTest() {
+    void setUserForATripTest() {
         User user = new User();
-        JoinTripDto joinTripDto = new JoinTripDto();
-        joinTripDto.setPlaces(2);
         trip1.setId(2L);
         trip1.setPassengers(users);
         when(userStore.getCurrentUser()).thenReturn(user);
         when(tripStore.findTripById(2L)).thenReturn(Optional.of(trip1));
-        tripApi.setTripPlacesAndUser(joinTripDto, 2L);
+        tripApi.setUserForATrip(2L);
         verify(userStore, times(1)).getCurrentUser();
         verify(tripStore, times(1)).findTripById(2L);
     }
 
     @Test
     @DisplayName("Check for throwing the ValidationException and calling userStore.getCurrentUser(), tripStore.findTripById() methods with the correct arguments")
-    void setTripPlacesAndUserTestForFor405ResponseStatusCode() {
-        JoinTripDto joinTripDto = new JoinTripDto();
-        joinTripDto.setPlaces(2);
+    void setUserForATripTestFor400ResponseStatusCode() {
         trip2.setId(2L);
         trip2.setPassengers(users);
         when(userStore.getCurrentUser()).thenReturn(user1);
         when(tripStore.findTripById(2L)).thenReturn(Optional.of(trip2));
-        assertThrows(ValidationException.class, () -> tripApi.setTripPlacesAndUser(joinTripDto, 2L));
+        assertThrows(ValidationException.class, () -> tripApi.setUserForATrip(2L));
         verify(userStore, times(1)).getCurrentUser();
         verify(tripStore, times(1)).findTripById(2L);
     }
 
     @Test
     @DisplayName("Check for throwing the ValidationException when setTripPlacesAndUser() method is called with a nonexistent trip id")
-    void setTripPlacesAndUserTestForValidationException() {
-        assertThrows(ValidationException.class, () -> tripApi.setTripPlacesAndUser(new JoinTripDto(), 42L));
+    void setUserForATripTestForValidationException() {
+        assertThrows(ValidationException.class, () -> tripApi.setUserForATrip(42L));
     }
 
+    @Test
+    @DisplayName("Check calling userStore.getCurrentUser(), tripStore.findTripById() methods with the correct arguments")
+    void removeUserFromTripTest() {
+        trip1.setId(2L);
+        trip1.setPassengers(users);
+        when(userStore.getCurrentUser()).thenReturn(user1);
+        when(tripStore.findTripById(2L)).thenReturn(Optional.of(trip1));
+        tripApi.removeUserFromTrip(2L);
+        verify(userStore, times(1)).getCurrentUser();
+        verify(tripStore, times(1)).findTripById(2L);
+    }
+
+    @Test
+    @DisplayName("Check for throwing the ValidationException and calling userStore.getCurrentUser(), tripStore.findTripById() methods with the correct arguments")
+    void removeUserFromTripTestFor400ResponseStatusCode() {
+        trip2.setId(2L);
+        trip2.setPassengers(emptyUsers);
+        when(userStore.getCurrentUser()).thenReturn(user1);
+        when(tripStore.findTripById(2L)).thenReturn(Optional.of(trip2));
+        assertThrows(ValidationException.class, () -> tripApi.removeUserFromTrip(2L));
+        verify(userStore, times(1)).getCurrentUser();
+        verify(tripStore, times(1)).findTripById(2L);
+    }
+
+    @Test
+    @DisplayName("Check for throwing the ValidationException when setTripPlacesAndUser() method is called with a nonexistent trip id")
+    void removeUserFromTripTestForValidationException() {
+        assertThrows(ValidationException.class, () -> tripApi.removeUserFromTrip(42L));
+    }
 
     @Test
     @DisplayName("Check getting Response.Status.CREATED and calling userStore.getCurrentUser(), em.persist() methods")
     void createNewTrip() {
         when(userStore.getCurrentUser()).thenReturn(user1);
-        TripDto tripDto = new TripDto("Landa Hans", "1111111", Place.AGENSKALNS, Place.CTCO, 3, "09:00", false, event4, TripStatus.ACTIVE);
+        TripDto tripDto = new TripDto("Hans Landa", "1111111", Place.AGENSKALNS, Place.CTCO, 3, "09:00", false, event4, TripStatus.ACTIVE);
         assertEquals(Response.Status.CREATED.getStatusCode(), tripApi.createNewTrip(tripDto).getStatus());
         verify(userStore, times(1)).getCurrentUser();
         verify(em, times(1)).persist(any(Trip.class));
@@ -211,7 +238,6 @@ class TripApiTest {
         assertEquals("Danila", userDto2.getName());
         assertEquals("Bagrov", userDto2.getSurname());
     }
-
 
     @Test
     @DisplayName("Check that received Dto's list corresponds with list of events")
@@ -248,16 +274,16 @@ class TripApiTest {
 
     @Test
     @DisplayName("Check if getting empty list of events return empty dto")
-    void checkIfGettingEventsReturnsEmptyDto() {
+    void checkIfGettingEventsReturnsEmptyDto(){
         when(userStore.getCurrentUser()).thenReturn(user1);
         when(tripStore.findAllEventsForEventPage(any(User.class))).thenReturn(emptyEvents);
-        List<EventDto> result = tripApi.getAllEventsForUser();
+        List<EventDto> result=tripApi.getAllEventsForUser();
         verify(userStore, times(1)).getCurrentUser();
         verify(tripStore, times(1)).findAllEventsForEventPage(any(User.class));
         assertTrue(result.isEmpty());
     }
 
-    private Optional<User> getUserByFullname(String fullname) {
+    private Optional<User> getUserByFullname(String fullname){
         if (fullname.equals(user1.getName() + " " + user1.getSurname())) return Optional.of(user1);
         if (fullname.equals(user2.getName() + " " + user2.getSurname())) return Optional.of(user2);
         if (fullname.equals(user3.getName() + " " + user3.getSurname())) return Optional.of(user3);
@@ -316,7 +342,7 @@ class TripApiTest {
 
     @Test
     @DisplayName("Check getting Response.Status.CREATED for new event")
-    void createNewEventIsCreated() {
+    void createNewEventIsCreated(){
         when(userStore.getCurrentUser()).thenReturn(user1);
         when(userStore.findUserByNameAndSurname(any(String.class)))
                 .thenAnswer(invocation -> {

@@ -29,7 +29,6 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -66,7 +65,7 @@ class TripApiTest {
     private Event event1;
     private Event event2;
     private Event event3;
-    private Event event4;
+    private Event emptyEvent = new Event();
     List<String> usernames = new ArrayList<>();
 
     @BeforeEach
@@ -83,19 +82,18 @@ class TripApiTest {
         user3 = new User("brother", "pass3", "Danila", "Bagrov", "3333333");
         Collections.addAll(users, user1, user2, user3);
 
-        trips = new ArrayList<>();
-        trip1 = new Trip(user1, Place.AGENSKALNS, Place.CTCO, 3, "09:00", false, event4, TripStatus.ACTIVE);
-        trip2 = new Trip(user2, Place.CTCO, Place.CENTRS, 2, "18:00", true, event2, TripStatus.ACTIVE);
-        trip3 = new Trip(user3, Place.IMANTA, Place.CTCO, 3, "08:30", false, event4, TripStatus.ACTIVE);
-        Collections.addAll(trips, trip1, trip2, trip3);
-
         emptyEvents=new ArrayList<>();
         events = new ArrayList<>();
         event1 = new Event("Team-building", "22.09.2018", "12:00", Place.BOLDERAJA);
         event2 = new Event("Christmas-party", "23.12.2018", "19:00", Place.CTCO);
         event3 = new Event("Garden-Party", "25.08.2018", "16:00", Place.CTCO);
-        event4=new Event();
         Collections.addAll(events, event1, event2, event3);
+
+        trips = new ArrayList<>();
+        trip1 = new Trip(user1, Place.AGENSKALNS, Place.CTCO, 3, "09:00", false, emptyEvent, TripStatus.ACTIVE);
+        trip2 = new Trip(user2, Place.CTCO, Place.CENTRS, 2, "18:00", true, event2, TripStatus.ACTIVE);
+        trip3 = new Trip(user3, Place.IMANTA, Place.CTCO, 3, "08:30", false, emptyEvent, TripStatus.ACTIVE);
+        Collections.addAll(trips, trip1, trip2, trip3);
 
         usernames.add(user1.getName()+" "+user1.getSurname());
         usernames.add(user2.getName()+" "+user2.getSurname());
@@ -106,10 +104,11 @@ class TripApiTest {
     @DisplayName("Check getting sorted list of TripDto and calling tripStore.findTripsByStatus()")
     void getActiveTrips() {
         List<TripDto> tripDtos = new ArrayList<>();
-        TripDto tripDto1 = new TripDto("Hans Landa", "1111111", Place.AGENSKALNS, Place.CTCO, 3, "09:00", false,event4, TripStatus.ACTIVE);
-        TripDto tripDto2 = new TripDto("Anakin Skywalker", "2222222", Place.CTCO, Place.CENTRS, 2, "18:00", true,event4, TripStatus.ACTIVE);
-        TripDto tripDto3 = new TripDto("Danila Bagrov", "3333333", Place.IMANTA, Place.CTCO, 3, "08:30", false,event4, TripStatus.ACTIVE);
-        Collections.addAll(tripDtos, tripDto3, tripDto1, tripDto2);
+
+        TripDto tripDto1 = new TripDto("Hans Landa", "1111111", Place.AGENSKALNS, Place.CTCO, 3, "09:00", false,emptyEvent, TripStatus.ACTIVE);
+        TripDto tripDto2 = new TripDto("Anakin Skywalker", "2222222", Place.CTCO, Place.CENTRS, 2, "18:00", true,event2, TripStatus.ACTIVE);
+        TripDto tripDto3 = new TripDto("Danila Bagrov", "3333333", Place.IMANTA, Place.CTCO, 3, "08:30", false,emptyEvent, TripStatus.ACTIVE);
+        Collections.addAll(tripDtos, tripDto1, tripDto2, tripDto3);
         ListTripDto listTripDto = new ListTripDto();
         listTripDto.setTrips(tripDtos);
         when(userStore.getCurrentUser()).thenReturn(user1);
@@ -127,13 +126,13 @@ class TripApiTest {
     @DisplayName("Check getting sorted list of TripDto and calling tripStore.findTripsByUser() method with the correct argument")
     void getTripsForDriver() {
         List<Trip> driverTrips = new ArrayList<>();
-        Trip trip4 = new Trip(user1, Place.IMANTA, Place.CTCO, 2, "08:00", false,null, TripStatus.ACTIVE);
-        Trip trip5 = new Trip(user1, Place.CTCO, Place.IMANTA, 2, "19:00", false,null, TripStatus.ACTIVE);
+        Trip trip4 = new Trip(user1, Place.IMANTA, Place.CTCO, 2, "08:00", false,emptyEvent, TripStatus.ACTIVE);
+        Trip trip5 = new Trip(user1, Place.CTCO, Place.IMANTA, 2, "19:00", false,emptyEvent, TripStatus.ACTIVE);
         Collections.addAll(driverTrips, trip1, trip4, trip5);
         List<TripDto> tripDtos = new ArrayList<>();
-        TripDto tripDto1 = new TripDto("Hans Landa", "1111111", Place.AGENSKALNS, Place.CTCO, 3, "09:00", false,event4, TripStatus.ACTIVE);
-        TripDto tripDto2 = new TripDto("Hans Landa", "1111111", Place.IMANTA, Place.CTCO, 2, "08:00", false,event4, TripStatus.ACTIVE);
-        TripDto tripDto3 = new TripDto("Hans Landa", "1111111", Place.CTCO, Place.IMANTA, 2, "19:00", false,event4, TripStatus.ACTIVE);
+        TripDto tripDto1 = new TripDto("Hans Landa", "1111111", Place.AGENSKALNS, Place.CTCO, 3, "09:00", false,emptyEvent, TripStatus.ACTIVE);
+        TripDto tripDto2 = new TripDto("Hans Landa", "1111111", Place.IMANTA, Place.CTCO, 2, "08:00", false,emptyEvent, TripStatus.ACTIVE);
+        TripDto tripDto3 = new TripDto("Hans Landa", "1111111", Place.CTCO, Place.IMANTA, 2, "19:00", false,emptyEvent, TripStatus.ACTIVE);
         Collections.addAll(tripDtos, tripDto2, tripDto1, tripDto3);
         ListTripDto listTripDto = new ListTripDto();
         listTripDto.setTrips(tripDtos);
@@ -233,7 +232,7 @@ class TripApiTest {
     @DisplayName("Check getting Response.Status.CREATED and calling userStore.getCurrentUser(), em.persist() methods")
     void createNewTrip() {
         when(userStore.getCurrentUser()).thenReturn(user1);
-        TripDto tripDto = new TripDto("Landa Hans", "1111111", Place.AGENSKALNS, Place.CTCO, 3, "09:00", false,event4, TripStatus.ACTIVE);
+        TripDto tripDto = new TripDto("Landa Hans", "1111111", Place.AGENSKALNS, Place.CTCO, 3, "09:00", false,emptyEvent, TripStatus.ACTIVE);
         assertEquals(Response.Status.CREATED.getStatusCode(), tripApi.createNewTrip(tripDto).getStatus());
         verify(userStore, times(1)).getCurrentUser();
         verify(em, times(1)).persist(any(Trip.class));

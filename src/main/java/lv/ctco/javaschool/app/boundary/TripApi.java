@@ -96,8 +96,7 @@ public class TripApi {
         dto.setDriverInfo(driver.getName() + " " + driver.getSurname());
         dto.setDriverPhone(driver.getPhoneNumber());
         dto.setEvent(trip.isEvent());
-        if(trip.getEvent()==null)
-        {
+        if(trip.getEvent()==null){
             dto.setEventName("");
             dto.setEventId(null);
         }else {

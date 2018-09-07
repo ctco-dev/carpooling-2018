@@ -206,7 +206,7 @@ public class TripApi {
 
     private EventDto convertEventToEventDtoFromCreatorPointOfView(Event event, User currentuser) {
         EventDto dto = new EventDto();
-        dto.setEventId(event.getId());
+        dto.setEventId(event.getEventId());
         dto.setEventName(event.getEventName());
         dto.setEventDate(DateTimeCoverter.covertToDate(event.getEventDateTime()));
         dto.setEventTime(DateTimeCoverter.covertToTime(event.getEventDateTime()));
@@ -283,7 +283,7 @@ public class TripApi {
     @Path("/deleteEvent/{id}")
     @RolesAllowed({"ADMIN", "USER"})
     public Response markEventAsDeleted(@PathParam("id") Long eventId) {
-        Optional<Event> foundEvent = tripStore.findEventById(eventId);
+        Optional<Event> foundEvent = tripStore.getEventById(eventId);
         if (foundEvent.isPresent()) {
             foundEvent.get().setDeletedStatus(true);
         } else {
@@ -305,7 +305,7 @@ public class TripApi {
         }
         return eventDto;
     }
-}
+
 
     @GET
     @Path("/deleteTrip/{id}")

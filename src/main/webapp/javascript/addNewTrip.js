@@ -16,7 +16,7 @@ function tripdto() {
     else {
         var isEvent = false;
         dto["isEvent"] = isEvent;
-        dto["eventName"] = null;
+        dto["eventName"] = "";
         dto["eventId"] = null;
 
     }

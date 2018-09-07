@@ -106,33 +106,34 @@ class TripApiTest {
     @DisplayName("Check getting sorted list of TripDto and calling tripStore.findTripsByStatus()")
     void getActiveTrips() {
         List<TripDto> tripDtos = new ArrayList<>();
-        TripDto tripDto1 = new TripDto("Hans Landa", "1111111", Place.AGENSKALNS, Place.CTCO, 3, "09:00", false, TripStatus.ACTIVE);
-        TripDto tripDto2 = new TripDto("Anakin Skywalker", "2222222", Place.CTCO, Place.CENTRS, 2, "18:00", true, TripStatus.ACTIVE);
-        TripDto tripDto3 = new TripDto("Danila Bagrov", "3333333", Place.IMANTA, Place.CTCO, 3, "08:30", false, TripStatus.ACTIVE);
+        TripDto tripDto1 = new TripDto("Hans Landa", "1111111", Place.AGENSKALNS, Place.CTCO, 3, "09:00", false,event4, TripStatus.ACTIVE);
+        TripDto tripDto2 = new TripDto("Anakin Skywalker", "2222222", Place.CTCO, Place.CENTRS, 2, "18:00", true,event4, TripStatus.ACTIVE);
+        TripDto tripDto3 = new TripDto("Danila Bagrov", "3333333", Place.IMANTA, Place.CTCO, 3, "08:30", false,event4, TripStatus.ACTIVE);
         Collections.addAll(tripDtos, tripDto3, tripDto1, tripDto2);
         ListTripDto listTripDto = new ListTripDto();
         listTripDto.setTrips(tripDtos);
-        when(tripStore.findTripsByStatus(any(TripStatus.class))).thenReturn(trips);
+        when(userStore.getCurrentUser()).thenReturn(user1);
+        when(tripStore.findTripsByStatus(any(TripStatus.class),any(User.class))).thenReturn(trips);
         int i = 0;
         for (TripDto tripDto :
                 tripApi.getActiveTrips().getTrips()) {
             assertEquals(tripDtos.get(i), tripDto);
             i++;
         }
-        verify(tripStore, times(1)).findTripsByStatus(TripStatus.ACTIVE);
+        verify(tripStore, times(1)).findTripsByStatus(TripStatus.ACTIVE,user1);
     }
 
     @Test
     @DisplayName("Check getting sorted list of TripDto and calling tripStore.findTripsByUser() method with the correct argument")
     void getTripsForDriver() {
         List<Trip> driverTrips = new ArrayList<>();
-        Trip trip4 = new Trip(user1, Place.IMANTA, Place.CTCO, 2, "08:00", false, TripStatus.ACTIVE);
-        Trip trip5 = new Trip(user1, Place.CTCO, Place.IMANTA, 2, "19:00", false, TripStatus.ACTIVE);
+        Trip trip4 = new Trip(user1, Place.IMANTA, Place.CTCO, 2, "08:00", false,null, TripStatus.ACTIVE);
+        Trip trip5 = new Trip(user1, Place.CTCO, Place.IMANTA, 2, "19:00", false,null, TripStatus.ACTIVE);
         Collections.addAll(driverTrips, trip1, trip4, trip5);
         List<TripDto> tripDtos = new ArrayList<>();
-        TripDto tripDto1 = new TripDto("Hans Landa", "1111111", Place.AGENSKALNS, Place.CTCO, 3, "09:00", false, TripStatus.ACTIVE);
-        TripDto tripDto2 = new TripDto("Hans Landa", "1111111", Place.IMANTA, Place.CTCO, 2, "08:00", false, TripStatus.ACTIVE);
-        TripDto tripDto3 = new TripDto("Hans Landa", "1111111", Place.CTCO, Place.IMANTA, 2, "19:00", false, TripStatus.ACTIVE);
+        TripDto tripDto1 = new TripDto("Hans Landa", "1111111", Place.AGENSKALNS, Place.CTCO, 3, "09:00", false,event4, TripStatus.ACTIVE);
+        TripDto tripDto2 = new TripDto("Hans Landa", "1111111", Place.IMANTA, Place.CTCO, 2, "08:00", false,event4, TripStatus.ACTIVE);
+        TripDto tripDto3 = new TripDto("Hans Landa", "1111111", Place.CTCO, Place.IMANTA, 2, "19:00", false,event4, TripStatus.ACTIVE);
         Collections.addAll(tripDtos, tripDto2, tripDto1, tripDto3);
         ListTripDto listTripDto = new ListTripDto();
         listTripDto.setTrips(tripDtos);
@@ -217,7 +218,7 @@ class TripApiTest {
         event.setDeletedStatus(true);
         when(tripStore.getEventById(eventId)).thenReturn(Optional.of(event));
         assertEquals(Response.Status.ACCEPTED.getStatusCode(), tripApi.markEventAsDeleted( eventId).getStatus());
-        verify(tripStore, times(1)).findEventById( any(Long.class));
+        verify(tripStore, times(1)).getEventById( any(Long.class));
     }
 
 
@@ -232,7 +233,7 @@ class TripApiTest {
     @DisplayName("Check getting Response.Status.CREATED and calling userStore.getCurrentUser(), em.persist() methods")
     void createNewTrip() {
         when(userStore.getCurrentUser()).thenReturn(user1);
-        TripDto tripDto = new TripDto("Landa Hans", "1111111", Place.AGENSKALNS, Place.CTCO, 3, "09:00", false, TripStatus.ACTIVE);
+        TripDto tripDto = new TripDto("Landa Hans", "1111111", Place.AGENSKALNS, Place.CTCO, 3, "09:00", false,event4, TripStatus.ACTIVE);
         assertEquals(Response.Status.CREATED.getStatusCode(), tripApi.createNewTrip(tripDto).getStatus());
         verify(userStore, times(1)).getCurrentUser();
         verify(em, times(1)).persist(any(Trip.class));

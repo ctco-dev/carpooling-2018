@@ -13,13 +13,13 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.10.0/jquery.timepicker.js"></script>
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.10.0/jquery.timepicker.css"
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.10.0/jquery.timepicker.css">
     <script src="javascript/common.js"></script>
     <title>Add new Trip</title>
 </head>
 <body onload="addOptionValues()">
 <div id="button-go-to-main-page">
-    <button type="button" class="btn btn-link" onclick="goToMainPage()">Go back</button>
+    <button type="button" class="btn btn-primary" onclick="goToMainPage()">Go back</button>
 </div>
 <div>
     <h2>Add new trip:</h2>
@@ -43,7 +43,7 @@
         <tr>
             <td><b>Event:</b></td>
             <td><input type="radio" id="yes" name="isEvent" onchange="addRemoveEvent()" n> Yes<br>
-                <input type="radio" id="no" name="isEvent" onchange="addRemoveEvent()">No<br></td>
+                <input type="radio" id="no" name="isEvent" onchange="addRemoveEvent()"; checked>No<br></td>
         </tr>
         <tr id="event-name" class="w3-hide" >
             <td ><b>Event name:</b></td>
@@ -51,7 +51,7 @@
         </tr>
         <tr id="event-time" class="w3-hide">
             <td ><b>Event start date and time:</b></td>
-            <td><input name="input" id="time" type="text"></td>
+            <td><input name="input" id="time" type="text" readonly></td>
         </tr>
     </table>
 </div>

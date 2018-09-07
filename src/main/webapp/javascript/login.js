@@ -43,14 +43,12 @@ function switchRegistration() {
 }
 function login() {
     hideError();
-    console.log("start login");
     var usernameTxt = document.getElementById("username-txt");
     var passwordTxt = document.getElementById("password1-txt");
     var dto = {
         "username": usernameTxt.value,
         "password": passwordTxt.value
     };
-    console.log("sending login data");
     fetch('/api/auth/login', {
         "method": "POST",
         headers: {
@@ -60,7 +58,6 @@ function login() {
         body: JSON.stringify(dto)
     }).then(function (response) {
         if (response.status === 200) {
-            console.log("login success");
             location.href = "/main.jsp";
         } else {
             showError("Username or Password is incorrect!");
@@ -69,7 +66,6 @@ function login() {
 }
 function register(data) {
     hideError();
-    console.log("sending registration data");
     fetch('/api/auth/register', {
         "method": "POST",
         headers: {
@@ -79,7 +75,6 @@ function register(data) {
         body: JSON.stringify(data)
     }).then(function (response) {
         if (response.status === 200) {
-            console.log("registration success");
             location.href = "/main.jsp";
         } else if (response.status === 401) {
             showError("Something is wrong!");

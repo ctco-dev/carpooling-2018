@@ -168,7 +168,7 @@ public class TripApi {
         Trip trip = new Trip();
         trip.setDriver(user);
         trip.setIsEvent(dto.isEvent());
-        if (!dto.getEventName().equals("")) {
+        if (dto.getEventName()!=null && !dto.getEventName().equals("")) {
             Optional<Event> event = tripStore.getEventById(dto.getEventId());
             if (event.isPresent()) {
                 trip.setEvent(event.get());

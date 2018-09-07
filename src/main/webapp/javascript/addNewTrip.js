@@ -89,7 +89,7 @@ function saveTrip(values) {
 
 function showEvents() {
     var select = document.getElementsByClassName("event-name")[0];
-    fetch('/api/trip/events', {
+    fetch('/api/trip/eventList', {
         "method": "GET",
         headers: {
             'Accept': 'application/json',

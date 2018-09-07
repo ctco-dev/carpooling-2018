@@ -203,6 +203,20 @@ public class TripApi {
                 .collect(Collectors.toList());
     }
 
+    @GET
+    @Path("/eventList")
+    @Produces("application/json")
+    @RolesAllowed({"ADMIN", "USER"})
+    public List<EventDto> getAllEventsForParticipants() {
+        User user = userStore.getCurrentUser();
+        return tripStore.findAllEventsForTripPage(user)
+                .stream()
+                .map(this::convertEventToEventDto)
+                .collect(Collectors.toList());
+    }
+
+
+
     private EventDto convertEventToEventDto(Event event) {
         EventDto dto = new EventDto();
         dto.setEventId(event.getEventId());

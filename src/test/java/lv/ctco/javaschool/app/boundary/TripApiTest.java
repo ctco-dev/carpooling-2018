@@ -208,27 +208,16 @@ class TripApiTest {
         assertThrows(ValidationException.class, () -> tripApi.removeUserFromTrip(42L));
     }
 
-/*    @GET
-    @Path("/deleteEvent/{id}")
-    @RolesAllowed({"ADMIN", "USER"})
-    public void markEventAsDeleted(@PathParam("id") Long eventId) {
-        Optional<Event> foundEvent = tripStore.findEventById(eventId);
-        if (foundEvent.isPresent()) {
-            foundEvent.get().setDeletedStatus(true);
-        } else
-            throw new ValidationException("There is no such event");
-    }
-*/
-
-
     @Test
-    @DisplayName("Check calling userStore.getCurrentUser(), tripStore.findEventById() methods with the correct arguments")
+    @DisplayName("Check calling tripStore.findEventById() methods with the correct arguments")
     void markEventAsDeletedTest() {
-        event1.setId(2L);
-        event1.setDeletedStatus(true);
-        when(tripStore.findEventById(2L)).thenReturn(Optional.of(event1));
-        tripApi.markEventAsDeleted(2L);
-        verify(tripStore, times(1)).findEventById(2L);
+        Long eventId=7L;
+        Event event = new Event();
+        event.setId(eventId);
+        event.setDeletedStatus(true);
+        when(tripStore.findEventById(eventId)).thenReturn(Optional.of(event));
+        assertEquals(Response.Status.ACCEPTED.getStatusCode(), tripApi.markEventAsDeleted( eventId).getStatus());
+        verify(tripStore, times(1)).findEventById( any(Long.class));
     }
 
 

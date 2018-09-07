@@ -252,11 +252,13 @@ public class TripApi {
     @GET
     @Path("/deleteEvent/{id}")
     @RolesAllowed({"ADMIN", "USER"})
-    public void markEventAsDeleted(@PathParam("id") Long eventId) {
+    public Response markEventAsDeleted(@PathParam("id") Long eventId) {
         Optional<Event> foundEvent = tripStore.findEventById(eventId);
         if (foundEvent.isPresent()) {
             foundEvent.get().setDeletedStatus(true);
-        } else
+        } else {
             throw new ValidationException("There is no such event");
+        }
+        return Response.status(Response.Status.ACCEPTED).build();
     }
 }

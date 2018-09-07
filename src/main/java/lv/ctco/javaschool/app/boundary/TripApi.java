@@ -240,12 +240,14 @@ public class TripApi {
     @GET
     @Path("/deleteTrip/{id}")
     @RolesAllowed({"ADMIN", "USER"})
-    public void deleteTrip(@PathParam("id") Long tripID) {
+    public Response  deleteTrip(@PathParam("id") Long tripID) {
         Optional<Trip> foundTrip = tripStore.findTripById(tripID);
         System.out.println(tripID);
         if (foundTrip.isPresent()) {
             foundTrip.get().setTripStatus(TripStatus.FINISHED);
-        } else
+        } else {
             throw new ValidationException("There is no such trip");
+        }
+        return Response.status(Response.Status.OK).build();
     }
 }

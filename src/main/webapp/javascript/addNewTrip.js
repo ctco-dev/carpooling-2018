@@ -100,9 +100,10 @@ function showEvents() {
     }).then(function (events) {
         eventList = events;
         eventList.forEach(function (e) {
-            console.log(e)
+            console.log(e);
             select.add(new Option(e.eventName));
         });
+        showEventInfo();
     });
 }
 

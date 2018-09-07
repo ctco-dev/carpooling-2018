@@ -71,6 +71,7 @@ public class TripApi {
         ListTripDto listTripDto = new ListTripDto();
         listTripDto.setTrips(tripStore.findTripsByUser(currentUser)
                 .stream()
+                .filter(e -> (e.getTripStatus().equals(TripStatus.ACTIVE)))
                 .sorted(Comparator.comparing(Trip::getDepartureTime))
                 .map(t -> this.convertToTripDto(t, currentUser))
                 .collect(Collectors.toList()));
@@ -260,5 +261,19 @@ public class TripApi {
             throw new ValidationException("There is no such event");
         }
         return Response.status(Response.Status.ACCEPTED).build();
+    }
+
+    @GET
+    @Path("/deleteTrip/{id}")
+    @RolesAllowed({"ADMIN", "USER"})
+    public Response  deleteTrip(@PathParam("id") Long tripID) {
+        Optional<Trip> foundTrip = tripStore.findTripById(tripID);
+        System.out.println(tripID);
+        if (foundTrip.isPresent()) {
+            foundTrip.get().setTripStatus(TripStatus.FINISHED);
+        } else {
+            throw new ValidationException("There is no such trip");
+        }
+        return Response.status(Response.Status.OK).build();
     }
 }

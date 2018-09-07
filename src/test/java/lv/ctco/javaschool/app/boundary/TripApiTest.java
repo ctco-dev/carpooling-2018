@@ -28,10 +28,16 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyList;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 class TripApiTest {
 
@@ -195,10 +201,30 @@ class TripApiTest {
     }
 
     @Test
-    @DisplayName("Check for throwing the ValidationException when setTripPlacesAndUser() method is called with a nonexistent trip id")
+    @DisplayName("Check for throwing the ValidationException when removeUserFromTrip() method is called with a nonexistent trip id")
     void removeUserFromTripTestForValidationException() {
         assertThrows(ValidationException.class, () -> tripApi.removeUserFromTrip(42L));
     }
+
+    @Test
+    @DisplayName("Check calling tripStore.findEventById() methods with the correct arguments")
+    void markEventAsDeletedTest() {
+        Long eventId=7L;
+        Event event = new Event();
+        event.setId(eventId);
+        event.setDeletedStatus(true);
+        when(tripStore.findEventById(eventId)).thenReturn(Optional.of(event));
+        assertEquals(Response.Status.ACCEPTED.getStatusCode(), tripApi.markEventAsDeleted( eventId).getStatus());
+        verify(tripStore, times(1)).findEventById( any(Long.class));
+    }
+
+
+    @Test
+    @DisplayName("Check for throwing the ValidationException when markEventAsDeleted() method is called with a nonexistent trip id")
+    void markEventAsDeletedTestForValidationException() {
+        assertThrows(ValidationException.class, () -> tripApi.markEventAsDeleted(42L));
+    }
+
 
     @Test
     @DisplayName("Check getting Response.Status.CREATED and calling userStore.getCurrentUser(), em.persist() methods")

@@ -37,7 +37,7 @@
                         <th>Event Date</th>
                         <th>Event Time</th>
                         <th>Event Place</th>
-                        <th></th>
+                        <th> &nbsp; </th>
                     </tr>
                     </thead>
                     <tbody></tbody>

@@ -184,12 +184,25 @@ public class TripApi {
         User user = userStore.getCurrentUser();
         return tripStore.findAllEventsForEventPage(user)
                 .stream()
-                .map(this::convertEventToEventDto)
+                .map(e-> convertEventToEventDtoFromCreatorPointOfView(e, user))
                 .collect(Collectors.toList());
+    }
+
+    private EventDto convertEventToEventDtoFromCreatorPointOfView(Event event, User currentuser) {
+        EventDto dto = new EventDto();
+        dto.setEventId(event.getId());
+        dto.setEventName(event.getEventName());
+        dto.setEventDate(DateTimeCoverter.covertToDate(event.getEventDateTime()));
+        dto.setEventTime(DateTimeCoverter.covertToTime(event.getEventDateTime()));
+        dto.setEventPlace(event.getEventDestination());
+        dto.setUsernames(new ArrayList<>());
+        dto.setIamCreator( event.getEventCreator()!=null && event.getEventCreator().equals(currentuser) );
+        return dto;
     }
 
     private EventDto convertEventToEventDto(Event event) {
         EventDto dto = new EventDto();
+        dto.setEventId(event.getId());
         dto.setEventName(event.getEventName());
         dto.setEventDate(DateTimeCoverter.covertToDate(event.getEventDateTime()));
         dto.setEventTime(DateTimeCoverter.covertToTime(event.getEventDateTime()));
@@ -235,6 +248,19 @@ public class TripApi {
         return users.stream()
                 .map(this::convertToUserDto)
                 .collect(Collectors.toList());
+    }
+
+    @GET
+    @Path("/deleteEvent/{id}")
+    @RolesAllowed({"ADMIN", "USER"})
+    public Response markEventAsDeleted(@PathParam("id") Long eventId) {
+        Optional<Event> foundEvent = tripStore.findEventById(eventId);
+        if (foundEvent.isPresent()) {
+            foundEvent.get().setDeletedStatus(true);
+        } else {
+            throw new ValidationException("There is no such event");
+        }
+        return Response.status(Response.Status.ACCEPTED).build();
     }
 
     @GET

@@ -28,14 +28,16 @@ function showMyEvents() {
     }).then(function (response) {
         return response.json();
     }).then(function (eventsList) {
+        console.log(eventsList);
         drawTable(eventsList, "events");
-        window.setTimeout(function () {showMyEvents(); }, 1000);
+        window.setTimeout(function () {
+            showMyEvents();
+        }, 1000);
     });
 }
 
 
-
-function drawTable(eventsList, tabId){
+function drawTable(eventsList, tabId) {
     var table = document.getElementById(tabId);
     var tbody = table.getElementsByTagName('tbody')[0];
     if (tbody) table.removeChild(tbody);
@@ -44,7 +46,13 @@ function drawTable(eventsList, tabId){
     eventsList.forEach(function (e) {
         var row = tbody.insertRow();
 
-        var cellInd=0;
+        var cellInd = 0;
+        var cell_Id = row.insertCell(cellInd);
+        cell_Id.id = "id";
+        cell_Id.classList.add("table_id");
+        cell_Id.innerHTML = e.eventId;
+
+        cellInd++;
         var cell_name = row.insertCell(cellInd);
         cell_name.innerHTML = e.eventName;
 
@@ -62,13 +70,30 @@ function drawTable(eventsList, tabId){
 
         cellInd++;
         var cell_deleteBtn = row.insertCell(cellInd);
-        cell_deleteBtn.innerHTML = addDeleteBtn();
+        cell_deleteBtn.innerHTML = addDeleteBtn(e.iamCreator);
+        cell_deleteBtn.classList.add("delete_button");
     });
     table.appendChild(tbody);
 }
 
-function addDeleteBtn(){
-    return "<button type=\"button\" class=\"btn btn-primary\" onclick=\"\">delete</button>";
+function addDeleteBtn(showButton) {
+    if (showButton === false) return "";
+
+    return "<button id=\"delete-button\" type=\"button\" class=\"btn btn-primary\"\n" +
+        " onclick=\"deleteEvent( $(this).closest('tr').find('.table_id').text() )\">\n" +
+        "Delete</button>";
+}
+
+function deleteEvent(eventId) {
+    fetch('/api/trip/deleteEvent/' + eventId, {
+        "method": "GET",
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        }
+    }).then(function (response) {
+        showMyEvents();
+    });
 }
 
 function addNewEvent(data) {
@@ -129,7 +154,7 @@ function showUsers() {
 }
 
 
-var remove = function(){
+var remove = function () {
     var index = selectedUsers.indexOf(this.parentNode.lastChild.innerHTML);
     if (index > -1) {
         selectedUsers.splice(index, 1);

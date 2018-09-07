@@ -7,11 +7,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class EventDto {
+    private Long eventId;
     private String eventName;
     private String eventDate;
     private String eventTime;
     private Place eventPlace;
     private List<String> usernames;
+    private Boolean iamCreator;
+
 
     public EventDto() {
     }
@@ -22,6 +25,13 @@ public class EventDto {
         this.eventTime = eventTime;
         this.eventPlace = eventPlace;
         this.usernames = new ArrayList<>();
+    }
+
+    public Long getEventId() {
+        return eventId;
+    }
+    public void setEventId(Long eventId) {
+        this.eventId = eventId;
     }
 
     public List<String> getUsernames() {
@@ -50,4 +60,12 @@ public class EventDto {
 
     public String getEventTime() { return eventTime; }
     public void setEventTime(String eventTime) { this.eventTime = eventTime; }
+
+    public Boolean getIamCreator() {
+        return iamCreator;
+    }
+
+    public void setIamCreator(Boolean isACreator) {
+        this.iamCreator = isACreator;
+    }
 }

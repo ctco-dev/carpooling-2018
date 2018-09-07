@@ -21,11 +21,6 @@ public class TripStore {
     @PersistenceContext
     private EntityManager em;
 
-    public List<Trip> getAllTrips() {
-        return em.createQuery("select t from Trip t", Trip.class)
-                .getResultList();
-    }
-
     public List<Trip> findTripsByStatus(TripStatus tripStatus) {
         return em.createQuery("select t from Trip t where t.tripStatus = :status", Trip.class)
                 .setParameter("status", tripStatus)
@@ -45,26 +40,13 @@ public class TripStore {
                 .findFirst();
     }
 
-    public void addTrip(Trip trip) {
-        em.persist(trip);
-    }
-
-    public List<Event> findAllEventsForTripPage(User user){
-        return em.createQuery(
-                "select e from Event e "+
-                        "where e.eventDateTime >= :newDT" , Event.class)
-                .setParameter("newDT",   LocalDateTime.now() )
-                .getResultStream()
-                .filter(e -> e.getParticipants().contains(user))
-                .sorted(Comparator.comparing(Event::getEventDateTime))
-                .collect(Collectors.toList());
-    }
-
     public List<Event> findAllEventsForEventPage(User user){
         return em.createQuery(
                 "select e from Event e "+
-                        "where e.eventDateTime >= :newDT" , Event.class)
+                        "where e.eventDateTime >= :newDT " +
+                        "and e.isDeleted=:delFlag " , Event.class)
                 .setParameter("newDT",   LocalDateTime.now() )
+                .setParameter("delFlag",   false )
                 .getResultStream()
                 .filter(e -> ((e.getParticipants().contains(user)) || (e.getEventCreator().equals(user))) )
                 .sorted(Comparator.comparing(Event::getEventDateTime))
@@ -81,4 +63,10 @@ public class TripStore {
         em.persist(event);
     }
 
+    public Optional<Event> findEventById(Long id) {
+        return em.createQuery("select e from Event e where e.id = :id", Event.class)
+                .setParameter("id", id)
+                .getResultStream()
+                .findFirst();
+    }
 }

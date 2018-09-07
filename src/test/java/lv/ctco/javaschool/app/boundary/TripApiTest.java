@@ -8,13 +8,11 @@ import lv.ctco.javaschool.app.entity.domain.Place;
 import lv.ctco.javaschool.app.entity.domain.Trip;
 import lv.ctco.javaschool.app.entity.domain.TripStatus;
 import lv.ctco.javaschool.app.entity.dto.EventDto;
-import lv.ctco.javaschool.app.entity.dto.JoinTripDto;
 import lv.ctco.javaschool.app.entity.dto.ListTripDto;
 import lv.ctco.javaschool.app.entity.dto.TripDto;
 import lv.ctco.javaschool.auth.control.UserStore;
 import lv.ctco.javaschool.auth.entity.domain.User;
 import lv.ctco.javaschool.auth.entity.dto.UserDto;
-import lv.ctco.javaschool.auth.entity.dto.UserLoginDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -29,15 +27,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyList;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 class TripApiTest {
 
@@ -355,5 +349,16 @@ class TripApiTest {
         verify(userStore, times(usernames.size())).findUserByNameAndSurname(any(String.class));
         verify(tripStore, times(1)).addNewEvent(any(EventDto.class), any(User.class), anyList());
         assertEquals(Response.Status.CREATED.getStatusCode(), tripApi.createNewEvent(eventDto).getStatus());
+    }
+    @Test
+    @DisplayName("Check calling tripStore.findTripById() methods with the correct arguments")
+    void markTripAsDeletedTest() {
+        Long tripID=8L;
+        Trip trip = new Trip();
+        trip.setId(tripID);
+        trip.setTripStatus(TripStatus.FINISHED);
+        when(tripStore.findTripById(tripID)).thenReturn(Optional.of(trip));
+        assertEquals(Response.Status.OK.getStatusCode(), tripApi.deleteTrip( tripID).getStatus());
+        verify(tripStore, times(1)).findTripById( any(Long.class));
     }
 }

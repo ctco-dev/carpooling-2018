@@ -54,9 +54,8 @@ public class TripApi {
     public ListTripDto getActiveTrips() {
         User currentUser = userStore.getCurrentUser();
         ListTripDto listTripDto = new ListTripDto();
-        listTripDto.setTrips(tripStore.findTripsByStatus(TripStatus.ACTIVE)
+        listTripDto.setTrips(tripStore.getAllTrips()
                 .stream()
-                .sorted(Comparator.comparing(Trip::getDepartureTime))
                 .map(t -> this.convertToTripDto(t, currentUser))
                 .collect(Collectors.toList()));
         return listTripDto;
@@ -96,7 +95,15 @@ public class TripApi {
         dto.setDriverInfo(driver.getName() + " " + driver.getSurname());
         dto.setDriverPhone(driver.getPhoneNumber());
         dto.setEvent(trip.isEvent());
-        dto.setEvent(trip.getEvent().getEventName());
+        if(trip.getEvent()==null)
+        {
+            dto.setEventName("");
+            dto.setEventId(null);
+        }else {
+            dto.setEventName(trip.getEvent().getEventName());
+            dto.setEventId(trip.getEvent().getEventId());
+        }
+
         dto.setFrom(trip.getDeparture());
         dto.setTo(trip.getDestination());
         dto.setPlaces(trip.getPlaces() - passList.size());
@@ -159,8 +166,15 @@ public class TripApi {
         User user = userStore.getCurrentUser();
         Trip trip = new Trip();
         trip.setDriver(user);
-        trip.setEvent(dto.isEvent());
-        trip.setEvent(dto.getEvent());
+        trip.setIsEvent(dto.isEvent());
+        if (!dto.getEventName().equals("")) {
+            Optional<Event> event = tripStore.getEventById(dto.getEventId());
+            if (event.isPresent()) {
+                trip.setEvent(event.get());
+            } else {
+                throw new ValidationException("Event not found");
+            }
+        }
         trip.setDeparture(dto.getFrom());
         trip.setDestination(dto.getTo());
         trip.setPlaces(dto.getPlaces());
@@ -191,6 +205,7 @@ public class TripApi {
 
     private EventDto convertEventToEventDto(Event event) {
         EventDto dto = new EventDto();
+        dto.setEventId(event.getEventId());
         dto.setEventName(event.getEventName());
         dto.setEventDate(DateTimeCoverter.covertToDate(event.getEventDateTime()));
         dto.setEventTime(DateTimeCoverter.covertToTime(event.getEventDateTime()));
@@ -241,8 +256,13 @@ public class TripApi {
     @Path("/getEvent/{event}")
     @Produces("application/json")
     @RolesAllowed({"ADMIN", "USER"})
-    public Optional<Event> getEventInfo(@PathParam("event") String eventName) {
-       Optional<Event> event=tripStore.getEventByName(eventName);
-        return event;
+    public EventDto getEventInfo(@PathParam("event") Long eventId) {
+        EventDto eventDto = new EventDto();
+        Optional<Event> event = tripStore.getEventById(eventId);
+        if (event.isPresent()) {
+            Event event1 = event.get();
+            eventDto = convertEventToEventDto(event1);
+        }
+        return eventDto;
     }
 }

@@ -26,13 +26,13 @@ public class TripStore {
                 .getResultList();
     }
 
-    public List<Trip> findTripsByStatus(TripStatus tripStatus, User currentUser) {
+    public List<Trip> findTripsByStatus(TripStatus tripStatus) {
         return em.createQuery("select t from Trip t " +
                 "where t.tripStatus = :status", Trip.class)
                 .setParameter("status", tripStatus)
                 .getResultStream()
-                .filter(t-> ((t.getEvent()==null) || (t.getEvent().getParticipants().contains(currentUser))))
-                .sorted(Comparator.comparing(Trip::getDepartureTime))
+//                .filter(t-> ((t.getEvent()==null) || (t.getEvent().getParticipants().contains(currentUser))))
+               // .sorted(Comparator.comparing(Trip::getDepartureTime))
                 .collect(Collectors.toList());
     }
 
@@ -86,9 +86,9 @@ public class TripStore {
         em.persist(event);
     }
 
-    public Optional<Event> getEventByName(String eventName) {
-        return em.createQuery("select e from Event e where e.eventName=:eventName", Event.class)
-                .setParameter("eventName", eventName)
+    public Optional<Event> getEventById(Long eventId) {
+        return em.createQuery("select e from Event e where e.eventId=:eventId", Event.class)
+                .setParameter("eventId", eventId)
                 .getResultStream()
                 .findFirst();
     }

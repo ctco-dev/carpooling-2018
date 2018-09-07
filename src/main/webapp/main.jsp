@@ -29,7 +29,6 @@
     <table class="table table-bordered" id="trips">
         <thead>
         <tr>
-            <!--th>Id</th-->
             <th>Route</th>
             <th>Driver</th>
             <th>Driver phone</th>

@@ -18,7 +18,8 @@ public class TripDto {
     private int places;
     private String time;
     private boolean isEvent;
-    private Event event;
+    private String eventName;
+    private Long eventId;
     private TripStatus tripStatus;
     private List<String> passengers;
     private Boolean hasJoined;
@@ -35,16 +36,25 @@ public class TripDto {
         this.places = places;
         this.time = time;
         this.isEvent = isEvent;
-        this.event = event;
+        this.eventName = event.getEventName();
+        this.eventId=event.getEventId();
         this.tripStatus = tripStatus;
     }
 
-    public Event getEvent() {
-        return event;
+    public String getEventName() {
+        return eventName;
     }
 
-    public void setEvent(Event event) {
-        this.event = event;
+    public void setEventName(String eventName) {
+        this.eventName = eventName;
+    }
+
+    public Long getEventId() {
+        return eventId;
+    }
+
+    public void setEventId(Long eventId) {
+        this.eventId = eventId;
     }
 
     public Long getId() {
@@ -151,7 +161,8 @@ public class TripDto {
         TripDto tripDto = (TripDto) o;
         return places == tripDto.places &&
                 isEvent == tripDto.isEvent &&
-                event ==tripDto.event &&
+                eventName ==tripDto.eventName &&
+                eventId ==tripDto.eventId &&
                 Objects.equals(driverInfo, tripDto.driverInfo) &&
                 Objects.equals(driverPhone, tripDto.driverPhone) &&
                 from == tripDto.from &&
@@ -162,6 +173,6 @@ public class TripDto {
 
     @Override
     public int hashCode() {
-        return Objects.hash(driverInfo, driverPhone, from, to, places, time, isEvent, event, tripStatus);
+        return Objects.hash(driverInfo, driverPhone, from, to, places, time, isEvent, eventName, tripStatus);
     }
 }

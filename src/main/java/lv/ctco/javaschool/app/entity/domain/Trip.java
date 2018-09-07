@@ -38,6 +38,7 @@ public class Trip {
     private String departureTime;
 
     @ManyToOne
+    @JoinColumn(name = "event_id")
     private Event event;
 
     private boolean isEvent;
@@ -118,7 +119,7 @@ public class Trip {
         return isEvent;
     }
 
-    public void setEvent(boolean event) {
+    public void setIsEvent(boolean event) {
         isEvent = event;
     }
 
@@ -143,5 +144,8 @@ public class Trip {
 
     public void setEvent(Event event) {
         this.event = event;
+    }
+
+    public void setEventName(String eventName) {
     }
 }

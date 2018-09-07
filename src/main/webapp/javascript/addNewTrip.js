@@ -7,22 +7,23 @@ function tripdto() {
     var places = document.getElementById("places");
     var eventName = document.getElementById("name");
     if (yesChkBox.checked) {
-        var isEvent = "true";
+        var isEvent = true;
         dto["isEvent"] = isEvent;
         dto["eventName"] = eventName.options[eventName.selectedIndex].value;
+        dto["eventId"] = eventName.selectedIndex;
     }
     else {
-        var isEvent = "false";
+        var isEvent = false;
         dto["isEvent"] = isEvent;
-        var notEvent = " ";
-        dto["eventName"] = notEvent;
+        dto["eventName"] = null;
+        dto["eventId"] = null;
 
     }
     dto["to"] = destination.options[destination.selectedIndex].value;
     dto["from"] = departure.options[departure.selectedIndex].value;
     dto["places"] = places.value;
     dto["time"] = departureTime.value;
-    dto["tripStatus"] = "ACTIVE"
+    dto["tripStatus"] = "ACTIVE";
     saveTrip(dto);
 }
 
@@ -49,13 +50,18 @@ function addRemoveEvent() {
     var yesChkBox = document.getElementById("yes");
     var noChkBox = document.getElementById("no");
     if (yesChkBox.checked) {
+
         noChkBox.checked = false;
+        console.log(yesChkBox.checked);
+        console.log(noChkBox.checked)
         document.getElementById('event-name').classList.remove("w3-hide");
         document.getElementById('event-time').classList.remove("w3-hide");
         showEvents();
     }
     if (noChkBox.checked) {
         yesChkBox.checked = false;
+        console.log(noChkBox.checked)
+        console.log(yesChkBox.checked);
         document.getElementById('event-name').classList.add("w3-hide");
         document.getElementById('event-time').classList.add("w3-hide");
     }
@@ -70,9 +76,15 @@ function saveTrip(values) {
         },
         body: JSON.stringify(values)
     }).then(function (response) {
-        location.href = "/main.jsp";
+        if (response.status == 400) {
+            alert("Event not found")
+        } else if (response.status === 201) {
+            console.log(values)
+           location.href = "/main.jsp";
+        }
     })
 }
+var eventList = [];
 
 function showEvents() {
     var select = document.getElementsByClassName("event-name")[0];
@@ -85,7 +97,9 @@ function showEvents() {
     }).then(function (response) {
         return response.json();
     }).then(function (events) {
-        events.forEach(function (e) {
+        eventList = events;
+        eventList.forEach(function (e) {
+            console.log(e)
             select.add(new Option(e.eventName));
         });
     });
@@ -93,7 +107,7 @@ function showEvents() {
 
 function showEventInfo() {
     var selectedValue = document.getElementById("name");
-    var event = selectedValue.options[selectedValue.selectedIndex].value;
+    var event = eventList[selectedValue.selectedIndex].eventId;
     fetch('/api/trip/getEvent/' + event, {
         "method": "GET",
         headers: {
@@ -102,8 +116,9 @@ function showEventInfo() {
         }
     }).then(function (response) {
         return response.json();
-    }).then(function (event) {
-        document.getElementById("time").value = event.eventDate + " " + event.eventTime;
+    }).then(function (newEvent) {
+        console.log(newEvent);
+        document.getElementById("time").value = newEvent.eventDate + " " + newEvent.eventTime;
     });
 
 }

@@ -21,7 +21,7 @@ import java.util.List;
 public class Event {
     @Id
     @GeneratedValue
-    private Long id;
+    private Long eventId;
 
 
     private String eventName;
@@ -48,12 +48,12 @@ public class Event {
         this.eventDestination = eventDestination;
     }
 
-    public Long getId() {
-        return id;
+    public Long getEventId() {
+        return eventId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setEventId(Long id) {
+        this.eventId = id;
     }
 
     public String getEventName() {

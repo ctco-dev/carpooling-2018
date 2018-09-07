@@ -21,7 +21,8 @@ import java.util.List;
 public class Event {
     @Id
     @GeneratedValue
-    private Long id;
+    private Long eventId;
+
 
     private String eventName;
     private LocalDateTime eventDateTime;
@@ -43,18 +44,19 @@ public class Event {
     public Event() {
     }
 
-    public Event(String eventName, String eventDate, String eventTime, Place eventDestination) {
+    public Event(String eventName, String eventDate, String eventTime, Place eventDestination,List<User> participants) {
         this.eventName = eventName;
         this.eventDateTime = DateTimeCoverter.covertToDateTime(eventDate, eventTime);
         this.eventDestination = eventDestination;
+        this.participants=participants;
     }
 
-    public Long getId() {
-        return id;
+    public Long getEventId() {
+        return eventId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setEventId(Long id) {
+        this.eventId = id;
     }
 
     public String getEventName() {

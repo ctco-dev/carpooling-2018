@@ -59,7 +59,7 @@ function drawTable(tripsList, tabId) {
 
         cellInd++;
         var cell_event = row.insertCell(cellInd);
-        cell_event.innerHTML = e.event;
+        cell_event.innerHTML = e.eventName;
 
         cellInd++;
         var cell_btnForPassenger = row.insertCell(cellInd);
@@ -153,6 +153,6 @@ function leave(tripId) {
     });
 }
 
-function goAddEvent() {
+function goAddEvent(){
     location.href = "/addEvent.jsp";
 }

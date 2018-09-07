@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class EventDto {
-    private Long eventId;
+    private  Long eventId;
     private String eventName;
     private String eventDate;
     private String eventTime;
@@ -30,6 +30,7 @@ public class EventDto {
     public Long getEventId() {
         return eventId;
     }
+
     public void setEventId(Long eventId) {
         this.eventId = eventId;
     }

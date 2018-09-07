@@ -54,9 +54,8 @@ public class TripApi {
     public ListTripDto getActiveTrips() {
         User currentUser = userStore.getCurrentUser();
         ListTripDto listTripDto = new ListTripDto();
-        listTripDto.setTrips(tripStore.findTripsByStatus(TripStatus.ACTIVE)
+        listTripDto.setTrips(tripStore.findTripsByStatus(TripStatus.ACTIVE,currentUser)
                 .stream()
-                .sorted(Comparator.comparing(Trip::getDepartureTime))
                 .map(t -> this.convertToTripDto(t, currentUser))
                 .collect(Collectors.toList()));
         return listTripDto;
@@ -97,6 +96,14 @@ public class TripApi {
         dto.setDriverInfo(driver.getName() + " " + driver.getSurname());
         dto.setDriverPhone(driver.getPhoneNumber());
         dto.setEvent(trip.isEvent());
+        if(trip.getEvent()==null){
+            dto.setEventName("");
+            dto.setEventId(null);
+        }else {
+            dto.setEventName(trip.getEvent().getEventName());
+            dto.setEventId(trip.getEvent().getEventId());
+        }
+
         dto.setFrom(trip.getDeparture());
         dto.setTo(trip.getDestination());
         dto.setPlaces(trip.getPlaces() - passList.size());
@@ -159,7 +166,15 @@ public class TripApi {
         User user = userStore.getCurrentUser();
         Trip trip = new Trip();
         trip.setDriver(user);
-        trip.setEvent(dto.isEvent());
+        trip.setIsEvent(dto.isEvent());
+        if (dto.getEventName()!=null && !dto.getEventName().equals("")) {
+            Optional<Event> event = tripStore.getEventById(dto.getEventId());
+            if (event.isPresent()) {
+                trip.setEvent(event.get());
+            } else {
+                throw new ValidationException("Event not found");
+            }
+        }
         trip.setDeparture(dto.getFrom());
         trip.setDestination(dto.getTo());
         trip.setPlaces(dto.getPlaces());
@@ -190,7 +205,7 @@ public class TripApi {
 
     private EventDto convertEventToEventDtoFromCreatorPointOfView(Event event, User currentuser) {
         EventDto dto = new EventDto();
-        dto.setEventId(event.getId());
+        dto.setEventId(event.getEventId());
         dto.setEventName(event.getEventName());
         dto.setEventDate(DateTimeCoverter.covertToDate(event.getEventDateTime()));
         dto.setEventTime(DateTimeCoverter.covertToTime(event.getEventDateTime()));
@@ -200,9 +215,23 @@ public class TripApi {
         return dto;
     }
 
+    @GET
+    @Path("/eventList")
+    @Produces("application/json")
+    @RolesAllowed({"ADMIN", "USER"})
+    public List<EventDto> getAllEventsForParticipants() {
+        User user = userStore.getCurrentUser();
+        return tripStore.findAllEventsForTripPage(user)
+                .stream()
+                .map(this::convertEventToEventDto)
+                .collect(Collectors.toList());
+    }
+
+
+
     private EventDto convertEventToEventDto(Event event) {
         EventDto dto = new EventDto();
-        dto.setEventId(event.getId());
+        dto.setEventId(event.getEventId());
         dto.setEventName(event.getEventName());
         dto.setEventDate(DateTimeCoverter.covertToDate(event.getEventDateTime()));
         dto.setEventTime(DateTimeCoverter.covertToTime(event.getEventDateTime()));
@@ -235,7 +264,6 @@ public class TripApi {
             participant.ifPresent(userList::add);
         }
         tripStore.addNewEvent(dto, creator, userList);
-
         return Response.status(Response.Status.CREATED).build();
     }
 
@@ -254,7 +282,7 @@ public class TripApi {
     @Path("/deleteEvent/{id}")
     @RolesAllowed({"ADMIN", "USER"})
     public Response markEventAsDeleted(@PathParam("id") Long eventId) {
-        Optional<Event> foundEvent = tripStore.findEventById(eventId);
+        Optional<Event> foundEvent = tripStore.getEventById(eventId);
         if (foundEvent.isPresent()) {
             foundEvent.get().setDeletedStatus(true);
         } else {
@@ -262,6 +290,21 @@ public class TripApi {
         }
         return Response.status(Response.Status.ACCEPTED).build();
     }
+
+    @GET
+    @Path("/getEvent/{event}")
+    @Produces("application/json")
+    @RolesAllowed({"ADMIN", "USER"})
+    public EventDto getEventInfo(@PathParam("event") Long eventId) {
+        EventDto eventDto = new EventDto();
+        Optional<Event> event = tripStore.getEventById(eventId);
+        if (event.isPresent()) {
+            Event event1 = event.get();
+            eventDto = convertEventToEventDto(event1);
+        }
+        return eventDto;
+    }
+
 
     @GET
     @Path("/deleteTrip/{id}")

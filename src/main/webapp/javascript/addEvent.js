@@ -18,7 +18,6 @@ function buildEventDto() {
 }
 
 function showMyEvents() {
-
     fetch('/api/trip/events', {
         "method": "GET",
         headers: {
@@ -37,7 +36,7 @@ function showMyEvents() {
 }
 
 
-function drawTable(eventsList, tabId) {
+function drawTable(eventsList, tabId){
     var table = document.getElementById(tabId);
     var tbody = table.getElementsByTagName('tbody')[0];
     if (tbody) table.removeChild(tbody);

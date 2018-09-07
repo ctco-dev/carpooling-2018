@@ -37,6 +37,10 @@ public class Trip {
 
     private String departureTime;
 
+    @ManyToOne
+    @JoinColumn(name = "event_id")
+    private Event event;
+
     private boolean isEvent;
 
     @Enumerated(EnumType.STRING)
@@ -51,13 +55,14 @@ public class Trip {
     public Trip() {
     }
 
-    public Trip(User driver, Place departure, Place destination, int places, String departureTime, boolean isEvent, TripStatus tripStatus) {
+    public Trip(User driver, Place departure, Place destination, int places, String departureTime, boolean isEvent,Event event, TripStatus tripStatus) {
         this.driver = driver;
         this.departure = departure;
         this.destination = destination;
         this.places = places;
         this.departureTime = departureTime;
         this.isEvent = isEvent;
+        this.event=event;
         this.tripStatus = tripStatus;
         this.passengers = new ArrayList<>();
     }
@@ -114,7 +119,7 @@ public class Trip {
         return isEvent;
     }
 
-    public void setEvent(boolean event) {
+    public void setIsEvent(boolean event) {
         isEvent = event;
     }
 
@@ -131,5 +136,16 @@ public class Trip {
     }
     public void setPassengers(List<User> passengers) {
         this.passengers = passengers;
+    }
+
+    public Event getEvent() {
+        return event;
+    }
+
+    public void setEvent(Event event) {
+        this.event = event;
+    }
+
+    public void setEventName(String eventName) {
     }
 }

@@ -358,14 +358,14 @@ class TripApiTest {
         verify(tripStore, times(1)).addNewEvent(any(EventDto.class), any(User.class), anyList());
         assertEquals(Response.Status.CREATED.getStatusCode(), tripApi.createNewEvent(eventDto).getStatus());
     }
-//
-//    @Test
-//    @DisplayName("Check getting event info from DB by event name")
-//    void getEventFromDB() {
-//        when(tripStore.getEventByName("Team-building")).thenReturn(Optional.ofNullable(event1));
-//        Optional<Event> result = tripApi.getEventInfo("Team-building");
-//        verify(tripStore, times(1)).getEventByName("Team-building");
-//    }
+
+    @Test
+    @DisplayName("Check getting event info from DB by event name")
+    void getEventFromDB() {
+        when(tripStore.getEventById((long) 1)).thenReturn(Optional.ofNullable(event1));
+        EventDto result = tripApi.getEventInfo((long) 1);
+        verify(tripStore, times(1)).getEventById((long) 1);
+    }
 
     @Test
     @DisplayName("Check getting full list of users")

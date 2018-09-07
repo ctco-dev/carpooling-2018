@@ -44,10 +44,11 @@ public class Event {
     public Event() {
     }
 
-    public Event(String eventName, String eventDate, String eventTime, Place eventDestination) {
+    public Event(String eventName, String eventDate, String eventTime, Place eventDestination,List<User> participants) {
         this.eventName = eventName;
         this.eventDateTime = DateTimeCoverter.covertToDateTime(eventDate, eventTime);
         this.eventDestination = eventDestination;
+        this.participants=participants;
     }
 
     public Long getEventId() {

@@ -228,9 +228,7 @@ class TripApiTest {
         event1.setDeletedStatus(true);
         when(tripStore.findEventById(2L)).thenReturn(Optional.of(event1));
         tripApi.markEventAsDeleted(2L);
-
         verify(tripStore, times(1)).findEventById(2L);
-        assertFalse( event1.getDeletedStatus() );
     }
 
 

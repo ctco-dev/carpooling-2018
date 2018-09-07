@@ -53,16 +53,12 @@ function addRemoveEvent() {
     if (yesChkBox.checked) {
 
         noChkBox.checked = false;
-        console.log(yesChkBox.checked);
-        console.log(noChkBox.checked)
         document.getElementById('event-name').classList.remove("w3-hide");
         document.getElementById('event-time').classList.remove("w3-hide");
         showEvents();
     }
     if (noChkBox.checked) {
         yesChkBox.checked = false;
-        console.log(noChkBox.checked)
-        console.log(yesChkBox.checked);
         document.getElementById('event-name').classList.add("w3-hide");
         document.getElementById('event-time').classList.add("w3-hide");
     }
@@ -80,7 +76,6 @@ function saveTrip(values) {
         if (response.status == 400) {
             alert("Event not found")
         } else if (response.status === 201) {
-            console.log(values)
            location.href = "/main.jsp";
         }
     })
@@ -100,7 +95,6 @@ function showEvents() {
     }).then(function (events) {
         eventList = events;
         eventList.forEach(function (e) {
-            console.log(e);
             select.add(new Option(e.eventName));
         });
         showEventInfo();
@@ -119,7 +113,6 @@ function showEventInfo() {
     }).then(function (response) {
         return response.json();
     }).then(function (newEvent) {
-        console.log(newEvent);
         document.getElementById("time").value = newEvent.eventDate + " " + newEvent.eventTime;
     });
 

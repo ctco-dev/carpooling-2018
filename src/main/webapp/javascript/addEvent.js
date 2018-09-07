@@ -27,7 +27,6 @@ function showMyEvents() {
     }).then(function (response) {
         return response.json();
     }).then(function (eventsList) {
-        console.log(eventsList);
         drawTable(eventsList, "events");
         window.setTimeout(function () {
             showMyEvents();

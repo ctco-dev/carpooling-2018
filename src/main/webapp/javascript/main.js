@@ -8,7 +8,6 @@ function displayActiveTrips() {
     }).then(function (response) {
         return response.json();
     }).then(function (tripsList) {
-        console.log(JSON.stringify(tripsList));
         drawTable(tripsList, "trips");
         window.setTimeout(function () {displayActiveTrips(); }, 1000);
     });

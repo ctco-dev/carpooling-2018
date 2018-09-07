@@ -39,6 +39,8 @@ public class Event {
     @ManyToOne
     private User eventCreator;
 
+    private Boolean isDeleted = false;
+
     public Event() {
     }
 
@@ -94,5 +96,13 @@ public class Event {
 
     public void setEventCreator(User eventCreator) {
         this.eventCreator = eventCreator;
+    }
+
+    public Boolean getDeletedStatus() {
+        return isDeleted;
+    }
+
+    public void setDeletedStatus(Boolean deleted) {
+        isDeleted = deleted;
     }
 }

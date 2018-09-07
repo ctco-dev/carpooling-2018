@@ -34,20 +34,7 @@
                 <th></th>
             </tr>
             </thead>
-            <tbody>
-            <tr w3-repeat="trips">
-                <td>{{from}}-{{to}}</td>
-                <td>{{places}}</td>
-                <td>{{event}}</td>
-                <td class="dropdown">
-                    <button onclick="myFunction()" class="dropbtn">...</button>
-                    <div id="myDropdown" class="dropdown-content">
-                        <a href="#edit">edit</a>
-                        <a href="#delete">delete</a>
-                    </div>
-                </td>
-            </tr>
-            </tbody>
+            <tbody></tbody>
         </table>
     </div>
 </div>

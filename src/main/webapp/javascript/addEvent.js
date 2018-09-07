@@ -27,11 +27,13 @@ function showMyEvents() {
     }).then(function (response) {
         return response.json();
     }).then(function (eventsList) {
+        console.log(eventsList);
         drawTable(eventsList, "events");
-        window.setTimeout(function () {showMyEvents(); }, 1000);
+        window.setTimeout(function () {
+            showMyEvents();
+        }, 1000);
     });
 }
-
 
 
 function drawTable(eventsList, tabId){
@@ -42,19 +44,55 @@ function drawTable(eventsList, tabId){
     tbody = document.createElement('tbody');
     eventsList.forEach(function (e) {
         var row = tbody.insertRow();
-        var cell1 = row.insertCell(0);
-        var cell2 = row.insertCell(1);
-        var cell3 = row.insertCell(2);
-        var cell4 = row.insertCell(3);
-        var cell5 = row.insertCell(4);
-        cell1.innerHTML = e.eventName;
-        cell2.innerHTML = e.eventDate;
-        cell3.innerHTML = e.eventTime;
-        cell4.innerHTML = e.eventPlace;
-        cell5.innerHTML =
-            "<button type=\"button\" class=\"btn btn-primary\" onclick=\"\">delete</button>";
+
+        var cellInd = 0;
+        var cell_Id = row.insertCell(cellInd);
+        cell_Id.id = "id";
+        cell_Id.classList.add("table_id");
+        cell_Id.innerHTML = e.eventId;
+
+        cellInd++;
+        var cell_name = row.insertCell(cellInd);
+        cell_name.innerHTML = e.eventName;
+
+        cellInd++;
+        var cell_date = row.insertCell(cellInd);
+        cell_date.innerHTML = e.eventDate;
+
+        cellInd++;
+        var cell_time = row.insertCell(cellInd);
+        cell_time.innerHTML = e.eventTime;
+
+        cellInd++;
+        var cell_place = row.insertCell(cellInd);
+        cell_place.innerHTML = e.eventPlace;
+
+        cellInd++;
+        var cell_deleteBtn = row.insertCell(cellInd);
+        cell_deleteBtn.innerHTML = addDeleteBtn(e.iamCreator);
+        cell_deleteBtn.classList.add("delete_button");
     });
     table.appendChild(tbody);
+}
+
+function addDeleteBtn(showButton) {
+    if (showButton === false) return "";
+
+    return "<button id=\"delete-button\" type=\"button\" class=\"btn btn-primary\"\n" +
+        " onclick=\"deleteEvent( $(this).closest('tr').find('.table_id').text() )\">\n" +
+        "Delete</button>";
+}
+
+function deleteEvent(eventId) {
+    fetch('/api/trip/deleteEvent/' + eventId, {
+        "method": "GET",
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        }
+    }).then(function (response) {
+        showMyEvents();
+    });
 }
 
 function addNewEvent(data) {

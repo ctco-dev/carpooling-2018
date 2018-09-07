@@ -70,6 +70,7 @@ public class TripApi {
         ListTripDto listTripDto = new ListTripDto();
         listTripDto.setTrips(tripStore.findTripsByUser(currentUser)
                 .stream()
+                .filter(e -> (e.getTripStatus().equals(TripStatus.ACTIVE)))
                 .sorted(Comparator.comparing(Trip::getDepartureTime))
                 .map(t -> this.convertToTripDto(t, currentUser))
                 .collect(Collectors.toList()));
@@ -199,8 +200,20 @@ public class TripApi {
         User user = userStore.getCurrentUser();
         return tripStore.findAllEventsForEventPage(user)
                 .stream()
-                .map(this::convertEventToEventDto)
+                .map(e-> convertEventToEventDtoFromCreatorPointOfView(e, user))
                 .collect(Collectors.toList());
+    }
+
+    private EventDto convertEventToEventDtoFromCreatorPointOfView(Event event, User currentuser) {
+        EventDto dto = new EventDto();
+        dto.setEventId(event.getId());
+        dto.setEventName(event.getEventName());
+        dto.setEventDate(DateTimeCoverter.covertToDate(event.getEventDateTime()));
+        dto.setEventTime(DateTimeCoverter.covertToTime(event.getEventDateTime()));
+        dto.setEventPlace(event.getEventDestination());
+        dto.setUsernames(new ArrayList<>());
+        dto.setIamCreator( event.getEventCreator()!=null && event.getEventCreator().equals(currentuser) );
+        return dto;
     }
 
     @GET
@@ -267,6 +280,19 @@ public class TripApi {
     }
 
     @GET
+    @Path("/deleteEvent/{id}")
+    @RolesAllowed({"ADMIN", "USER"})
+    public Response markEventAsDeleted(@PathParam("id") Long eventId) {
+        Optional<Event> foundEvent = tripStore.findEventById(eventId);
+        if (foundEvent.isPresent()) {
+            foundEvent.get().setDeletedStatus(true);
+        } else {
+            throw new ValidationException("There is no such event");
+        }
+        return Response.status(Response.Status.ACCEPTED).build();
+    }
+
+    @GET
     @Path("/getEvent/{event}")
     @Produces("application/json")
     @RolesAllowed({"ADMIN", "USER"})
@@ -278,5 +304,20 @@ public class TripApi {
             eventDto = convertEventToEventDto(event1);
         }
         return eventDto;
+    }
+}
+
+    @GET
+    @Path("/deleteTrip/{id}")
+    @RolesAllowed({"ADMIN", "USER"})
+    public Response  deleteTrip(@PathParam("id") Long tripID) {
+        Optional<Trip> foundTrip = tripStore.findTripById(tripID);
+        System.out.println(tripID);
+        if (foundTrip.isPresent()) {
+            foundTrip.get().setTripStatus(TripStatus.FINISHED);
+        } else {
+            throw new ValidationException("There is no such trip");
+        }
+        return Response.status(Response.Status.OK).build();
     }
 }

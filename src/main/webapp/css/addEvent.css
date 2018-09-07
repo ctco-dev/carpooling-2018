@@ -12,6 +12,7 @@
 }
 
 #newEvent {
+    align: center;
     display: inline-block;
     padding: 10px;
 }
@@ -33,6 +34,10 @@ th, td {
 td {
     padding-left: 3px;
     padding-right: 3px;
+}
+
+td.delete_button{
+    height: 38px;
 }
 
 #name {
@@ -94,6 +99,10 @@ li[name=user] {
 
 td[name=myEventTable]{
     vertical-align: super;
+}
+
+.table_id {
+    display:none;
 }
 
 h1{

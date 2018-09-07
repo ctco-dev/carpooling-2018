@@ -36,7 +36,6 @@ public class TripStore {
                 .collect(Collectors.toList());
     }
 
-
     public List<Trip> findTripsByUser(User user) {
         return em.createQuery("select t from Trip t where t.driver = :user", Trip.class)
                 .setParameter("user", user)

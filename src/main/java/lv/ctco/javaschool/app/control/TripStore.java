@@ -26,13 +26,13 @@ public class TripStore {
                 .getResultList();
     }
 
-    public List<Trip> findTripsByStatus(TripStatus tripStatus) {
+    public List<Trip> findTripsByStatus(TripStatus tripStatus,User currentUser) {
         return em.createQuery("select t from Trip t " +
                 "where t.tripStatus = :status", Trip.class)
                 .setParameter("status", tripStatus)
                 .getResultStream()
-//                .filter(t-> ((t.getEvent()==null) || (t.getEvent().getParticipants().contains(currentUser))))
-               // .sorted(Comparator.comparing(Trip::getDepartureTime))
+                .filter(t -> ((t.getEvent() == null) || (t.getEvent().getParticipants().contains(currentUser))))
+                .sorted(Comparator.comparing(Trip::getDepartureTime))
                 .collect(Collectors.toList());
     }
 

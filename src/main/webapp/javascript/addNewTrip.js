@@ -1,3 +1,4 @@
+var eventList = [];
 function tripdto() {
     var dto = {}
     var yesChkBox = document.getElementById("yes");
@@ -10,7 +11,7 @@ function tripdto() {
         var isEvent = true;
         dto["isEvent"] = isEvent;
         dto["eventName"] = eventName.options[eventName.selectedIndex].value;
-        dto["eventId"] = eventName.selectedIndex;
+        dto["eventId"]  = eventList[eventName.selectedIndex].eventId;
     }
     else {
         var isEvent = false;
@@ -84,7 +85,7 @@ function saveTrip(values) {
         }
     })
 }
-var eventList = [];
+
 
 function showEvents() {
     var select = document.getElementsByClassName("event-name")[0];

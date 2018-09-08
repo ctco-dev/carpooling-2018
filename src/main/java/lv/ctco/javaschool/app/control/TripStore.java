@@ -53,28 +53,28 @@ public class TripStore {
         em.persist(trip);
     }
 
-    public List<Event> findAllEventsForTripPage(User user) {
+    public List<Event> findAllEvents() {
         return em.createQuery(
                 "select e from Event e " +
                         "where e.eventDateTime >= :newDT " +
-                        "and e.isDeleted=:flag ", Event.class)
+                        "and e.isDeleted=:flag " +
+                        "order by e.eventDateTime", Event.class)
                 .setParameter("newDT", LocalDateTime.now())
-                .getResultStream()
+                .setParameter("flag", false)
+                .getResultList();
+    }
+
+    public List<Event> findAllEventsForTripPage(User user) {
+        return findAllEvents()
+                .stream()
                 .filter(e -> e.getParticipants().contains(user))
-                .sorted(Comparator.comparing(Event::getEventDateTime))
                 .collect(Collectors.toList());
     }
 
     public List<Event> findAllEventsForEventPage(User user) {
-        return em.createQuery(
-                "select e from Event e " +
-                        "where e.eventDateTime >= :newDT " +
-                        "and e.isDeleted=:flag ", Event.class)
-                .setParameter("newDT", LocalDateTime.now())
-                .setParameter("flag", false)
-                .getResultStream()
+        return findAllEvents()
+                .stream()
                 .filter(e -> ((e.getParticipants().contains(user)) || (e.getEventCreator().equals(user))))
-                .sorted(Comparator.comparing(Event::getEventDateTime))
                 .collect(Collectors.toList());
     }
 
